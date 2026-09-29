@@ -347,16 +347,10 @@ const Assessment = () => {
                           <label className="text-sm font-semibold mb-2 block">Minh chứng cụ thể (nếu có)</label>
                           <textarea className="form-control mb-3" rows="2" placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." style={{width: '100%'}}></textarea>
                           <div className="flex items-center gap-3 mt-2">
-                            <label className="btn flex items-center gap-2 cursor-pointer" style={{ padding: '6px 14px', fontSize: '13px', borderRadius: '6px', border: '1px dashed var(--primary)', color: 'var(--primary)', backgroundColor: 'transparent' }}>
+                            <button type="button" className="btn flex items-center gap-2 cursor-pointer" style={{ padding: '6px 14px', fontSize: '13px', borderRadius: '6px', border: '1px dashed var(--primary)', color: 'var(--primary)', backgroundColor: 'transparent' }}>
                               <Upload size={14} />
                               <span className="font-semibold">Tải lên tài liệu (.pdf, .docx, .xlsx)</span>
-                              <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" style={{ display: 'none' }} onChange={(e) => {
-                                if (e.target.files && e.target.files.length > 0) {
-                                  alert(`(Bản Demo) Bạn vừa chọn tệp: ${e.target.files[0].name}\nChức năng lưu trữ file lên server đang được phát triển.`);
-                                }
-                              }} />
-                            </label>
-                            <span className="text-xs text-muted italic">*Bản demo giao diện (Front-end)</span>
+                            </button>
                           </div>
                         </div>
                       )}
