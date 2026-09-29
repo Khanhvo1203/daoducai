@@ -497,13 +497,13 @@ const LandingPage = () => {
                       } 
                     });
                   }}
-                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem' }}
+                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textAlign: 'left', width: '100%' }}
                 >
                   <div className="flex items-start gap-2">
                     <Settings size={18} className="text-primary flex-shrink-0" style={{ marginTop: '4px' }} />
-                    <div className="flex-1 text-left">
-                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0' }}>1. Đánh giá khung đạo đức theo thông tư 05/2026/TT-BKHCN</h4>
-                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0 }}>Ấn vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống.</p>
+                    <div className="flex-1" style={{ textAlign: 'left' }}>
+                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>1. Đánh giá khung đạo đức theo thông tư 05/2026/TT-BKHCN</h4>
+                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0, textAlign: 'left' }}>Ấn vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống.</p>
                     </div>
                   </div>
                 </button>
@@ -513,13 +513,13 @@ const LandingPage = () => {
                   href="/Khung_dao_duc_Unesco.xlsx" 
                   download
                   className="selection-card block hover:border-primary transition-colors cursor-pointer mt-4"
-                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textDecoration: 'none' }}
+                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textDecoration: 'none', textAlign: 'left', width: '100%' }}
                 >
                   <div className="flex items-start gap-2">
                     <Scale size={18} className="text-primary flex-shrink-0" style={{ marginTop: '4px' }} />
-                    <div className="flex-1 text-left">
-                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0' }}>2. Đánh giá khung đạo đức theo Unesco</h4>
-                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0 }}>Ấn vào đây để tải về file Excel biểu mẫu đánh giá của Unesco.</p>
+                    <div className="flex-1" style={{ textAlign: 'left' }}>
+                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>2. Đánh giá khung đạo đức theo Unesco</h4>
+                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0, textAlign: 'left' }}>Ấn vào đây để tải về file Excel biểu mẫu đánh giá của Unesco.</p>
                     </div>
                   </div>
                 </a>
