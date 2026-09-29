@@ -160,6 +160,13 @@ const Assessment = () => {
   const handleSelect = (qId, optionIdx) => {
     setAnswers({ ...answers, [qId]: optionIdx });
     const currentIndex = currentQuestions.findIndex(q => q.id === qId);
+    const selectedOptionText = currentQuestions[currentIndex].options[optionIdx];
+    
+    // Không tự động nhảy câu nếu chọn "Có" để người dùng kịp điền minh chứng
+    if (selectedOptionText === 'Có') {
+      return;
+    }
+
     if (currentIndex >= 0 && currentIndex < currentQuestions.length - 1) {
       setOpenQuestion(currentQuestions[currentIndex + 1].id);
     }
@@ -335,11 +342,12 @@ const Assessment = () => {
                           </label>
                         ))}
                       </div>
-                      
-                      <div className="evidence-upload mt-4 pt-4 border-t">
-                        <label className="text-sm font-semibold mb-2 block">Minh chứng cụ thể (nếu có)</label>
-                        <textarea className="form-control" rows="2" placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." style={{width: '100%'}}></textarea>
-                      </div>
+                      {answers[q.id] !== undefined && q.options[answers[q.id]] === 'Có' && (
+                        <div className="evidence-upload mt-4 pt-4 border-t">
+                          <label className="text-sm font-semibold mb-2 block">Minh chứng cụ thể (nếu có)</label>
+                          <textarea className="form-control" rows="2" placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." style={{width: '100%'}}></textarea>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
