@@ -97,15 +97,17 @@ const LandingPage = () => {
       <div className="container split-layout declaration-split">
         {/* Left Side: Information */}
         <div className="declaration-info">
-          <div className="icon-box-lg text-primary bg-primary-light mb-6">
-            <ShieldCheck size={36} />
+          <div className="flex items-center gap-4 mb-4">
+            <div className="icon-box-lg text-primary bg-primary-light flex-shrink-0">
+              <ShieldCheck size={36} />
+            </div>
+            <h1 className="hero-title" style={{ margin: 0 }}>
+              {step === 1 && 'Hồ sơ đăng ký'}
+              {step === 2 && 'Mô tả hệ thống AI'}
+              {step === 3 && 'Khai báo đánh giá rủi ro'}
+              {step === 4 && 'Chọn nội dung đánh giá'}
+            </h1>
           </div>
-          <h1 className="hero-title">
-            {step === 1 && 'Hồ sơ đăng ký'}
-            {step === 2 && 'Mô tả hệ thống AI'}
-            {step === 3 && 'Khai báo đánh giá rủi ro'}
-            {step === 4 && 'Chọn nội dung đánh giá'}
-          </h1>
           <p className="hero-subtitle text-muted mt-4 mb-8">
             {step === 1 && 'Để bắt đầu, vui lòng cung cấp thông tin liên hệ của cá nhân/đơn vị đại diện.'}
             {step === 2 && 'Cung cấp các đặc tả kỹ thuật, vai trò, mục đích và giới hạn của hệ thống AI.'}
