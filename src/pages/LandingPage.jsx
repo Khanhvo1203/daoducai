@@ -503,7 +503,7 @@ const LandingPage = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Settings size={18} className="text-primary" />
-                        <h4 className="font-bold">1. Đánh giá khung đạo đức theo thông tư 05/2026/TT-BKHCN</h4>
+                        <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: 0 }}>1. Đánh giá khung đạo đức theo thông tư 05/2026/TT-BKHCN</h4>
                       </div>
                       <p className="text-sm text-muted">Nhấp vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống.</p>
                     </div>
@@ -521,7 +521,7 @@ const LandingPage = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Scale size={18} className="text-primary" />
-                        <h4 className="font-bold text-main">2. Đánh giá khung đạo đức theo Unesco</h4>
+                        <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: 0 }}>2. Đánh giá khung đạo đức theo Unesco</h4>
                       </div>
                       <p className="text-sm text-muted">Nhấp vào đây để tải về file Excel biểu mẫu đánh giá của Unesco.</p>
                     </div>
