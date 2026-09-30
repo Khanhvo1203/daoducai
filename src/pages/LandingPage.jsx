@@ -95,9 +95,8 @@ const LandingPage = () => {
   return (
     <div className="declaration-page">
       <div className="container split-layout declaration-split">
-        {/* Left Side: Information */}
         <div className="declaration-info">
-          <div className="flex items-center gap-3 mb-6" style={{ marginTop: '-4px' }}>
+          <div className="flex items-center gap-3 mb-6">
             <ShieldCheck size={42} className="text-primary flex-shrink-0" />
             <h1 className="hero-title" style={{ margin: 0, lineHeight: 1 }}>
               {step === 1 && 'Hồ sơ đăng ký'}
