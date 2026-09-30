@@ -81,7 +81,7 @@ const Assessment = () => {
     ],
     'partA3': [
       { id: 'A11', text: <>Hệ thống có thuộc Danh mục AI rủi ro cao theo Điều 13 Luật 134/2025/QH15 và <a href="https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Quyet-dinh-33-2026-QD-TTg-Danh-muc-he-thong-tri-tue-nhan-tao-co-rui-ro-cao-712969.aspx" target="_blank" rel="noreferrer" className="text-primary hover:underline" onClick={(e) => e.stopPropagation()}>Quyết định 33/2026/QĐ-TTg</a> ban hành vào ngày 30/06/2026 hay không?</>, options: ['Có', 'Không'], required: true },
-      { id: 'A12', text: 'Nếu hệ thống đưa ra kết quả sai, những tác động tiêu cực lên người dân có dễ dàng khắc phục được không?', options: ['Có', 'Không'], required: true },
+      { id: 'A12', text: <>Nếu thuộc Danh mục AI rủi ro cao theo Điều 13 Luật 134/2025/QH15 và <a href="https://thuvienphapluat.vn/van-ban/Cong-nghe-thong-tin/Quyet-dinh-33-2026-QD-TTg-Danh-muc-he-thong-tri-tue-nhan-tao-co-rui-ro-cao-712969.aspx" target="_blank" rel="noreferrer" className="text-primary hover:underline" onClick={(e) => e.stopPropagation()}>Quyết định 33/2026/QĐ-TTg</a> ban hành, đã thực hiện đánh giá sự phù hợp theo Điều 13 chưa?</>, options: ['Có', 'Không'], required: true },
       { id: 'A13', text: 'Hệ thống có thuộc Danh mục AI rủi ro cao theo quy định của pháp luật không?', options: ['Có', 'Không'], required: true },
       { id: 'A14', text: 'Có rủi ro rò rỉ dữ liệu hoặc xâm phạm nghiêm trọng đến quyền riêng tư không?', options: ['Có', 'Không'], required: true },
       { id: 'A15', text: 'Phân loại sơ bộ rủi ro theo qui định của Luật AI, hệ thống được xếp vào nhóm nào? (Thấp/Trung bình/Cao)', options: ['Thấp', 'Trung bình', 'Cao'], required: true }
