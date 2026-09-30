@@ -69,7 +69,7 @@ const Assessment = () => {
       { id: 'A1', text: 'Hệ thống AI có được định danh và mô tả chức năng rõ ràng bằng văn bản không?', options: ['Có', 'Không'], required: true },
       { id: 'A2', text: 'Vai trò của tổ chức đối với hệ thống này (Phát triển/Triển khai/Người dùng) đã được xác định chưa?', options: ['Có', 'Không'], required: true },
       { id: 'A3', text: 'Hệ thống AI này được phân loại theo loại công nghệ nào (ML truyền thống, học sâu, LLM/GenAI, GPAI, hệ thống lai) đã được ghi nhận rõ chưa?', options: ['Có', 'Không'], required: true },
-      { id: 'A4', text: 'Nguồn dữ liệu đầu vào (nội bộ, công khai, mua ngoài) có được lập bản đồ rõ ràng không?', options: ['Có', 'Không'], required: true },
+      { id: 'A4', text: 'Hệ thống AI đang ở giai đoạn nào của vòng đời (NCKH cơ bản, phát triển, thử nghiệm, sản xuất, ngừng) đã được mô tả chưa?', options: ['Có', 'Không'], required: true },
       { id: 'A5', text: 'Các hệ thống CNTT khác có kết nối trực tiếp với AI này đã được liệt kê đầy đủ không?', options: ['Có', 'Không'], required: true }
     ],
     'partA2': [
