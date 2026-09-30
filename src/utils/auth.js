@@ -28,9 +28,9 @@ export const login = (username, password, role = 'MEMBER') => {
     return { success: false, message: 'Sai tài khoản hoặc mật khẩu Quản trị.' };
   }
 
-  // Đăng nhập thành viên
+// Đăng nhập thành viên
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  const user = users.find(u => u.username === username && u.password === password);
+  const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
   
   if (user) {
     const loggedInUser = { ...user, role: 'MEMBER' };
@@ -59,7 +59,7 @@ export const createUser = ({ username, password, name, phone }) => {
     return { success: false, message: 'Tên đăng nhập bắt buộc phải là địa chỉ Email.' };
   }
   const users = getAllUsers();
-  if (users.find(u => u.username === username)) {
+  if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
     return { success: false, message: 'Email này đã tồn tại trong hệ thống.' };
   }
   users.push({ username, password, name, phone, createdAt: new Date().toISOString() });
