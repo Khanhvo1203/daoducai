@@ -73,7 +73,7 @@ const Assessment = () => {
       { id: 'A5', text: 'Nếu hệ thống dùng AI từ bên thứ ba, đã liệt kê đầy đủ các thành phần AI bên ngoài chưa?', options: ['Có', 'Không'], required: true }
     ],
     'partA2': [
-      { id: 'A6', text: 'Hệ thống có trực tiếp tương tác với công dân/khách hàng bên ngoài tổ chức không?', options: ['Có', 'Không'], required: true },
+      { id: 'A6', text: 'Đầu vào - đầu ra của hệ thống đã được mô tả rõ ràng chưa? (loại dữ liệu, định dạng, biên giới)', options: ['Có', 'Không'], required: true },
       { id: 'A7', text: 'Hệ thống có được sử dụng để đưa ra các quyết định hành chính, cấp phép không?', options: ['Có', 'Không'], required: true },
       { id: 'A8', text: 'Quyết định của AI có ảnh hưởng đến các nhóm yếu thế, người khuyết tật, dân tộc thiểu số không?', options: ['Có', 'Không'], required: true },
       { id: 'A9', text: 'Hệ thống có thu thập và xử lý dữ liệu cá nhân nhạy cảm (sinh trắc, y tế) không?', options: ['Có', 'Không'], required: true },
