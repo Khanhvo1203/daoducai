@@ -1,60 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, User, HardDrive, ArrowRight, CheckSquare, Settings, Scale, AlertTriangle, FileText } from 'lucide-react';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); 
+  
+  const [step, setStep] = useState(() => {
+    const saved = localStorage.getItem('landing_step');
+    return saved ? parseInt(saved, 10) : 1;
+  }); 
   // 1 = Hồ sơ, 2 = Thông tin AI, 3 = Đánh giá rủi ro, 4 = Chọn bài đánh giá
   
-  const [formData, setFormData] = useState({
-    // Step 1: Hồ sơ đăng ký
-    fullName: '',
-    role: '',
-    email: '',
-    
-    // Step 2: Thông tin AI
-    systemName: '',
-    aiTechType: 'ML truyền thống',
-    developType: 'Tự phát triển',
-    provider: '',
-    foundationModel: '',
-    otherThirdParty: '',
-    orgRole: 'Nhà phát triển',
-    otherOrgRole: '',
-    purpose: '',
-    domain: 'Hành chính',
-    outOfScope: '',
-    inputType: 'Văn bản',
-    inputSource: 'Người dùng nhập',
-    outputType: 'Dự đoán',
-    automationLevel: 'Gợi ý cho người',
-    directUser: 'Cán bộ chuyên môn',
-    decisionTarget: 'Công dân',
-    otherDecisionTarget: '',
-    userCount: '',
-    userTargetCount: '',
-    deployScope: 'Cả nước',
-    deployChannel: 'Nội bộ',
-    misuseMain: '',
-    misuseTarget: '',
-    misuseIllegal: '',
-    cautionSituations: '',
-    technicalLimits: '',
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem('landing_formData');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Error parsing formData from localStorage", e);
+      }
+    }
+    return {
+      // Step 1: Hồ sơ đăng ký
+      fullName: '',
+      role: '',
+      email: '',
+      
+      // Step 2: Thông tin AI
+      systemName: '',
+      aiTechType: 'ML truyền thống',
+      developType: 'Tự phát triển',
+      provider: '',
+      foundationModel: '',
+      otherThirdParty: '',
+      orgRole: 'Nhà phát triển',
+      otherOrgRole: '',
+      purpose: '',
+      domain: 'Hành chính',
+      outOfScope: '',
+      inputType: 'Văn bản',
+      inputSource: 'Người dùng nhập',
+      outputType: 'Dự đoán',
+      automationLevel: 'Gợi ý cho người',
+      directUser: 'Cán bộ chuyên môn',
+      decisionTarget: 'Công dân',
+      otherDecisionTarget: '',
+      userCount: '',
+      userTargetCount: '',
+      deployScope: 'Cả nước',
+      deployChannel: 'Nội bộ',
+      misuseMain: '',
+      misuseTarget: '',
+      misuseIllegal: '',
+      cautionSituations: '',
+      technicalLimits: '',
 
-    // Step 3: Đánh giá rủi ro
-    isHighRisk: '',
-    highRiskDesc: '',
-    decree142: 'Chưa thực hiện',
-    riskLevel: '',
-    impactDirectUser: '',
-    impactDecisionTarget: '',
-    impactThirdParty: '',
-    impactVulnerable: '',
-    impactEmployee: '',
-    impactCommunity: ''
+      // Step 3: Đánh giá rủi ro
+      isHighRisk: '',
+      highRiskDesc: '',
+      decree142: 'Chưa thực hiện',
+      riskLevel: '',
+      impactDirectUser: '',
+      impactDecisionTarget: '',
+      impactThirdParty: '',
+      impactVulnerable: '',
+      impactEmployee: '',
+      impactCommunity: ''
+    };
   });
+
+  useEffect(() => {
+    localStorage.setItem('landing_step', step);
+  }, [step]);
+
+  useEffect(() => {
+    localStorage.setItem('landing_formData', JSON.stringify(formData));
+  }, [formData]);
 
   const [assessmentSelection, setAssessmentSelection] = useState({
     partB: true,
