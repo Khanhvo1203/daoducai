@@ -33,11 +33,36 @@ const Assessment = () => {
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
 
-  const [activeStepIdx, setActiveStepIdx] = useState(0);
+  const [activeStepIdx, setActiveStepIdx] = useState(() => {
+    const saved = localStorage.getItem('assessment_activeStepIdx');
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
   const activeStep = allSteps[activeStepIdx];
 
   const [openQuestion, setOpenQuestion] = useState(null);
-  const [answers, setAnswers] = useState({});
+  
+  const [answers, setAnswers] = useState(() => {
+    const saved = localStorage.getItem('assessment_answers');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const [evidences, setEvidences] = useState(() => {
+    const saved = localStorage.getItem('assessment_evidences');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  useEffect(() => {
+    localStorage.setItem('assessment_activeStepIdx', activeStepIdx);
+  }, [activeStepIdx]);
+
+  useEffect(() => {
+    localStorage.setItem('assessment_answers', JSON.stringify(answers));
+  }, [answers]);
+
+  useEffect(() => {
+    localStorage.setItem('assessment_evidences', JSON.stringify(evidences));
+  }, [evidences]);
 
   const questionsDb = {
     'partA1': [
@@ -345,7 +370,14 @@ const Assessment = () => {
                       {answers[q.id] !== undefined && q.options[answers[q.id]] === 'Có' && (
                         <div className="evidence-upload mt-4 pt-4 border-t">
                           <label className="text-sm font-semibold mb-2 block">Minh chứng cụ thể (nếu có)</label>
-                          <textarea className="form-control mb-3" rows="2" placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." style={{width: '100%'}}></textarea>
+                          <textarea 
+                            className="form-control mb-3" 
+                            rows="2" 
+                            placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." 
+                            style={{width: '100%'}}
+                            value={evidences[q.id] || ''}
+                            onChange={(e) => setEvidences({...evidences, [q.id]: e.target.value})}
+                          ></textarea>
                           <div className="flex items-center gap-3 mt-2">
                             <button type="button" className="btn flex items-center gap-2 cursor-pointer" style={{ padding: '6px 14px', fontSize: '13px', borderRadius: '6px', border: '1px dashed var(--primary)', color: 'var(--primary)', backgroundColor: 'transparent' }}>
                               <Upload size={14} />
