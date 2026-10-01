@@ -60,13 +60,34 @@ const Dashboard1 = () => {
     return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Nguyên tắc này hầu như chưa được tuân thủ; các hoạt động còn thiếu sót ở phần lớn nội dung và cần nỗ lực đáng kể để bảo đảm tuân thủ.' };
   };
 
-  const getOverallComplianceLevel = (totalScore) => {
-    if (totalScore >= 44) return { label: 'Tuân thủ đầy đủ', color: 'text-success', desc: 'Hệ thống đáp ứng tốt các nguyên tắc đạo đức AI.' };
-    if (totalScore >= 24) return { label: 'Tuân thủ một phần', color: 'text-warning', desc: 'Hệ thống đáp ứng một phần các nguyên tắc đạo đức AI. Cần tiếp tục cải thiện để đáp ứng đầy đủ.' };
-    return { label: 'Không tuân thủ', color: 'text-danger', desc: 'Hệ thống hầu như chưa đáp ứng các nguyên tắc đạo đức AI. Cần nỗ lực đáng kể để cải thiện.' };
+  const getOverallComplianceLevel = (totalScore, s1, s2, s3, s4) => {
+    // Không tuân thủ: Có ít nhất 01 nguyên tắc đạt 0-5 câu
+    if (s1 <= 5 || s2 <= 5 || s3 <= 5 || s4 <= 5) {
+      return { 
+        label: 'Không tuân thủ', 
+        color: 'text-danger', 
+        desc: 'Thiếu biện pháp bảo vệ cốt lõi, chưa có đầu mối trách nhiệm rõ ràng hoặc chưa có minh chứng; cần nỗ lực đáng kể để bảo đảm tuân thủ.' 
+      };
+    }
+    
+    // Tuân thủ đầy đủ: 44-60 câu, trong đó cả 04 nguyên tắc đạt 11-15 câu
+    if (totalScore >= 44 && s1 >= 11 && s2 >= 11 && s3 >= 11 && s4 >= 11) {
+      return { 
+        label: 'Tuân thủ đầy đủ', 
+        color: 'text-success', 
+        desc: 'Biện pháp bảo vệ cơ bản đã có đầy đủ, có minh chứng; có cơ chế giám sát của con người, kênh khiếu nại và quy trình khắc phục sự cố; sẵn sàng duy trì và cải tiến liên tục.' 
+      };
+    }
+
+    // Tuân thủ một phần: 24-43 câu và không có nguyên tắc nào đạt dưới 6 câu, HOẶC không thỏa mãn Tuân thủ đầy đủ (nhưng không có nguyên tắc < 6)
+    return { 
+      label: 'Tuân thủ một phần', 
+      color: 'text-warning', 
+      desc: 'Đã có khung quản trị nhưng còn thiếu bằng chứng hoặc chưa bảo đảm đầy đủ ở một hoặc nhiều nguyên tắc; cần xây dựng kế hoạch cải thiện có thời hạn.' 
+    };
   };
 
-  const overall = getOverallComplianceLevel(totalCScore);
+  const overall = getOverallComplianceLevel(totalCScore, scoreC1, scoreC2, scoreC3, scoreC4);
 
   let labels = ['An toàn', 'Quyền con người', 'Bền vững', 'Đổi mới'];
   let dataPoints = [
