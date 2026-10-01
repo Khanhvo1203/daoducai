@@ -54,6 +54,24 @@ const Dashboard1 = () => {
   const scoreC4 = getScore('C4');
   const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
 
+  const getScoreD = () => {
+    let score = 0;
+    for (let i = 1; i <= 10; i++) {
+      if (answers[`D${i}`] === 0) {
+        score++;
+      }
+    }
+    return score;
+  };
+  const scoreD = getScoreD();
+
+  const getDComplianceLevel = (score) => {
+    if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
+    if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
+    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Kế hoạch giám sát hầu như chưa đạt yêu cầu, cần cải thiện đáng kể.' };
+  };
+  const dLevel = getDComplianceLevel(scoreD);
+
   const getComplianceLevel = (score) => {
     if (score >= 11) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Cơ quan, tổ chức có đầy đủ các cơ chế, chính sách, quy trình và biện pháp bảo vệ để bảo đảm nguyên tắc này được thực thi xuyên suốt vòng đời của hệ thống AI; minh chứng đầy đủ, nhất quán, có cơ chế giám sát và cải tiến liên tục.' };
     if (score >= 6) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Cơ quan, tổ chức đã có những nỗ lực và biện pháp ban đầu hướng tới nguyên tắc này, nhưng vẫn còn khoảng trống hoặc thiếu minh chứng ở một số nội dung và cần tiếp tục cải thiện để đáp ứng đầy đủ.' };
@@ -302,6 +320,23 @@ const Dashboard1 = () => {
                 </div>
               </div>
 
+            </div>
+          </div>
+
+          <div className="card mt-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">Kết quả kế hoạch giám sát (Phần D)</h4>
+            <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+              <div className={`icon-box ${dLevel.bgColor} ${dLevel.color}`}><CheckSquare size={20}/></div>
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-1">
+                  <h5 className="font-bold text-main mb-0">Mức độ tuân thủ</h5>
+                  <div className="font-bold text-sm">
+                    <span className={dLevel.color}>{dLevel.label}</span>
+                    <span className="text-muted ml-2">({scoreD}/10)</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted">{dLevel.desc}</p>
+              </div>
             </div>
           </div>
 
