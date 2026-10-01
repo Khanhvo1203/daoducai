@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, User, HardDrive, ArrowRight, CheckSquare, Settings, Scale, AlertTriangle, FileText } from 'lucide-react';
+import { getCurrentUser } from '../utils/auth';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
   
   const [step, setStep] = useState(() => {
-    const saved = localStorage.getItem('landing_step');
+    const saved = localStorage.getItem(`landing_step_${userId}`);
     return saved ? parseInt(saved, 10) : 1;
   }); 
   // 1 = Hồ sơ, 2 = Thông tin AI, 3 = Đánh giá rủi ro, 4 = Chọn bài đánh giá
   
   const [formData, setFormData] = useState(() => {
-    const saved = localStorage.getItem('landing_formData');
+    const saved = localStorage.getItem(`landing_formData_${userId}`);
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -71,12 +74,12 @@ const LandingPage = () => {
   });
 
   useEffect(() => {
-    localStorage.setItem('landing_step', step);
-  }, [step]);
+    localStorage.setItem(`landing_step_${userId}`, step);
+  }, [step, userId]);
 
   useEffect(() => {
-    localStorage.setItem('landing_formData', JSON.stringify(formData));
-  }, [formData]);
+    localStorage.setItem(`landing_formData_${userId}`, JSON.stringify(formData));
+  }, [formData, userId]);
 
   const [assessmentSelection, setAssessmentSelection] = useState({
     partB: true,

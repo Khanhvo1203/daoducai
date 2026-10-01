@@ -33,8 +33,11 @@ const Assessment = () => {
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
 
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
+
   const [activeStepIdx, setActiveStepIdx] = useState(() => {
-    const saved = localStorage.getItem('assessment_activeStepIdx');
+    const saved = localStorage.getItem(`assessment_activeStepIdx_${userId}`);
     return saved ? parseInt(saved, 10) : 0;
   });
 
@@ -43,26 +46,26 @@ const Assessment = () => {
   const [openQuestion, setOpenQuestion] = useState(null);
   
   const [answers, setAnswers] = useState(() => {
-    const saved = localStorage.getItem('assessment_answers');
+    const saved = localStorage.getItem(`assessment_answers_${userId}`);
     return saved ? JSON.parse(saved) : {};
   });
 
   const [evidences, setEvidences] = useState(() => {
-    const saved = localStorage.getItem('assessment_evidences');
+    const saved = localStorage.getItem(`assessment_evidences_${userId}`);
     return saved ? JSON.parse(saved) : {};
   });
 
   useEffect(() => {
-    localStorage.setItem('assessment_activeStepIdx', activeStepIdx);
-  }, [activeStepIdx]);
+    localStorage.setItem(`assessment_activeStepIdx_${userId}`, activeStepIdx);
+  }, [activeStepIdx, userId]);
 
   useEffect(() => {
-    localStorage.setItem('assessment_answers', JSON.stringify(answers));
-  }, [answers]);
+    localStorage.setItem(`assessment_answers_${userId}`, JSON.stringify(answers));
+  }, [answers, userId]);
 
   useEffect(() => {
-    localStorage.setItem('assessment_evidences', JSON.stringify(evidences));
-  }, [evidences]);
+    localStorage.setItem(`assessment_evidences_${userId}`, JSON.stringify(evidences));
+  }, [evidences, userId]);
 
   const questionsDb = {
     'partA1': [
