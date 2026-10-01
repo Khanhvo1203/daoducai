@@ -140,7 +140,7 @@ const Assessment = () => {
       { id: 'C3.3', text: 'Có cung cấp hệ thống bằng nhiều ngôn ngữ (Việt, Anh, ngôn ngữ dân tộc thiểu số chính) không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.4', text: 'Hệ thống AI có được thiết kế và kiểm tra để tôn trọng các giá trị văn hóa, thuần phong mỹ tục và bản sắc dân tộc của Việt Nam không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.5', text: 'Có cơ chế phát hiện và xử lý các nội dung không phù hợp với chuẩn mực văn hóa và pháp luật Việt Nam không?', options: ['Có', 'Không'], required: true },
-      { id: 'C3.6', groupTitle: 'Phúc lợi người lao động và tác động việc làm', text: 'Tổ chức đã đánh giá tác động tiềm tàng của hệ thống AI đến việc làm và vai trò công việc của cán bộ, viên chức và người lao động liên quan không?', options: ['Có', 'Không'], required: true },
+      { id: 'C3.6', groupTitle: 'Thiết kế bao trùm và giảm khoảng cách số', text: 'Tổ chức có đánh giá nguy cơ hệ thống AI làm tăng khoảng cách số giữa các nhóm dân cư không, và có biện pháp giảm thiểu nếu phát hiện nguy cơ đó không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.7', text: 'Có kế hoạch hỗ trợ người lao động bị ảnh hưởng bởi tự động hóa AI (đào tạo kỹ năng mới, chuyển đổi vai trò, thăng tiến nghề nghiệp) không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.8', text: 'Người lao động sử dụng hoặc bị giám sát bởi AI có được tham khảo ý kiến một cách thực chất trong quá trình thiết kế và triển khai hệ thống không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.9', text: 'AI có được dùng để giám sát hiệu suất nhân viên một cách không minh bạch, xâm phạm phẩm giá hoặc vượt quá mức cần thiết không?', options: ['Có', 'Không'], required: true },
