@@ -154,7 +154,7 @@ const Assessment = () => {
     'partC4': [
       { id: 'C4.1', groupTitle: 'Đổi mới có trách nhiệm', text: 'Tổ chức có tích hợp quy trình đánh giá đạo đức ngay từ giai đoạn lên ý tưởng và thiết kế hệ thống AI không hoặc chỉ sau khi triển khai không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.2', text: 'Khi thử nghiệm AI trong môi trường thực tế, có cơ chế kiểm soát phạm vi thử nghiệm, thời hạn và biện pháp bảo vệ người tham gia thử nghiệm không?', options: ['Có', 'Không'], required: true },
-      { id: 'C4.3', text: 'Tổ chức có cơ chế để cán bộ, viên chức có thể báo cáo các lo ngại về đạo đức AI một cách an toàn mà không sợ bị trả thù hay ảnh hưởng đến sự nghiệp không?', options: ['Có', 'Không'], required: true },
+      { id: 'C4.3', text: 'Trách nhiệm của các bên (NPT/NCC/BTK/NSD) có được phân định rõ trong hợp đồng không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.4', text: 'Kết quả nghiên cứu và kinh nghiệm thực tiễn trong triển khai AI có được chia sẻ (trong phạm vi an toàn thông tin) với các cơ quan, tổ chức khác để cùng học hỏi không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.5', text: 'Tổ chức có tích cực tham gia vào các diễn đàn, cơ chế chia sẻ kinh nghiệm quản trị AI cấp quốc gia và khu vực không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.6', groupTitle: 'Trách nhiệm giải trình và năng lực quản trị', text: 'Trách nhiệm giải trình cho từng hệ thống AI có được phân định rõ ràng trong văn bản pháp lý nội bộ (quy chế, quy trình vận hành chuẩn) không?', options: ['Có', 'Không'], required: true },
