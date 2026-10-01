@@ -95,10 +95,10 @@ const Assessment = () => {
       { id: 'B3', text: 'Tổ chức có danh mục đầy đủ các hệ thống AI đang sử dụng không?', options: ['Có', 'Không'], required: true },
       { id: 'B4', text: 'Tài liệu mô tả có ghi rõ giới hạn sử dụng (những gì AI không được làm) và có được ban hành thành văn bản không?', options: ['Có', 'Không'], required: true },
       { id: 'B5', text: 'Quá trình phân loại rủi ro có được tài liệu hóa và có sự tham gia của bộ phận pháp chế không?', options: ['Có', 'Không'], required: true },
-      { id: 'B6', text: 'Quy trình chuẩn có định nghĩa rõ khi nào con người phải can thiệp vào máy móc không?', options: ['Có', 'Không'], required: true },
-      { id: 'B7', text: 'Có quy trình rõ ràng về thời gian phản hồi khi người dân khiếu nại quyết định của AI không?', options: ['Có', 'Không'], required: true },
-      { id: 'B8', text: 'Tổ chức có thực hiện phân loại dữ liệu và đánh giá tác động quyền riêng tư không?', options: ['Có', 'Không'], required: true },
-      { id: 'B9', text: 'Hợp đồng với Vendor có quy định rõ trách nhiệm bồi thường khi thuật toán gây ra hậu quả xấu không?', options: ['Có', 'Không'], required: true }
+      { id: 'B6', text: 'Mỗi hệ thống AI có cơ chế giám sát của con người được tài liệu hóa không?', options: ['Có', 'Không'], required: true },
+      { id: 'B7', text: 'Tổ chức có đầu mối tiếp nhận phản ánh/sự cố công khai không? (email, đường dây nóng, biểu mẫu). Có quy trình rõ ràng về thời gian phản hồi khi người dân khiếu nại quyết định của AI không?', options: ['Có', 'Không'], required: true },
+      { id: 'B8', text: 'Tổ chức có hồ sơ dữ liệu cho mỗi hệ thống AI (nguồn gốc, chất lượng, biện pháp bảo mật) và đánh giá tác động quyền riêng tư không?', options: ['Có', 'Không'], required: true },
+      { id: 'B9', text: 'Tổ chức có quy trình đánh giá nhà cung cấp AI trước khi ký hợp đồng không? Hợp đồng với nhà cung cấp AI có điều khoản về trách nhiệm chia sẻ, cập nhật, sự cố không?', options: ['Có', 'Không'], required: true }
     ],
     'partC1': [
       { id: 'C1.1', groupTitle: 'Thiết kế an toàn', text: 'Tổ chức đã lập danh mục và hồ sơ về các rủi ro gây hại tiềm tàng của hệ thống AI, bao gồm cả các tình huống bị lạm dụng hoặc sử dụng sai mục đích chưa?', options: ['Có', 'Không'], required: true },
