@@ -215,7 +215,7 @@ const Assessment = () => {
       if (user) {
         code = saveAssessment(user.username, { formData, selection, answers });
       }
-      navigate('/dashboard', { state: { selection, formData, answers, assessmentCode: code } });
+      navigate('/dashboard1', { state: { selection, formData, answers, assessmentCode: code } });
     }
   };
 
@@ -419,4 +419,4 @@ const Assessment = () => {
   );
 };
 
-export default Assessment;
+export default Assessment1;

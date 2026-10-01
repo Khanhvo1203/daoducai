@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
-import Assessment from './pages/Assessment';
-import Dashboard from './pages/Dashboard';
+import Assessment1 from './pages/Assessment1';
+import Assessment2 from './pages/Assessment2';
+import Dashboard1 from './pages/Dashboard1';
+import Dashboard2 from './pages/Dashboard2';
 import Login from './pages/Login';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
@@ -190,8 +192,10 @@ function App() {
             {/* Member Protected Routes */}
             <Route path="/" element={<Navigate to="/ho-so-dang-ky" replace />} />
             <Route path="/ho-so-dang-ky" element={<ProtectedRoute allowedRole="MEMBER"><LandingPage /></ProtectedRoute>} />
-            <Route path="/assessment" element={<ProtectedRoute allowedRole="MEMBER"><Assessment /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><Dashboard /></ProtectedRoute>} />
+            <Route path="/assessment1" element={<ProtectedRoute allowedRole="MEMBER"><Assessment1 /></ProtectedRoute>} />
+            <Route path="/assessment2" element={<ProtectedRoute allowedRole="MEMBER"><Assessment2 /></ProtectedRoute>} />
+            <Route path="/dashboard1" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><Dashboard1 /></ProtectedRoute>} />
+            <Route path="/dashboard2" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><Dashboard2 /></ProtectedRoute>} />
             <Route path="/history" element={<ProtectedRoute allowedRole="MEMBER"><MemberHistory /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute allowedRole="MEMBER"><Profile /></ProtectedRoute>} />
 
