@@ -137,9 +137,9 @@ const Assessment = () => {
     'partC3': [
       { id: 'C3.1', groupTitle: 'Lợi ích xã hội và bao trùm kỹ thuật số', text: 'Tổ chức đã xác định rõ ràng và có thể đo lường được các lợi ích xã hội cụ thể mà hệ thống AI mang lại cho người dân và cộng đồng không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.2', text: 'Hệ thống AI có được thiết kế và kiểm thử để đảm bảo người dùng có năng lực kỹ thuật số hạn chế (người cao tuổi, người ở vùng nông thôn, vùng sâu vùng xa) vẫn có thể tiếp cận dịch vụ không?', options: ['Có', 'Không'], required: true },
-      { id: 'C3.3', text: 'Tổ chức có đánh giá nguy cơ hệ thống AI làm tăng khoảng cách số giữa các nhóm dân cư không, và có biện pháp giảm thiểu nếu phát hiện nguy cơ đó không?', options: ['Có', 'Không'], required: true },
+      { id: 'C3.3', text: 'Có cung cấp hệ thống bằng nhiều ngôn ngữ (Việt, Anh, ngôn ngữ dân tộc thiểu số chính) không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.4', text: 'Hệ thống AI có được thiết kế và kiểm tra để tôn trọng các giá trị văn hóa, thuần phong mỹ tục và bản sắc dân tộc của Việt Nam không?', options: ['Có', 'Không'], required: true },
-      { id: 'C3.5', text: 'Kết quả đầu ra của AI (đặc biệt với Generative AI) có được kiểm tra để đảm bảo không tạo ra hoặc khuếch đại nội dung gây hại cho các giá trị văn hóa-xã hội Việt Nam không?', options: ['Có', 'Không'], required: true },
+      { id: 'C3.5', text: 'Có cơ chế phát hiện và xử lý các nội dung không phù hợp với chuẩn mực văn hóa và pháp luật Việt Nam không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.6', groupTitle: 'Phúc lợi người lao động và tác động việc làm', text: 'Tổ chức đã đánh giá tác động tiềm tàng của hệ thống AI đến việc làm và vai trò công việc của cán bộ, viên chức và người lao động liên quan không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.7', text: 'Có kế hoạch hỗ trợ người lao động bị ảnh hưởng bởi tự động hóa AI (đào tạo kỹ năng mới, chuyển đổi vai trò, thăng tiến nghề nghiệp) không?', options: ['Có', 'Không'], required: true },
       { id: 'C3.8', text: 'Người lao động sử dụng hoặc bị giám sát bởi AI có được tham khảo ý kiến một cách thực chất trong quá trình thiết kế và triển khai hệ thống không?', options: ['Có', 'Không'], required: true },
