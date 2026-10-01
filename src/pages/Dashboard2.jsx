@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -38,25 +38,82 @@ const Dashboard2 = () => {
   const assessmentCode = existingCode;
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
-  // Dynamic Chart Data based on selection
-  let labels = [];
-  let dataPoints = [];
-  if (selection.partB) {
-    labels.push('Quản trị & Pháp lý');
-    dataPoints.push(85);
-  }
-  if (selection.partC) {
-    labels.push('An toàn & Tin cậy'); dataPoints.push(70);
-    labels.push('Quyền con người'); dataPoints.push(65);
-    labels.push('Bền vững'); dataPoints.push(80);
-    labels.push('Đổi mới'); dataPoints.push(75);
-  }
+  const getScore = (prefix) => {
+    let score = 0;
+    for (let i = 1; i <= 15; i++) {
+      if (answers[`${prefix}.${i}`] === 0) { // 'Có' is always index 0
+        score++;
+      }
+    }
+    return score;
+  };
 
-  // Ensure radar chart looks good even with few points
-  if (labels.length < 3) {
-    labels.push('Tổng quan chung');
-    dataPoints.push(75);
-  }
+  const scoreC1 = getScore('C1');
+  const scoreC2 = getScore('C2');
+  const scoreC3 = getScore('C3');
+  const scoreC4 = getScore('C4');
+  const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
+
+  const getScoreD = () => {
+    let score = 0;
+    for (let i = 1; i <= 10; i++) {
+      if (answers[`D${i}`] === 0) {
+        score++;
+      }
+    }
+    return score;
+  };
+  const scoreD = getScoreD();
+
+  const getDComplianceLevel = (score) => {
+    if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
+    if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
+    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Kế hoạch giám sát hầu như chưa đạt yêu cầu, cần cải thiện đáng kể.' };
+  };
+  const dLevel = getDComplianceLevel(scoreD);
+
+  const getComplianceLevel = (score) => {
+    if (score >= 11) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Cơ quan, tổ chức có đầy đủ các cơ chế, chính sách, quy trình và biện pháp bảo vệ để bảo đảm nguyên tắc này được thực thi xuyên suốt vòng đời của hệ thống AI; minh chứng đầy đủ, nhất quán, có cơ chế giám sát và cải tiến liên tục.' };
+    if (score >= 6) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Cơ quan, tổ chức đã có những nỗ lực và biện pháp ban đầu hướng tới nguyên tắc này, nhưng vẫn còn khoảng trống hoặc thiếu minh chứng ở một số nội dung và cần tiếp tục cải thiện để đáp ứng đầy đủ.' };
+    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Nguyên tắc này hầu như chưa được tuân thủ; các hoạt động còn thiếu sót ở phần lớn nội dung và cần nỗ lực đáng kể để bảo đảm tuân thủ.' };
+  };
+
+  const getOverallComplianceLevel = (totalScore, s1, s2, s3, s4) => {
+    // Không tuân thủ: Có ít nhất 01 nguyên tắc đạt 0-5 câu
+    if (s1 <= 5 || s2 <= 5 || s3 <= 5 || s4 <= 5) {
+      return { 
+        label: 'Không tuân thủ', 
+        color: 'text-danger', 
+        desc: 'Thiếu biện pháp bảo vệ cốt lõi, chưa có đầu mối trách nhiệm rõ ràng hoặc chưa có minh chứng; cần nỗ lực đáng kể để bảo đảm tuân thủ.' 
+      };
+    }
+    
+    // Tuân thủ đầy đủ: 44-60 câu, trong đó cả 04 nguyên tắc đạt 11-15 câu
+    if (totalScore >= 44 && s1 >= 11 && s2 >= 11 && s3 >= 11 && s4 >= 11) {
+      return { 
+        label: 'Tuân thủ đầy đủ', 
+        color: 'text-success', 
+        desc: 'Biện pháp bảo vệ cơ bản đã có đầy đủ, có minh chứng; có cơ chế giám sát của con người, kênh khiếu nại và quy trình khắc phục sự cố; sẵn sàng duy trì và cải tiến liên tục.' 
+      };
+    }
+
+    // Tuân thủ một phần: 24-43 câu và không có nguyên tắc nào đạt dưới 6 câu, HOẶC không thỏa mãn Tuân thủ đầy đủ (nhưng không có nguyên tắc < 6)
+    return { 
+      label: 'Tuân thủ một phần', 
+      color: 'text-warning', 
+      desc: 'Đã có khung quản trị nhưng còn thiếu bằng chứng hoặc chưa bảo đảm đầy đủ ở một hoặc nhiều nguyên tắc; cần xây dựng kế hoạch cải thiện có thời hạn.' 
+    };
+  };
+
+  const overall = getOverallComplianceLevel(totalCScore, scoreC1, scoreC2, scoreC3, scoreC4);
+
+  let labels = ['An toàn', 'Quyền con người', 'Bền vững', 'Đổi mới'];
+  let dataPoints = [
+    (scoreC1 / 15) * 100,
+    (scoreC2 / 15) * 100,
+    (scoreC3 / 15) * 100,
+    (scoreC4 / 15) * 100
+  ];
 
   const chartData = {
     labels: labels,
@@ -173,20 +230,20 @@ const Dashboard2 = () => {
               <h4 className="font-bold mb-6 text-sm">KẾT QUẢ TỔNG THỂ</h4>
               <div className="flex gap-6 items-center">
                 <div className="score-circle">
-                  <svg viewBox="0 0 100 100" className="circular-chart text-primary">
+                  <svg viewBox="0 0 100 100" className={`circular-chart ${overall.color.replace('text-', '')}`}>
                     <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path className="circle" strokeDasharray="75, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path className="circle" strokeDasharray={`${(totalCScore / 60) * 100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? '#22c55e' : overall.color === 'text-warning' ? '#f59e0b' : '#ef4444'} />
                   </svg>
                   <div className="score-text">
-                    <span className="score-number">75</span>
-                    <span className="score-total">/100</span>
+                    <span className="score-number" style={{ color: overall.color === 'text-success' ? '#22c55e' : overall.color === 'text-warning' ? '#f59e0b' : '#ef4444' }}>{totalCScore}</span>
+                    <span className="score-total">/60</span>
                   </div>
                 </div>
                 
                 <div className="score-details flex-1">
-                  <div className="text-muted text-sm mb-1">Hệ thống của bạn đạt mức</div>
-                  <h3 className="text-2xl font-bold text-primary mb-2">Tuân thủ Khá</h3>
-                  <p className="text-sm text-muted mb-4">Hệ thống đáp ứng phần lớn các tiêu chí về quản trị và đạo đức AI. Cần cải thiện một số khuyến nghị dưới đây.</p>
+                  <div className="text-muted text-sm mb-1">Tuân thủ nguyên tắc đạo đức</div>
+                  <h3 className={`text-2xl font-bold mb-2 ${overall.color}`}>{overall.label}</h3>
+                  <p className="text-sm text-muted mb-4">{overall.desc}</p>
                 </div>
               </div>
             </div>
@@ -200,38 +257,86 @@ const Dashboard2 = () => {
           </div>
 
           <div className="card">
-            <h4 className="font-bold mb-4 text-sm">KHUYẾN NGHỊ CẢI THIỆN (BIỆN PHÁP)</h4>
+            <h4 className="font-bold mb-4 text-sm uppercase">Kết quả từng nguyên tắc (Phần C)</h4>
             <div className="flex-col gap-4">
               
-              {selection.partB && (
-                <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                  <div className="icon-box bg-primary-light text-primary"><Shield size={20}/></div>
-                  <div>
-                    <h5 className="font-bold text-primary mb-1">Bổ sung quy trình Human-in-the-loop</h5>
-                    <p className="text-sm text-muted">Cần thiết lập cơ chế để con người có thể can thiệp vào các quyết định tự động quan trọng của AI.</p>
+              {/* C1 */}
+              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+                <div className={`icon-box ${getComplianceLevel(scoreC1).bgColor} ${getComplianceLevel(scoreC1).color}`}><Shield size={20}/></div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <h5 className="font-bold text-main mb-0">C1. An toàn và tin cậy</h5>
+                    <div className="font-bold text-sm">
+                      <span className={getComplianceLevel(scoreC1).color}>{getComplianceLevel(scoreC1).label}</span>
+                      <span className="text-muted ml-2">({scoreC1}/15)</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted">{getComplianceLevel(scoreC1).desc}</p>
+                </div>
+              </div>
+
+              {/* C2 */}
+              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+                <div className={`icon-box ${getComplianceLevel(scoreC2).bgColor} ${getComplianceLevel(scoreC2).color}`}><User size={20}/></div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <h5 className="font-bold text-main mb-0">C2. Quyền con người và công bằng</h5>
+                    <div className="font-bold text-sm">
+                      <span className={getComplianceLevel(scoreC2).color}>{getComplianceLevel(scoreC2).label}</span>
+                      <span className="text-muted ml-2">({scoreC2}/15)</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted">{getComplianceLevel(scoreC2).desc}</p>
+                </div>
+              </div>
+
+              {/* C3 */}
+              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+                <div className={`icon-box ${getComplianceLevel(scoreC3).bgColor} ${getComplianceLevel(scoreC3).color}`}><Target size={20}/></div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <h5 className="font-bold text-main mb-0">C3. Bền vững và bao trùm</h5>
+                    <div className="font-bold text-sm">
+                      <span className={getComplianceLevel(scoreC3).color}>{getComplianceLevel(scoreC3).label}</span>
+                      <span className="text-muted ml-2">({scoreC3}/15)</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted">{getComplianceLevel(scoreC3).desc}</p>
+                </div>
+              </div>
+
+              {/* C4 */}
+              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+                <div className={`icon-box ${getComplianceLevel(scoreC4).bgColor} ${getComplianceLevel(scoreC4).color}`}><BookOpen size={20}/></div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center mb-1">
+                    <h5 className="font-bold text-main mb-0">C4. Đổi mới có trách nhiệm</h5>
+                    <div className="font-bold text-sm">
+                      <span className={getComplianceLevel(scoreC4).color}>{getComplianceLevel(scoreC4).label}</span>
+                      <span className="text-muted ml-2">({scoreC4}/15)</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted">{getComplianceLevel(scoreC4).desc}</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="card mt-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">Kết quả kế hoạch giám sát (Phần D)</h4>
+            <div className="flex gap-4 p-4 border rounded-md recommendation-item">
+              <div className={`icon-box ${dLevel.bgColor} ${dLevel.color}`}><CheckSquare size={20}/></div>
+              <div className="flex-1">
+                <div className="flex justify-between items-center mb-1">
+                  <h5 className="font-bold text-main mb-0">Mức độ tuân thủ</h5>
+                  <div className="font-bold text-sm">
+                    <span className={dLevel.color}>{dLevel.label}</span>
+                    <span className="text-muted ml-2">({scoreD}/10)</span>
                   </div>
                 </div>
-              )}
-
-              {selection.partC && (
-                <>
-                  <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                    <div className="icon-box bg-primary-light text-primary"><Target size={20}/></div>
-                    <div>
-                      <h5 className="font-bold text-primary mb-1">Đánh giá rủi ro thiên kiến (Bias)</h5>
-                      <p className="text-sm text-muted">Thực hiện kiểm tra định kỳ dữ liệu huấn luyện để đảm bảo không có sự phân biệt đối xử với nhóm yếu thế.</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                    <div className="icon-box bg-primary-light text-primary"><BookOpen size={20}/></div>
-                    <div>
-                      <h5 className="font-bold text-primary mb-1">Công khai cơ chế phản hồi</h5>
-                      <p className="text-sm text-muted">Cung cấp kênh liên lạc rõ ràng để người dùng cuối có thể gửi phản hồi về các quyết định của AI.</p>
-                    </div>
-                  </div>
-                </>
-              )}
-
+                <p className="text-sm text-muted">{dLevel.desc}</p>
+              </div>
             </div>
           </div>
 
