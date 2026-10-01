@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-const Dashboard = () => {
+const Dashboard2 = () => {
   const location = useLocation();
   const selection = location.state?.selection || { partB: true, partC: true };
   const answers = location.state?.answers || {};

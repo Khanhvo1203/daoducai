@@ -4,7 +4,7 @@ import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, Check
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import './Assessment.css';
 
-const Assessment = () => {
+const Assessment1 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
