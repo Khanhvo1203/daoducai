@@ -202,7 +202,7 @@ const Dashboard2 = () => {
                 </div>
                 
                 <div className="score-details flex-1">
-                  <div className="text-muted text-sm mb-1">Mức độ đáp ứng đạo đức (Phần C)</div>
+                  <div className="text-muted text-sm mb-1">Tuân thủ nguyên tắc đạo đức</div>
                   <h3 className={`text-2xl font-bold mb-2 ${overall.color}`}>{overall.label}</h3>
                   <p className="text-sm text-muted mb-4">{overall.desc}</p>
                 </div>
