@@ -106,7 +106,7 @@ const Assessment = () => {
       { id: 'C1.3', text: 'Có kế hoạch dự phòng và phục hồi khi hệ thống AI gặp sự cố hoặc tạo ra kết quả sai không?', options: ['Có', 'Không'], required: true },
       { id: 'C1.4', text: 'Hệ thống AI có các cơ chế để dừng hoạt động khẩn cấp khi cần thiết không?', options: ['Có', 'Không'], required: true },
       { id: 'C1.5', text: 'Tổ chức có thực hiện phân tích rủi ro bảo mật an toàn thông tin và kiểm thử xâm nhập cho hệ thống AI không?', options: ['Có', 'Không'], required: true },
-      { id: 'C1.6', groupTitle: 'Kiểm thử và xác nhận chất lượng', text: 'Hệ thống AI đã được kiểm thử toàn diện trước khi triển khai, bao gồm kiểm thử với dữ liệu đại diện cho các nhiều nhóm người dùng khác nhau không?', options: ['Có', 'Không'], required: true },
+      { id: 'C1.6', groupTitle: 'Kiểm thử và xác nhận chất lượng', text: 'Hệ thống AI đã được kiểm thử toàn diện trước khi triển khai, bao gồm kiểm thử mô hình trên dữ liệu Việt Nam đại diện cho các nhóm chịu tác động không?', options: ['Có', 'Không'], required: true },
       { id: 'C1.7', text: 'Tổ chức có quy trình kiểm thử chấp nhận độc lập với đội ngũ phát triển không?', options: ['Có', 'Không'], required: true },
       { id: 'C1.8', text: 'Hệ thống AI có được kiểm tra khả năng kháng cự tấn công đối kháng nhằm chống lại các nỗ lực thao túng thuật toán không?', options: ['Có', 'Không'], required: true },
       { id: 'C1.9', text: 'Kết quả kiểm thử được tài liệu hóa và lưu trữ để phục vụ kiểm tra/thanh tra trong suốt vòng đời dự án không?', options: ['Có', 'Không'], required: true },
