@@ -152,7 +152,7 @@ const Assessment = () => {
       { id: 'C3.15', text: 'Chính sách AI của tổ chức có đề cập đến cam kết và trách nhiệm về môi trường trong phát triển và sử dụng AI không?', options: ['Có', 'Không'], required: true }
     ],
     'partC4': [
-      { id: 'C4.1', groupTitle: 'Đổi mới có trách nhiệm', text: 'Tổ chức có tích hợp quy trình đánh giá đạo đức ngay từ giai đoạn lên ý tưởng và thiết kế hệ thống AI không / chỉ sau khi triển khai không?', options: ['Có', 'Không'], required: true },
+      { id: 'C4.1', groupTitle: 'Đổi mới có trách nhiệm', text: 'Tổ chức có tích hợp quy trình đánh giá đạo đức ngay từ giai đoạn lên ý tưởng và thiết kế hệ thống AI không hoặc chỉ sau khi triển khai không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.2', text: 'Khi thử nghiệm AI trong môi trường thực tế, có cơ chế kiểm soát phạm vi thử nghiệm, thời hạn và biện pháp bảo vệ người tham gia thử nghiệm không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.3', text: 'Tổ chức có cơ chế để cán bộ, viên chức có thể báo cáo các lo ngại về đạo đức AI một cách an toàn mà không sợ bị trả thù hay ảnh hưởng đến sự nghiệp không?', options: ['Có', 'Không'], required: true },
       { id: 'C4.4', text: 'Kết quả nghiên cứu và kinh nghiệm thực tiễn trong triển khai AI có được chia sẻ (trong phạm vi an toàn thông tin) với các cơ quan, tổ chức khác để cùng học hỏi không?', options: ['Có', 'Không'], required: true },
