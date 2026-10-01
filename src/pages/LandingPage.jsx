@@ -86,6 +86,8 @@ const LandingPage = () => {
     partC: true
   });
 
+  const [selectedAssessment, setSelectedAssessment] = useState(1);
+
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setFormData({
@@ -505,60 +507,39 @@ const LandingPage = () => {
             <div className="card glass-card form-card fade-in">
               <h3 className="mb-2">Bạn muốn đánh giá phần nào?</h3>
               <p className="text-muted text-sm mb-6 border-b pb-4">
-                Chọn một hoặc cả hai để xây dựng bộ câu hỏi phù hợp cho hệ thống {formData.systemName}.
+                Chọn hình thức đánh giá để xây dựng bộ câu hỏi phù hợp cho hệ thống {formData.systemName}.
               </p>
               
               <div className="flex-col gap-4 mb-8">
-                {/* Lựa chọn 1 */}
-                <button 
-                  type="button" 
-                  className="selection-card w-full text-left hover:border-primary transition-colors cursor-pointer" 
-                  onClick={() => {
-                    navigate('/assessment1', { 
-                      state: { 
-                        selection: { partB: true, partC: true },
-                        formData: formData
-                      } 
-                    });
-                  }}
-                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textAlign: 'left', width: '100%' }}
-                >
-                  <div className="flex items-start gap-2">
-                    <Settings size={18} className="text-primary flex-shrink-0" style={{ marginTop: '4px' }} />
-                    <div className="flex-1" style={{ textAlign: 'left' }}>
-                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>1. Đánh giá khung đạo đức theo các tiêu chí</h4>
-                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0, textAlign: 'left' }}>Ấn vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống.</p>
-                    </div>
-                  </div>
-                </button>
-
-                {/* Lựa chọn 2 */}
-                <button 
-                  type="button" 
-                  className="selection-card w-full text-left hover:border-primary transition-colors cursor-pointer mt-4" 
-                  onClick={() => {
-                    navigate('/assessment2', { 
-                      state: { 
-                        selection: { partB: true, partC: true },
-                        formData: formData
-                      } 
-                    });
-                  }}
-                  style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textAlign: 'left', width: '100%' }}
-                >
-                  <div className="flex items-start gap-2">
-                    <Scale size={18} className="text-primary flex-shrink-0" style={{ marginTop: '4px' }} />
-                    <div className="flex-1" style={{ textAlign: 'left' }}>
-                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số</h4>
-                      <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0, textAlign: 'left' }}>Ấn vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống.</p>
-                    </div>
-                  </div>
-                </button>
+                <div className="form-group mb-4">
+                  <label className="text-sm font-semibold mb-2 block text-main">Chọn khung đánh giá</label>
+                  <select 
+                    className="form-control" 
+                    value={selectedAssessment} 
+                    onChange={(e) => setSelectedAssessment(parseInt(e.target.value))}
+                    style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
+                  >
+                    <option value={1}>1. Đánh giá khung đạo đức theo các tiêu chí</option>
+                    <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số</option>
+                  </select>
+                </div>
               </div>
 
-              <div className="flex justify-start items-center mt-6 pt-4 border-t">
+              <div className="flex justify-between items-center mt-6 pt-4 border-t">
                 <button className="btn btn-secondary text-muted border-none bg-transparent" onClick={handlePrevStep}>
                   Quay lại
+                </button>
+                <button 
+                  className="btn btn-primary"
+                  onClick={() => {
+                    if (selectedAssessment === 1) {
+                      navigate('/assessment1', { state: { selection: { partB: true, partC: true }, formData: formData } });
+                    } else {
+                      navigate('/assessment2', { state: { selection: { partB: true, partC: true }, formData: formData } });
+                    }
+                  }}
+                >
+                  Bắt đầu đánh giá <ArrowRight size={18} />
                 </button>
               </div>
             </div>
