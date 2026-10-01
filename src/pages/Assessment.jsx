@@ -90,7 +90,7 @@ const Assessment = () => {
       { id: 'A15', text: 'Có rủi ro rò rỉ dữ liệu hoặc xâm phạm nghiêm trọng đến quyền riêng tư không?', options: ['Có', 'Không'], required: true }
     ],
     'partB': [
-      { id: 'B1', text: 'Có văn bản chính thức phân công Lãnh đạo cấp cao chịu trách nhiệm về đạo đức AI chưa?', options: ['Có', 'Không'], required: true },
+      { id: 'B1', text: 'Tổ chức có văn bản phân công Lãnh đạo cấp cao chịu trách nhiệm về đạo đức AI chưa?', options: ['Có', 'Không'], required: true },
       { id: 'B2', text: 'Tổ chức đã thiết lập đội nhóm hoặc cá nhân chuyên trách theo dõi vòng đời quản trị AI chưa?', options: ['Có', 'Không'], required: true },
       { id: 'B3', text: 'Tất cả các mô hình, API AI đang chạy có được ghi nhận đầy đủ trong Danh mục AI không?', options: ['Có', 'Không'], required: true },
       { id: 'B4', text: 'Giới hạn sử dụng (những gì AI không được làm) có được ban hành thành văn bản không?', options: ['Có', 'Không'], required: true },
