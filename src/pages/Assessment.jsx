@@ -127,7 +127,12 @@ const Assessment = () => {
       { id: 'C2.7', text: 'Tổ chức có khả năng cung cấp giải thích hợp lý về cơ sở và lý do đằng sau các quyết định quan trọng do AI đưa ra cho người bị ảnh hưởng không?', options: ['Có', 'Không'], required: true },
       { id: 'C2.8', text: 'Hệ thống có cơ chế lưu vết đầy đủ để truy xuất lại lịch sử quyết định trong tối thiểu 3 năm không?', options: ['Có', 'Không'], required: true },
       { id: 'C2.9', text: 'Thông tin về mục đích, phạm vi và hạn chế của hệ thống AI có được công bố công khai ở mức độ phù hợp cho người dân tiếp cận không?', options: ['Có', 'Không'], required: true },
-      { id: 'C2.10', text: <>Tổ chức có <i>tài liệu kỹ thuật/ thẻ mô hình/ thẻ hệ thống</i> đủ chi tiết để cơ quan kiểm toán/thanh tra có thể hiểu và xem xét hoạt động của hệ thống không?</>, options: ['Có', 'Không'], required: true }
+      { id: 'C2.10', text: <>Tổ chức có <i>tài liệu kỹ thuật/ thẻ mô hình/ thẻ hệ thống</i> đủ chi tiết để cơ quan kiểm toán/thanh tra có thể hiểu và xem xét hoạt động của hệ thống không?</>, options: ['Có', 'Không'], required: true },
+      { id: 'C2.11', groupTitle: 'Phòng chống phân biệt đối xử và thiên lệch', text: 'Dữ liệu huấn luyện AI có được đánh giá tính đại diện và kiểm tra thiên lệch trước khi sử dụng cho hệ thống thực không?', options: ['Có', 'Không'], required: true },
+      { id: 'C2.12', text: 'Hệ thống AI có được kiểm tra định kỳ về hiệu suất phân biệt trên các nhóm nhân khẩu học khác nhau (giới tính, dân tộc, vùng miền, độ tuổi) không?', options: ['Có', 'Không'], required: true },
+      { id: 'C2.13', text: 'Khi phát hiện thiên lệch, tổ chức có quy trình để đánh giá nguyên nhân, xác định tác động và thực hiện biện pháp khắc phục kịp thời không?', options: ['Có', 'Không'], required: true },
+      { id: 'C2.14', text: 'Hệ thống AI có tuân thủ các quy định về bảo vệ dữ liệu cá nhân (thu thập tối thiểu, đúng mục đích, bảo mật) không?', options: ['Có', 'Không'], required: true },
+      { id: 'C2.15', text: 'Người dùng/người dân có được cung cấp cơ chế khiếu nại và yêu cầu chỉnh sửa khi họ tin rằng quyết định của AI là không công bằng hoặc không chính xác không?', options: ['Có', 'Không'], required: true }
     ],
     'partC3': [
       { id: 'C3.1', groupTitle: 'Lợi ích xã hội và bao trùm kỹ thuật số', text: 'Tổ chức đã xác định rõ ràng và có thể đo lường được các lợi ích xã hội cụ thể mà hệ thống AI mang lại cho người dân và cộng đồng không?', options: ['Có', 'Không'], required: true },
