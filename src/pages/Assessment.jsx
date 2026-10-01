@@ -93,7 +93,7 @@ const Assessment = () => {
       { id: 'B1', text: 'Tổ chức có văn bản phân công Lãnh đạo cấp cao chịu trách nhiệm về đạo đức AI chưa?', options: ['Có', 'Không'], required: true },
       { id: 'B2', text: 'Tổ chức đã thiết lập đội nhóm hoặc cá nhân chuyên trách theo dõi vòng đời quản trị AI chưa?', options: ['Có', 'Không'], required: true },
       { id: 'B3', text: 'Tổ chức có danh mục đầy đủ các hệ thống AI đang sử dụng không?', options: ['Có', 'Không'], required: true },
-      { id: 'B4', text: 'Giới hạn sử dụng (những gì AI không được làm) có được ban hành thành văn bản không?', options: ['Có', 'Không'], required: true },
+      { id: 'B4', text: 'Tài liệu mô tả có ghi rõ giới hạn sử dụng (những gì AI không được làm) và có được ban hành thành văn bản không?', options: ['Có', 'Không'], required: true },
       { id: 'B5', text: 'Quá trình phân loại rủi ro có được tài liệu hóa và có sự tham gia của bộ phận pháp chế không?', options: ['Có', 'Không'], required: true },
       { id: 'B6', text: 'Quy trình chuẩn có định nghĩa rõ khi nào con người phải can thiệp vào máy móc không?', options: ['Có', 'Không'], required: true },
       { id: 'B7', text: 'Có quy trình rõ ràng về thời gian phản hồi khi người dân khiếu nại quyết định của AI không?', options: ['Có', 'Không'], required: true },
