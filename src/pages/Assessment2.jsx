@@ -213,7 +213,7 @@ const Assessment2 = () => {
       const user = getCurrentUser();
       let code = null;
       if (user) {
-        code = saveAssessment(user.username, { formData, selection, answers });
+        code = saveAssessment(user.username, { formData, selection, answers, dashboardRoute: '/dashboard2' });
       }
       navigate('/dashboard2', { state: { selection, formData, answers, assessmentCode: code } });
     }

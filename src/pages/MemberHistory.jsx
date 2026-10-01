@@ -82,7 +82,7 @@ const MemberHistory = () => {
               </p>
               
               <button 
-                onClick={() => navigate('/dashboard', { state: { selection: a.selection, formData: a.formData, answers: a.answers, assessmentCode: a.id }})}
+                onClick={() => navigate(a.dashboardRoute || '/dashboard1', { state: { selection: a.selection, formData: a.formData, answers: a.answers, assessmentCode: a.id }})}
                 className="btn w-full btn-secondary text-primary border-primary flex justify-center items-center gap-2"
               >
                 Xem lại kết quả <ArrowRight size={16} />
