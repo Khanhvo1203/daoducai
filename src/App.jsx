@@ -66,18 +66,20 @@ const Navigation = () => {
               <div style={{ position: 'relative' }}>
                 <button 
                   onClick={() => setShowDropdown(!showDropdown)} 
-                  className="btn btn-secondary flex items-center gap-2"
+                  className="btn flex items-center gap-2"
                   style={{ 
                     padding: '8px 16px', 
                     borderRadius: '8px', 
-                    border: '1px solid var(--border)',
+                    border: '1px solid var(--primary)',
                     backgroundColor: '#fff',
-                    color: 'var(--text-main)',
-                    fontSize: '14px'
+                    color: 'var(--primary)',
+                    fontSize: '14px',
+                    cursor: 'pointer'
                   }}
                 >
+                  <User size={18} />
                   <span className="font-bold">{user.name || user.username}</span>
-                  <ChevronDown size={14} style={{ color: 'var(--text-muted)' }} />
+                  <ChevronDown size={16} />
                 </button>
                 
                 {showDropdown && (
