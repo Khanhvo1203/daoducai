@@ -41,7 +41,7 @@ const Navigation = () => {
     <header className="navbar glass">
       <div className="container flex items-center justify-between" style={{ height: 'var(--navbar-height)' }}>
         <Link to={user?.role === 'ADMIN' ? '/admin' : '/'} className="flex items-center gap-3 logo">
-          <img src="/logo-most.png" alt="Bộ Khoa học và Công nghệ" style={{ height: '48px', width: 'auto' }} />
+          <img src="/logo-most.png" alt="Bộ Khoa học và Công nghệ" style={{ height: '48px', width: '48px', borderRadius: '50%', objectFit: 'cover' }} />
           <span className="font-bold text-main" style={{ lineHeight: '1.2', fontSize: '1.1rem' }}>BỘ CÔNG CỤ ĐÁNH GIÁ<br/>ĐẠO ĐỨC AI</span>
         </Link>
         
