@@ -11,7 +11,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import MemberHistory from './pages/MemberHistory';
 import Profile from './pages/Profile';
 import { getCurrentUser, logout } from './utils/auth';
-import { User, LogOut, Settings, ChevronDown, History } from 'lucide-react';
+import { User, LogOut, Settings, ChevronDown, History, LogIn } from 'lucide-react';
 
 // Component bảo vệ Route
 const ProtectedRoute = ({ children, allowedRole, allowedRoles }) => {
@@ -167,7 +167,13 @@ const Navigation = () => {
               </div>
             </>
           ) : (
-            <Link to="/login" className="btn btn-primary text-sm">Đăng nhập</Link>
+            <Link 
+              to="/login" 
+              className="btn btn-primary flex items-center gap-2" 
+              style={{ fontWeight: 800, textTransform: 'uppercase', padding: '10px 20px', fontSize: '15px' }}
+            >
+              <LogIn size={20} strokeWidth={2.5} /> ĐĂNG NHẬP
+            </Link>
           )}
         </div>
       </div>
