@@ -218,8 +218,15 @@ const Dashboard1 = () => {
                 <button className="btn btn-secondary text-sm border-primary text-primary">
                   <Share2 size={16}/> Chia sẻ kết quả
                 </button>
-                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => navigate('/')}>
-                  <RotateCcw size={16}/> Đánh giá lại
+                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
+                  const user = getCurrentUser();
+                  if (user) {
+                    localStorage.removeItem(`landing_formData_${user.username}`);
+                    localStorage.removeItem(`landing_step_${user.username}`);
+                  }
+                  navigate('/');
+                }}>
+                  <RotateCcw size={16}/> Đánh giá thêm hệ thống
                 </button>
               </div>
             </div>
