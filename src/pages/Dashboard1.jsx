@@ -218,7 +218,13 @@ const Dashboard1 = () => {
                 <button className="btn btn-secondary text-sm border-primary text-primary">
                   <Share2 size={16}/> Chia sẻ kết quả
                 </button>
-                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => navigate('/')}>
+                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
+                  const user = getCurrentUser();
+                  if (user) {
+                    localStorage.setItem(`landing_step_${user.username}`, '1');
+                  }
+                  navigate('/');
+                }}>
                   <RotateCcw size={16}/> Đánh giá lại
                 </button>
               </div>
