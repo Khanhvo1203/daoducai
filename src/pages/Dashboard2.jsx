@@ -221,7 +221,8 @@ const Dashboard2 = () => {
                 <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
                   const user = getCurrentUser();
                   if (user) {
-                    localStorage.setItem(`landing_step_${user.username}`, '1');
+                    localStorage.removeItem(`landing_formData_${user.username}`);
+                    localStorage.removeItem(`landing_step_${user.username}`);
                   }
                   navigate('/');
                 }}>
