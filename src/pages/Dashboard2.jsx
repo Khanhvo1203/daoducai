@@ -224,6 +224,9 @@ const Dashboard2 = () => {
                   if (user) {
                     localStorage.removeItem(`landing_formData_${user.username}`);
                     localStorage.removeItem(`landing_step_${user.username}`);
+                    localStorage.removeItem(`assessment_answers_${user.username}`);
+                    localStorage.removeItem(`assessment_evidences_${user.username}`);
+                    localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
                   }
                   navigate('/');
                 }}>

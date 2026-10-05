@@ -214,6 +214,9 @@ const Assessment1 = () => {
       let code = null;
       if (user) {
         code = saveAssessment(user.username, { formData, selection, answers, dashboardRoute: '/dashboard1' });
+        localStorage.removeItem(`assessment_answers_${user.username}`);
+        localStorage.removeItem(`assessment_evidences_${user.username}`);
+        localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
       }
       navigate('/dashboard1', { state: { selection, formData, answers, assessmentCode: code } });
     }
