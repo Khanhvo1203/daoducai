@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
 import {
   Chart as ChartJS,
@@ -25,6 +25,7 @@ ChartJS.register(
 
 const Dashboard1 = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const selection = location.state?.selection || { partB: true, partC: true };
   const answers = location.state?.answers || {};
   const existingCode = location.state?.assessmentCode || null;
