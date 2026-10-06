@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import PrincipleResult from '../components/PrincipleResult';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
+import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -9,8 +10,11 @@ import {
   Filler,
   Tooltip,
   Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
 } from 'chart.js';
-import { Radar } from 'react-chartjs-2';
+import { Radar, Bar } from 'react-chartjs-2';
 import { saveAssessment, getCurrentUser } from '../utils/auth';
 import './Dashboard.css';
 
@@ -20,7 +24,10 @@ ChartJS.register(
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
 );
 
 const Dashboard1 = () => {
@@ -67,16 +74,16 @@ const Dashboard1 = () => {
   const scoreD = getScoreD();
 
   const getDComplianceLevel = (score) => {
-    if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
-    if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
-    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Kế hoạch giám sát hầu như chưa đạt yêu cầu, cần cải thiện đáng kể.' };
+    if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: '', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
+    if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: '', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
+    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: '', desc: 'Kế hoạch giám sát hầu như chưa đạt yêu cầu, cần cải thiện đáng kể.' };
   };
   const dLevel = getDComplianceLevel(scoreD);
 
   const getComplianceLevel = (score) => {
-    if (score >= 11) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: 'bg-success-light', desc: 'Cơ quan, tổ chức có đầy đủ các cơ chế, chính sách, quy trình và biện pháp bảo vệ để bảo đảm nguyên tắc này được thực thi xuyên suốt vòng đời của hệ thống AI; minh chứng đầy đủ, nhất quán, có cơ chế giám sát và cải tiến liên tục.' };
-    if (score >= 6) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: 'bg-warning-light', desc: 'Cơ quan, tổ chức đã có những nỗ lực và biện pháp ban đầu hướng tới nguyên tắc này, nhưng vẫn còn khoảng trống hoặc thiếu minh chứng ở một số nội dung và cần tiếp tục cải thiện để đáp ứng đầy đủ.' };
-    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: 'bg-danger-light', desc: 'Nguyên tắc này hầu như chưa được tuân thủ; các hoạt động còn thiếu sót ở phần lớn nội dung và cần nỗ lực đáng kể để bảo đảm tuân thủ.' };
+    if (score >= 11) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: '', desc: 'Cơ quan, tổ chức có đầy đủ các cơ chế, chính sách, quy trình và biện pháp bảo vệ để bảo đảm nguyên tắc này được thực thi xuyên suốt vòng đời của hệ thống AI; minh chứng đầy đủ, nhất quán, có cơ chế giám sát và cải tiến liên tục.' };
+    if (score >= 6) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: '', desc: 'Cơ quan, tổ chức đã có những nỗ lực và biện pháp ban đầu hướng tới nguyên tắc này, nhưng vẫn còn khoảng trống hoặc thiếu minh chứng ở một số nội dung và cần tiếp tục cải thiện để đáp ứng đầy đủ.' };
+    return { label: 'Không tuân thủ', color: 'text-danger', bgColor: '', desc: 'Nguyên tắc này hầu như chưa được tuân thủ; các hoạt động còn thiếu sót ở phần lớn nội dung và cần nỗ lực đáng kể để bảo đảm tuân thủ.' };
   };
 
   const getOverallComplianceLevel = (totalScore, s1, s2, s3, s4) => {
@@ -146,6 +153,39 @@ const Dashboard1 = () => {
     maintainAspectRatio: false,
   };
 
+  const barChartData = {
+    labels: [
+      'NT1 - An toàn, độ tin cậy & không gây hại',
+      'NT2 - Kiểm soát của con người',
+      'NT3 - Lợi ích xã hội & bao trùm kỹ thuật số',
+      'NT4 - Đổi mới có trách nhiệm'
+    ],
+    datasets: [
+      {
+        label: 'Trả lời "Có"',
+        data: [scoreC1, scoreC2, scoreC3, scoreC4],
+        backgroundColor: '#475569',
+      },
+      {
+        label: 'Trả lời "Không"',
+        data: [15 - scoreC1, 15 - scoreC2, 15 - scoreC3, 15 - scoreC4],
+        backgroundColor: '#cbd5e1',
+      }
+    ]
+  };
+
+  const barChartOptions = {
+    indexAxis: 'y',
+    scales: {
+      x: { stacked: true, max: 15, ticks: { stepSize: 5 } },
+      y: { stacked: true, ticks: { font: { size: 12, family: "'Inter', sans-serif" }, color: '#475569' } }
+    },
+    plugins: {
+      legend: { position: 'bottom' }
+    },
+    maintainAspectRatio: false,
+  };
+
   return (
     <div className="container page-container fade-in">
       <div className="breadcrumbs text-sm text-muted mb-4">
@@ -164,7 +204,7 @@ const Dashboard1 = () => {
             </div>
             <div className="info-group mb-3">
               <div className="text-muted text-sm">Lĩnh vực ứng dụng</div>
-              <div className="font-semibold">{formData.domain}</div>
+              <div className="font-semibold">{formData.domain === 'Khác' ? formData.otherDomain : formData.domain}</div>
             </div>
           </div>
 
@@ -241,12 +281,12 @@ const Dashboard1 = () => {
               <h4 className="font-bold mb-6 text-sm">KẾT QUẢ TỔNG THỂ</h4>
               <div className="flex gap-6 items-center">
                 <div className="score-circle">
-                  <svg viewBox="0 0 100 100" className={`circular-chart ${overall.color.replace('text-', '')}`}>
+                  <svg viewBox="0 0 36 36" className={`circular-chart ${overall.color.replace('text-', '')}`}>
                     <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path className="circle" strokeDasharray={`${(totalCScore / 60) * 100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? '#22c55e' : overall.color === 'text-warning' ? '#f59e0b' : '#ef4444'} />
+                    <path className="circle" strokeDasharray={`${(totalCScore / 60) * 100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)'} />
                   </svg>
                   <div className="score-text">
-                    <span className="score-number" style={{ color: overall.color === 'text-success' ? '#22c55e' : overall.color === 'text-warning' ? '#f59e0b' : '#ef4444' }}>{totalCScore}</span>
+                    <span className="score-number" style={{ color: overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)' }}>{totalCScore}</span>
                     <span className="score-total">/60</span>
                   </div>
                 </div>
@@ -267,79 +307,32 @@ const Dashboard1 = () => {
             </div>
           </div>
 
-          <div className="card">
+          <div className="card mb-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">SỐ CÂU "CÓ" / "KHÔNG" THEO NGUYÊN TẮC — ngưỡng 11 (đầy đủ) và 6 (một phần)</h4>
+            <div style={{height: '250px'}}>
+              <Bar data={barChartData} options={barChartOptions} />
+            </div>
+          </div>
+
+          <div className="card mb-6">
             <h4 className="font-bold mb-4 text-sm uppercase">Kết quả từng nguyên tắc (Phần C)</h4>
             <div className="flex-col gap-4">
               
-              {/* C1 */}
-              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                <div className={`icon-box ${getComplianceLevel(scoreC1).bgColor} ${getComplianceLevel(scoreC1).color}`}><Shield size={20}/></div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <h5 className="font-bold text-main mb-0">C1. An toàn và tin cậy</h5>
-                    <div className="font-bold text-sm">
-                      <span className={getComplianceLevel(scoreC1).color}>{getComplianceLevel(scoreC1).label}</span>
-                      <span className="text-muted ml-2">({scoreC1}/15)</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted">{getComplianceLevel(scoreC1).desc}</p>
-                </div>
-              </div>
-
-              {/* C2 */}
-              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                <div className={`icon-box ${getComplianceLevel(scoreC2).bgColor} ${getComplianceLevel(scoreC2).color}`}><User size={20}/></div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <h5 className="font-bold text-main mb-0">C2. Quyền con người và công bằng</h5>
-                    <div className="font-bold text-sm">
-                      <span className={getComplianceLevel(scoreC2).color}>{getComplianceLevel(scoreC2).label}</span>
-                      <span className="text-muted ml-2">({scoreC2}/15)</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted">{getComplianceLevel(scoreC2).desc}</p>
-                </div>
-              </div>
-
-              {/* C3 */}
-              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                <div className={`icon-box ${getComplianceLevel(scoreC3).bgColor} ${getComplianceLevel(scoreC3).color}`}><Target size={20}/></div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <h5 className="font-bold text-main mb-0">C3. Bền vững và bao trùm</h5>
-                    <div className="font-bold text-sm">
-                      <span className={getComplianceLevel(scoreC3).color}>{getComplianceLevel(scoreC3).label}</span>
-                      <span className="text-muted ml-2">({scoreC3}/15)</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted">{getComplianceLevel(scoreC3).desc}</p>
-                </div>
-              </div>
-
-              {/* C4 */}
-              <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-                <div className={`icon-box ${getComplianceLevel(scoreC4).bgColor} ${getComplianceLevel(scoreC4).color}`}><BookOpen size={20}/></div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-center mb-1">
-                    <h5 className="font-bold text-main mb-0">C4. Đổi mới có trách nhiệm</h5>
-                    <div className="font-bold text-sm">
-                      <span className={getComplianceLevel(scoreC4).color}>{getComplianceLevel(scoreC4).label}</span>
-                      <span className="text-muted ml-2">({scoreC4}/15)</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted">{getComplianceLevel(scoreC4).desc}</p>
-                </div>
-              </div>
-
+              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: An toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Kiểm soát của con người" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Lợi ích xã hội và bao trùm kỹ thuật số" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Đổi mới có trách nhiệm" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} />
             </div>
           </div>
 
           <div className="card mt-6">
             <h4 className="font-bold mb-4 text-sm uppercase">Kết quả kế hoạch giám sát (Phần D)</h4>
-            <div className="flex gap-4 p-4 border rounded-md recommendation-item">
-              <div className={`icon-box ${dLevel.bgColor} ${dLevel.color}`}><CheckSquare size={20}/></div>
+            <div className="flex items-center gap-4 p-4 border rounded-md recommendation-item">
+              <div className={`icon-box ${dLevel.bgColor} ${dLevel.color}`}>
+                {scoreD < 4 ? <AlertTriangle size={20}/> : <CheckSquare size={20}/>}
+              </div>
               <div className="flex-1">
-                <div className="flex justify-between items-center mb-1">
+                <div className="flex justify-between items-center">
                   <h5 className="font-bold text-main mb-0">Mức độ tuân thủ</h5>
                   <div className="font-bold text-sm">
                     <span className={dLevel.color}>{dLevel.label}</span>
@@ -384,7 +377,7 @@ const Dashboard1 = () => {
                     <div className="flex flex-col"><span className="text-muted mb-1">Mô hình nền (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.foundationModel || '-'}</span></div>
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các thành phần AI bên thứ ba khác:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.otherThirdParty || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Vai trò tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.orgRole === 'Khác: điền thông tin' ? formData.otherOrgRole : formData.orgRole || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Lĩnh vực ứng dụng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.domain || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Lĩnh vực ứng dụng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.domain === 'Khác' ? formData.otherDomain : formData.domain || '-'}</span></div>
                     
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mục đích chính:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.purpose || '-'}</span></div>
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Giới hạn ứng dụng (Out of scope):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outOfScope || '-'}</span></div>

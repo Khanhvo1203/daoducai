@@ -12,7 +12,7 @@
   
   /* Status Colors */
   --success: #2e7d32;
-  --warning: #ed6c02;
+  --warning: #cc8800;
   --danger: #d32f2f;
   --info: #0288d1;
 
@@ -30,6 +30,24 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.text-success { color: var(--success) !important; }
+.text-warning { color: var(--warning) !important; }
+.text-danger { color: var(--danger) !important; }
+
+.bg-success-light { background-color: #e8f5e9 !important; }
+.bg-warning-light { background-color: #fff8e1 !important; }
+.bg-danger-light { background-color: #ffebee !important; }
+
+.icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 * {

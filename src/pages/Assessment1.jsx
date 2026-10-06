@@ -17,18 +17,18 @@ const Assessment1 = () => {
 
   // Define steps dynamically with Themes and Icons
   const allSteps = [];
-  allSteps.push({ id: 'partA1', name: 'Nhận dạng hệ thống', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A1-A5 để định danh hệ thống, mục đích và công nghệ cốt lõi.' });
+  allSteps.push({ id: 'partA1', name: 'Mô tả hệ thống', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A1-A5 để định danh hệ thống, mục đích và công nghệ cốt lõi.' });
   allSteps.push({ id: 'partA2', name: 'Phạm vi & Nhóm đối tượng', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A6-A10 về mức độ tương tác và ảnh hưởng đến người dùng cuối.' });
   allSteps.push({ id: 'partA3', name: 'Sàng lọc rủi ro ban đầu', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A11-A15 để phân loại nhóm rủi ro của hệ thống theo quy định.' });
   
   if (selection.partB) {
-    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Quản trị rủi ro', theme: 'blue', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
+    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'blue', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
   }
   if (selection.partC) {
-    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: An toàn', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
-    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Quyền con người', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
-    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
-    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Đổi mới sáng tạo', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
+    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: An toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
+    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Kiểm soát của con người', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
+    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Lợi ích xã hội và bao trùm kỹ thuật số', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
+    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Đổi mới có trách nhiệm', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
   }
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
@@ -244,8 +244,12 @@ const Assessment1 = () => {
 
   return (
     <div className="container page-container">
-      <div className="breadcrumbs text-sm text-muted mb-4">
+      <div className="breadcrumbs text-sm text-muted mb-2">
         <Link to="/">Trang chủ</Link> {'>'} <span className="text-primary font-semibold">Đánh giá</span> {'>'} {activeStep?.name}
+      </div>
+      <div className="flex gap-6 mb-6 text-sm">
+        <div><span className="text-muted">Mã hồ sơ:</span> <span className="font-semibold">Đang cập nhật</span></div>
+        <div><span className="text-muted">Ngày thực hiện:</span> <span className="font-semibold">{new Date().toLocaleDateString('vi-VN')}</span></div>
       </div>
 
       <div className="split-layout">
@@ -255,6 +259,7 @@ const Assessment1 = () => {
             <div className="text-primary font-bold mb-4">{progressPercent}% <span className="text-muted font-normal">hoàn thành</span></div>
             
             <div className="stepper-groups">
+              <div className="text-base font-bold text-main mb-4">THÔNG TIN SƠ BỘ</div>
               {Object.entries(groupedSteps).map(([groupName, stepsInGroup], gIdx) => {
                 const groupTheme = stepsInGroup[0].theme;
                 const GroupIcon = stepsInGroup[0].icon;

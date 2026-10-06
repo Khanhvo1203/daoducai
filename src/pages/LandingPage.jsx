@@ -41,6 +41,7 @@ const LandingPage = () => {
       otherOrgRole: '',
       purpose: '',
       domain: 'Hành chính',
+      otherDomain: '',
       outOfScope: '',
       inputType: 'Văn bản',
       inputSource: 'Người dùng nhập',
@@ -286,6 +287,11 @@ const LandingPage = () => {
                       <option>Y tế</option><option>Giáo dục</option><option>Tài chính</option><option>Hành chính</option><option>Khác</option>
                     </select>
                   </div>
+                  {formData.domain === 'Khác' && (
+                    <div className="form-group mb-4">
+                      <input type="text" name="otherDomain" required placeholder="Vui lòng ghi rõ lĩnh vực" value={formData.otherDomain || ''} onChange={handleChange} className="form-control" />
+                    </div>
+                  )}
                   <div className="form-group">
                     <label>3. Giới hạn ứng dụng (Out of scope) <span className="text-danger">*</span></label>
                     <textarea name="outOfScope" required rows="2" placeholder="Các trường hợp KHÔNG ĐƯỢC sử dụng trong hệ thống" value={formData.outOfScope} onChange={handleChange} className="form-control"></textarea>
@@ -567,7 +573,7 @@ const LandingPage = () => {
                   <div className="flex items-start gap-2">
                     <Scale size={18} className="text-primary flex-shrink-0" style={{ marginTop: '4px' }} />
                     <div className="flex-1" style={{ textAlign: 'left' }}>
-                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>2. Đánh giá khung đạo đức theo Unesco</h4>
+                      <h4 className="font-bold text-main" style={{ fontSize: '1.05rem', margin: '0 0 4px 0', textAlign: 'left' }}>2. Đánh giá tham khảo khung đạo đức theo UNESCO</h4>
                       <p className="text-muted" style={{ fontSize: '0.9rem', margin: 0, textAlign: 'left' }}>Ấn vào đây để tải về file Excel biểu mẫu đánh giá của Unesco.</p>
                     </div>
                   </div>
