@@ -107,12 +107,13 @@ const AdminDashboard = () => {
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold">Danh sách Tài khoản</h3>
             <div className="flex gap-4 items-center">
-              <div className="relative w-64">
-                <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" />
+              <div style={{ position: 'relative', width: '256px' }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 <input 
                   type="text" 
                   placeholder="Tìm theo email, tên, sđt..." 
-                  className="form-control pl-9 py-1 text-sm"
+                  className="form-control text-sm"
+                  style={{ paddingLeft: '36px', paddingTop: '6px', paddingBottom: '6px' }}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -235,9 +236,9 @@ const AdminDashboard = () => {
         <div className="card fade-in">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold">Danh sách Hồ sơ Đánh giá</h3>
-            <div className="relative w-64">
-              <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" />
-              <input type="text" placeholder="Tìm mã hồ sơ..." className="form-control pl-9 py-1 text-sm" />
+            <div style={{ position: 'relative', width: '256px' }}>
+              <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <input type="text" placeholder="Tìm mã hồ sơ..." className="form-control text-sm" style={{ paddingLeft: '36px', paddingTop: '6px', paddingBottom: '6px' }} />
             </div>
           </div>
 
