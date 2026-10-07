@@ -225,7 +225,7 @@ const LandingPage = () => {
                 
                 {/* I. Thông tin chung */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">I. Thông tin chung</h4>
+                  <h4 className="font-bold text-main mb-4 mt-2">I. Thông tin chung</h4>
                   <div className="grid-2 gap-4 mb-4">
                     <div className="form-group">
                       <label>1. Tên hệ thống AI <span className="text-danger">*</span></label>
@@ -254,7 +254,8 @@ const LandingPage = () => {
 
                 {/* II. Loại công nghệ nhà cung cấp */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">II. Loại công nghệ & Nhà cung cấp</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">II. Loại công nghệ & Nhà cung cấp</h4>
                   <div className="grid-2 gap-4 mb-4">
                     <div className="form-group">
                       <label>1. Loại công nghệ AI <span className="text-danger">*</span></label>
@@ -285,7 +286,8 @@ const LandingPage = () => {
 
                 {/* III. Vai trò của tổ chức */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">III. Vai trò của tổ chức</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">III. Vai trò của tổ chức</h4>
                   <div className="form-group mb-4">
                     <label>1. Vai trò chính <span className="text-danger">*</span></label>
                     <select name="orgRole" value={formData.orgRole} onChange={handleChange} className="form-control select-control">
@@ -305,7 +307,8 @@ const LandingPage = () => {
 
                 {/* IV. Mục đích sử dụng dự kiến */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">IV. Mục đích sử dụng dự kiến</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">IV. Mục đích sử dụng dự kiến</h4>
                   <div className="form-group mb-4">
                     <label>1. Mục đích chính <span className="text-danger">*</span></label>
                     <textarea name="purpose" required rows="2" placeholder="Mô tả ngắn gọn" value={formData.purpose} onChange={handleChange} className="form-control"></textarea>
@@ -329,7 +332,8 @@ const LandingPage = () => {
 
                 {/* V. Loại dữ liệu */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">V. Loại dữ liệu đầu vào / đầu ra</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">V. Loại dữ liệu đầu vào / đầu ra</h4>
                   <div className="grid-2 gap-4 mb-4">
                     <div className="form-group">
                       <label>1. Loại dữ liệu đầu vào <span className="text-danger">*</span></label>
@@ -362,7 +366,8 @@ const LandingPage = () => {
 
                 {/* VI. Đối tượng sử dụng */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">VI. Đối tượng sử dụng & Tác động</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">VI. Đối tượng sử dụng & Tác động</h4>
                   <div className="grid-2 gap-4 mb-4">
                     <div className="form-group">
                       <label>1. Người sử dụng trực tiếp <span className="text-danger">*</span></label>
@@ -408,7 +413,8 @@ const LandingPage = () => {
 
                 {/* VII. Trường hợp sử dụng sai */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">VII. Các trường hợp sử dụng sai có thể dự đoán</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">VII. Các trường hợp sử dụng sai có thể dự đoán</h4>
                   <div className="form-group mb-4">
                     <label>1. Sử dụng ngoài mục đích chính</label>
                     <textarea name="misuseMain" rows="2" placeholder="Ví dụ cụ thể..." value={formData.misuseMain} onChange={handleChange} className="form-control"></textarea>
@@ -425,7 +431,8 @@ const LandingPage = () => {
 
                 {/* VIII. Cảnh báo */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">VIII. Cảnh báo cho người vận hành</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">VIII. Cảnh báo cho người vận hành</h4>
                   <div className="form-group mb-4">
                     <label>1. Các tình huống cần thận trọng <span className="text-danger">*</span></label>
                     <textarea name="cautionSituations" required rows="2" placeholder="Liệt kê 3-5 tình huống cụ thể..." value={formData.cautionSituations} onChange={handleChange} className="form-control"></textarea>
@@ -456,7 +463,7 @@ const LandingPage = () => {
                 
                 {/* I. Cổng pháp lý */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">I. Cổng pháp lý - Đối chiếu danh mục rủi ro</h4>
+                  <h4 className="font-bold text-main mb-4 mt-2">I. Cổng pháp lý - Đối chiếu danh mục rủi ro</h4>
                   <div className="form-group mb-4">
                     <label className="font-bold block mb-2">1. Hệ thống có thuộc danh mục rủi ro cao theo QĐ 33/2026/QĐ-TTg không?</label>
                     <div className="flex gap-6 mt-2">
@@ -496,7 +503,8 @@ const LandingPage = () => {
 
                 {/* II. Nhận diện nhóm chịu tác động */}
                 <div>
-                  <h4 className="font-bold text-main mb-3">II. Nhận diện nhóm chịu tác động</h4>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4">II. Nhận diện nhóm chịu tác động</h4>
                   <div className="text-sm text-muted mb-4 border-l-4 border-secondary pl-3 py-1 bg-muted-light">
                     Mô tả rõ mức độ ảnh hưởng và quy mô (số lượng người, khu vực...) đối với từng nhóm.
                   </div>
