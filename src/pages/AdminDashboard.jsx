@@ -10,6 +10,7 @@ const AdminDashboard = () => {
   const [showAddUser, setShowAddUser] = useState(false);
   const [newUser, setNewUser] = useState({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
   const [searchTerm, setSearchTerm] = useState('');
+  const [assessmentSearch, setAssessmentSearch] = useState('');
   const [editingUser, setEditingUser] = useState(null);
   const [editFormData, setEditFormData] = useState({ phone: '', password: '', role: 'MEMBER' });
   
@@ -65,6 +66,14 @@ const AdminDashboard = () => {
     loadData();
     alert('Cập nhật tài khoản thành công!');
   };
+
+  const filteredAssessments = assessments.filter(a => {
+    if (!assessmentSearch) return true;
+    const term = assessmentSearch.toLowerCase();
+    return a.id.toLowerCase().includes(term) || 
+           (a.formData?.systemName || '').toLowerCase().includes(term) || 
+           a.userId.toLowerCase().includes(term);
+  });
 
   const filteredUsers = users.filter(u => {
     const term = searchTerm.toLowerCase();
@@ -238,7 +247,7 @@ const AdminDashboard = () => {
             <h3 className="font-bold">Danh sách Hồ sơ Đánh giá</h3>
             <div style={{ position: 'relative', width: '256px' }}>
               <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input type="text" placeholder="Tìm mã hồ sơ..." className="form-control text-sm" style={{ paddingLeft: '36px', paddingTop: '6px', paddingBottom: '6px' }} />
+              <input type="text" placeholder="Tìm mã hồ sơ, tên hệ thống..." className="form-control text-sm" style={{ paddingLeft: '36px', paddingTop: '6px', paddingBottom: '6px' }} value={assessmentSearch} onChange={(e) => setAssessmentSearch(e.target.value)} />
             </div>
           </div>
 
@@ -254,10 +263,10 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {assessments.length === 0 ? (
+                {filteredAssessments.length === 0 ? (
                   <tr><td colSpan="5" className="p-4 text-center text-muted">Chưa có hồ sơ đánh giá nào.</td></tr>
                 ) : (
-                  assessments.map(a => (
+                  filteredAssessments.map(a => (
                     <tr key={a.id} className="border-b hover:bg-muted-light">
                       <td className="p-3 font-extrabold text-primary">#{a.id}</td>
                       <td className="p-3">{a.formData?.systemName || 'N/A'}</td>
