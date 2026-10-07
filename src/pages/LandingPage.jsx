@@ -227,25 +227,25 @@ const LandingPage = () => {
                   <h4 className="font-bold text-main mb-3">I. Thông tin chung</h4>
                   <div className="grid-2 gap-4 mb-4">
                     <div className="form-group">
-                      <label>1.1. Tên hệ thống AI <span className="text-danger">*</span></label>
+                      <label>1. Tên hệ thống AI <span className="text-danger">*</span></label>
                       <input type="text" name="systemName" required placeholder="Tên đầy đủ, không viết tắt" value={formData.systemName} onChange={handleChange} className="form-control" />
                     </div>
                     <div className="form-group">
-                      <label>1.2. Mã hệ thống nội bộ</label>
+                      <label>2. Mã hệ thống nội bộ</label>
                       <input type="text" name="internalCode" placeholder="Mã quản lý nội bộ, ví dụ AI-2026-001" value={formData.internalCode} onChange={handleChange} className="form-control" />
                     </div>
                   </div>
                   <div className="grid-3 gap-4 mb-4">
                     <div className="form-group">
-                      <label>1.3. Phiên bản</label>
+                      <label>3. Phiên bản</label>
                       <input type="text" name="version" placeholder="Số phiên bản, ngày phát hành" value={formData.version} onChange={handleChange} className="form-control" />
                     </div>
                     <div className="form-group">
-                      <label>1.4. Đơn vị quản lý</label>
+                      <label>4. Đơn vị quản lý</label>
                       <input type="text" name="managementUnit" placeholder="Phòng/ban chịu trách nhiệm vận hành" value={formData.managementUnit} onChange={handleChange} className="form-control" />
                     </div>
                     <div className="form-group">
-                      <label>1.5. Người phụ trách</label>
+                      <label>5. Người phụ trách</label>
                       <input type="text" name="personInCharge" placeholder="Họ tên, chức vụ, thông tin liên hệ" value={formData.personInCharge} onChange={handleChange} className="form-control" />
                     </div>
                   </div>
