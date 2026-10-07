@@ -264,20 +264,20 @@ const Assessment2 = () => {
       <div className="split-layout">
         <aside className="sidebar">
           <div className="card mb-6 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-5">
-              <div className="relative w-[72px] h-[72px] flex-shrink-0">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 52 52">
-                  <circle className="text-gray-100" strokeWidth="6" stroke="currentColor" fill="transparent" r="22" cx="26" cy="26" style={{ color: '#f1f5f9' }} />
-                  <circle className="text-primary" strokeWidth="6" strokeDasharray={dashArray} strokeDashoffset={dashOffset} strokeLinecap="round" stroke="currentColor" fill="transparent" r="22" cx="26" cy="26" style={{ transition: 'stroke-dashoffset 0.5s ease' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{ position: 'relative', width: '84px', height: '84px', flexShrink: 0 }}>
+                <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }} viewBox="0 0 52 52">
+                  <circle strokeWidth="5" stroke="#f1f5f9" fill="transparent" r="23" cx="26" cy="26" />
+                  <circle strokeWidth="5" strokeDasharray={`${(totalProgressPercent * 2 * Math.PI * 23) / 100} ${2 * Math.PI * 23}`} strokeDashoffset="0" strokeLinecap="round" stroke="var(--primary)" fill="transparent" r="23" cx="26" cy="26" style={{ transition: 'stroke-dashoffset 0.5s ease' }} />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-main">
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px', fontWeight: 'bold', color: 'var(--text-main)' }}>
                   {totalAnsweredAll}/{totalQuestions}
                 </div>
               </div>
-              <div className="flex flex-col justify-center">
-                <div className="text-[11px] font-bold text-muted uppercase tracking-wider mb-1">ĐÃ TRẢ LỜI</div>
-                <div className="text-base font-bold text-main">{totalAnsweredAll}/{totalQuestions} câu</div>
-                <div className="text-xs text-muted mt-1">còn {totalQuestions - totalAnsweredAll} câu chưa trả lời</div>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>ĐÃ TRẢ LỜI</div>
+                <div style={{ fontSize: '15px', fontWeight: 'bold', color: 'var(--text-main)' }}>{totalAnsweredAll}/{totalQuestions} câu</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>còn {totalQuestions - totalAnsweredAll} câu chưa trả lời</div>
               </div>
             </div>
           </div>
