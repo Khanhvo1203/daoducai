@@ -389,11 +389,7 @@ const LandingPage = () => {
                   )}
                   <div className="form-group mb-4">
                     <label>3. Số lượng người dùng dự kiến <span className="text-danger">*</span></label>
-                    <div className="flex gap-2">
-                      <input type="text" name="userCount" required placeholder="Số người..." value={formData.userCount} onChange={handleChange} className="form-control" />
-                      <div className="flex items-center text-muted px-2">/</div>
-                      <input type="text" name="userTargetCount" required placeholder="Đối tượng dự kiến mỗi tháng..." value={formData.userTargetCount} onChange={handleChange} className="form-control" />
-                    </div>
+                    <input type="text" name="userCount" required placeholder="Số người/Đối tượng dự kiến mỗi tháng..." value={formData.userCount} onChange={handleChange} className="form-control" />
                   </div>
                   <div className="grid-2 gap-4">
                     <div className="form-group">
