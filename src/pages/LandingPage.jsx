@@ -273,7 +273,7 @@ const LandingPage = () => {
                     <input type="text" name="provider" placeholder="Tên nhà cung cấp, quốc gia đăng ký, sản phẩm cụ thể" value={formData.provider} onChange={handleChange} className="form-control" />
                   </div>
                   <div className="form-group mb-4">
-                    <label>4. Mô hình nền (foundation model) sử dụng (nếu có)</label>
+                    <label>4. Mô hình nền sử dụng (nếu có)</label>
                     <input type="text" name="foundationModel" placeholder="Tên mô hình, nhà cung cấp, phiên bản" value={formData.foundationModel} onChange={handleChange} className="form-control" />
                   </div>
                   <div className="form-group">
