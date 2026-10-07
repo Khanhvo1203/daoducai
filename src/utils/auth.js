@@ -25,6 +25,13 @@ export const login = (username, password, role = 'MEMBER') => {
       localStorage.setItem('currentUser', JSON.stringify(user));
       return { success: true, user };
     }
+    // Kiểm tra trong danh sách users xem có ai được cấp quyền ADMIN không
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const dbAdmin = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password && u.role === 'ADMIN');
+    if (dbAdmin) {
+      localStorage.setItem('currentUser', JSON.stringify(dbAdmin));
+      return { success: true, user: dbAdmin };
+    }
     return { success: false, message: 'Sai tài khoản hoặc mật khẩu Quản trị.' };
   }
 
@@ -33,7 +40,7 @@ export const login = (username, password, role = 'MEMBER') => {
   const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
   
   if (user) {
-    const loggedInUser = { ...user, role: 'MEMBER' };
+    const loggedInUser = { ...user, role: user.role || 'MEMBER' };
     localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
     return { success: true, user: loggedInUser };
   }
@@ -54,15 +61,15 @@ export const getAllUsers = () => {
   return JSON.parse(localStorage.getItem('users')) || [];
 };
 
-export const createUser = ({ username, password, name, phone }) => {
-  if (!username.includes('@')) {
+export const createUser = ({ username, password, name, phone, role = 'MEMBER' }) => {
+  if (!username.includes('@') && role !== 'ADMIN') {
     return { success: false, message: 'Tên đăng nhập bắt buộc phải là địa chỉ Email.' };
   }
   const users = getAllUsers();
   if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-    return { success: false, message: 'Email này đã tồn tại trong hệ thống.' };
+    return { success: false, message: 'Tên đăng nhập này đã tồn tại trong hệ thống.' };
   }
-  users.push({ username, password, name, phone, createdAt: new Date().toISOString() });
+  users.push({ username, password, name, phone, role, createdAt: new Date().toISOString() });
   localStorage.setItem('users', JSON.stringify(users));
   return { success: true };
 };

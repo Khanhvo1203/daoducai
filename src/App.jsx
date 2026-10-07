@@ -21,12 +21,18 @@ const ProtectedRoute = ({ children, allowedRole, allowedRoles }) => {
   }
   
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" />;
+    return <Navigate to={user.role === 'ADMIN' ? '/admin' : '/'} />;
   } else if (allowedRole && user.role !== allowedRole) {
-    return <Navigate to="/" />;
+    return <Navigate to={user.role === 'ADMIN' ? '/admin' : '/'} />;
   }
   
   return children;
+};
+
+const RootRedirect = () => {
+  const user = getCurrentUser();
+  if (user && user.role === 'ADMIN') return <Navigate to="/admin" replace />;
+  return <Navigate to="/ho-so-dang-ky" replace />;
 };
 
 const Navigation = () => {
@@ -198,7 +204,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* Member Protected Routes */}
-            <Route path="/" element={<Navigate to="/ho-so-dang-ky" replace />} />
+            <Route path="/" element={<RootRedirect />} />
             <Route path="/ho-so-dang-ky" element={<ProtectedRoute allowedRole="MEMBER"><LandingPage /></ProtectedRoute>} />
             <Route path="/assessment1" element={<ProtectedRoute allowedRole="MEMBER"><Assessment1 /></ProtectedRoute>} />
             <Route path="/assessment2" element={<ProtectedRoute allowedRole="MEMBER"><Assessment2 /></ProtectedRoute>} />

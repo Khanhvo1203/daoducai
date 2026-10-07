@@ -32,6 +32,10 @@ const LandingPage = () => {
       
       // Step 2: Thông tin AI
       systemName: '',
+      internalCode: '',
+      version: '',
+      managementUnit: '',
+      personInCharge: '',
       aiTechType: 'ML truyền thống',
       developType: 'Tự phát triển',
       provider: '',
@@ -221,9 +225,29 @@ const LandingPage = () => {
                 {/* I. Thông tin chung */}
                 <div>
                   <h4 className="font-bold text-main mb-3">I. Thông tin chung</h4>
-                  <div className="form-group">
-                    <label>1. Tên hệ thống <span className="text-danger">*</span></label>
-                    <input type="text" name="systemName" required placeholder="Tên đầy đủ, không viết tắt" value={formData.systemName} onChange={handleChange} className="form-control" />
+                  <div className="grid-2 gap-4 mb-4">
+                    <div className="form-group">
+                      <label>1.1. Tên hệ thống AI <span className="text-danger">*</span></label>
+                      <input type="text" name="systemName" required placeholder="Tên đầy đủ, không viết tắt" value={formData.systemName} onChange={handleChange} className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label>1.2. Mã hệ thống nội bộ</label>
+                      <input type="text" name="internalCode" placeholder="Mã quản lý nội bộ, ví dụ AI-2026-001" value={formData.internalCode} onChange={handleChange} className="form-control" />
+                    </div>
+                  </div>
+                  <div className="grid-3 gap-4 mb-4">
+                    <div className="form-group">
+                      <label>1.3. Phiên bản</label>
+                      <input type="text" name="version" placeholder="Số phiên bản, ngày phát hành" value={formData.version} onChange={handleChange} className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label>1.4. Đơn vị quản lý</label>
+                      <input type="text" name="managementUnit" placeholder="Phòng/ban chịu trách nhiệm vận hành" value={formData.managementUnit} onChange={handleChange} className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label>1.5. Người phụ trách</label>
+                      <input type="text" name="personInCharge" placeholder="Họ tên, chức vụ, thông tin liên hệ" value={formData.personInCharge} onChange={handleChange} className="form-control" />
+                    </div>
                   </div>
                 </div>
 
@@ -429,7 +453,7 @@ const LandingPage = () => {
                 <div>
                   <h4 className="font-bold text-main mb-3">I. Cổng pháp lý - Đối chiếu danh mục rủi ro</h4>
                   <div className="form-group mb-4">
-                    <label className="font-bold block mb-2">1. Hệ thống có thuộc danh mục rủi ro cao theo QĐ 33/2026/QĐ-TTg không? <span className="text-danger">*</span></label>
+                    <label className="font-bold block mb-2">1. Hệ thống có thuộc danh mục rủi ro cao theo QĐ 33/2026/QĐ-TTg không?</label>
                     <div className="flex gap-6 mt-2">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" checked={formData.isHighRisk === 'Có'} onChange={() => setFormData({...formData, isHighRisk: 'Có'})} style={{width: '18px', height: '18px'}} />
@@ -444,21 +468,21 @@ const LandingPage = () => {
 
 
                   <div className="form-group mb-4">
-                    <label>2. Đã thực hiện đánh giá sự phù hợp theo Điều 7 Nghị định 142/NĐ-CP? <span className="text-danger">*</span></label>
+                    <label>2. Đã thực hiện đánh giá sự phù hợp theo Điều 7 Nghị định 142/NĐ-CP?</label>
                     <select name="decree142" value={formData.decree142} onChange={handleChange} className="form-control select-control">
                       <option>Đã thực hiện</option><option>Chưa thực hiện</option><option>Hệ thống không thuộc yêu cầu</option>
                     </select>
                   </div>
 
                   <div className="form-group mb-4">
-                    <label className="font-bold block mb-2">3. Phân loại rủi ro (Tự đánh giá) <span className="text-danger">*</span></label>
+                    <label className="font-bold block mb-2">3. Phân loại rủi ro (Tự đánh giá)</label>
                     <div className="flex gap-6 mt-2">
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="riskLevel" value="Thấp" checked={formData.riskLevel === 'Thấp'} onChange={handleChange} required style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
+                        <input type="radio" name="riskLevel" value="Thấp" checked={formData.riskLevel === 'Thấp'} onChange={handleChange} style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
                         <span>Thấp</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="riskLevel" value="Trung bình" checked={formData.riskLevel === 'Trung bình'} onChange={handleChange} required style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
+                        <input type="radio" name="riskLevel" value="Trung bình" checked={formData.riskLevel === 'Trung bình'} onChange={handleChange} style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
                         <span>Trung bình</span>
                       </label>
                     </div>
@@ -473,28 +497,28 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>1. Người dùng trực tiếp <span className="text-danger">*</span></label>
-                    <textarea name="impactDirectUser" required rows="2" placeholder="Mô tả và quy mô..." value={formData.impactDirectUser} onChange={handleChange} className="form-control"></textarea>
+                    <label>1. Người dùng trực tiếp</label>
+                    <textarea name="impactDirectUser" rows="2" placeholder="Mô tả và quy mô..." value={formData.impactDirectUser} onChange={handleChange} className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
-                    <label>2. Đối tượng quyết định của AI <span className="text-danger">*</span></label>
-                    <textarea name="impactDecisionTarget" required rows="2" placeholder="Mô tả và quy mô..." value={formData.impactDecisionTarget} onChange={handleChange} className="form-control"></textarea>
+                    <label>2. Đối tượng quyết định của AI</label>
+                    <textarea name="impactDecisionTarget" rows="2" placeholder="Mô tả và quy mô..." value={formData.impactDecisionTarget} onChange={handleChange} className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
-                    <label>3. Bên thứ ba bị ảnh hưởng gián tiếp <span className="text-danger">*</span></label>
-                    <textarea name="impactThirdParty" required rows="2" placeholder="Mô tả và quy mô..." value={formData.impactThirdParty} onChange={handleChange} className="form-control"></textarea>
+                    <label>3. Bên thứ ba bị ảnh hưởng gián tiếp</label>
+                    <textarea name="impactThirdParty" rows="2" placeholder="Mô tả và quy mô..." value={formData.impactThirdParty} onChange={handleChange} className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
-                    <label>4. Nhóm dễ tổn thương (trẻ em, người cao tuổi, dân tộc thiểu số, người khuyết tật) <span className="text-danger">*</span></label>
-                    <textarea name="impactVulnerable" required rows="2" placeholder="Liệt kê các nhóm cụ thể và quy mô..." value={formData.impactVulnerable} onChange={handleChange} className="form-control"></textarea>
+                    <label>4. Nhóm dễ tổn thương (trẻ em, người cao tuổi, dân tộc thiểu số, người khuyết tật)</label>
+                    <textarea name="impactVulnerable" rows="2" placeholder="Liệt kê các nhóm cụ thể và quy mô..." value={formData.impactVulnerable} onChange={handleChange} className="form-control"></textarea>
                   </div>
                   <div className="form-group mb-4">
-                    <label>5. Nhân viên tổ chức có thể bị thay đổi công việc do AI <span className="text-danger">*</span></label>
-                    <textarea name="impactEmployee" required rows="2" placeholder="Mô tả..." value={formData.impactEmployee} onChange={handleChange} className="form-control"></textarea>
+                    <label>5. Nhân viên tổ chức có thể bị thay đổi công việc do AI</label>
+                    <textarea name="impactEmployee" rows="2" placeholder="Mô tả..." value={formData.impactEmployee} onChange={handleChange} className="form-control"></textarea>
                   </div>
                   <div className="form-group">
-                    <label>6. Cộng đồng/môi trường rộng hơn chịu tác động <span className="text-danger">*</span></label>
-                    <textarea name="impactCommunity" required rows="2" placeholder="Mô tả tác động xã hội/môi trường..." value={formData.impactCommunity} onChange={handleChange} className="form-control"></textarea>
+                    <label>6. Cộng đồng/môi trường rộng hơn chịu tác động</label>
+                    <textarea name="impactCommunity" rows="2" placeholder="Mô tả tác động xã hội/môi trường..." value={formData.impactCommunity} onChange={handleChange} className="form-control"></textarea>
                   </div>
                 </div>
 

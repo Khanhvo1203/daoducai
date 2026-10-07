@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { getCurrentUser, logout, getAllUsers, createUser, deleteUser, getAllAssessments, updateUser } from '../utils/auth';
 import { Users, FileText, Trash2, Plus, LogOut, Search, Edit } from 'lucide-react';
 
@@ -8,9 +8,10 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [assessments, setAssessments] = useState([]);
   const [showAddUser, setShowAddUser] = useState(false);
-  const [newUser, setNewUser] = useState({ username: '', password: '', name: '', phone: '' });
+  const [newUser, setNewUser] = useState({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
+  const [searchTerm, setSearchTerm] = useState('');
   const [editingUser, setEditingUser] = useState(null);
-  const [editFormData, setEditFormData] = useState({ phone: '', password: '' });
+  const [editFormData, setEditFormData] = useState({ phone: '', password: '', role: 'MEMBER' });
   
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ const AdminDashboard = () => {
     e.preventDefault();
     const res = createUser(newUser);
     if (res.success) {
-      setNewUser({ username: '', password: '', name: '', phone: '' });
+      setNewUser({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
       setShowAddUser(false);
       loadData();
     } else {
@@ -54,7 +55,7 @@ const AdminDashboard = () => {
 
   const handleEditUser = (user) => {
     setEditingUser(user.username);
-    setEditFormData({ phone: user.phone || '', password: user.password || '' });
+    setEditFormData({ phone: user.phone || '', password: user.password || '', role: user.role || 'MEMBER' });
   };
 
   const submitEditUser = (e) => {
@@ -64,6 +65,15 @@ const AdminDashboard = () => {
     loadData();
     alert('Cập nhật tài khoản thành công!');
   };
+
+  const filteredUsers = users.filter(u => {
+    const term = searchTerm.toLowerCase();
+    return (
+      u.username.toLowerCase().includes(term) ||
+      (u.name && u.name.toLowerCase().includes(term)) ||
+      (u.phone && u.phone.includes(term))
+    );
+  });
 
   return (
     <div className="container page-container fade-in">
@@ -96,9 +106,21 @@ const AdminDashboard = () => {
         <div className="card fade-in">
           <div className="flex justify-between items-center mb-6">
             <h3 className="font-bold">Danh sách Tài khoản</h3>
-            <button onClick={() => setShowAddUser(!showAddUser)} className="btn btn-primary text-sm">
-              <Plus size={16} /> Thêm tài khoản
-            </button>
+            <div className="flex gap-4 items-center">
+              <div className="relative w-64">
+                <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted" />
+                <input 
+                  type="text" 
+                  placeholder="Tìm theo email, tên, sđt..." 
+                  className="form-control pl-9 py-1 text-sm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+              <button onClick={() => setShowAddUser(!showAddUser)} className="btn btn-primary text-sm whitespace-nowrap">
+                <Plus size={16} /> Thêm tài khoản
+              </button>
+            </div>
           </div>
 
           {showAddUser && (
@@ -119,6 +141,13 @@ const AdminDashboard = () => {
                 <label className="text-xs font-bold mb-1 block">Mật khẩu</label>
                 <input type="text" required className="form-control" value={newUser.password} onChange={e => setNewUser({...newUser, password: e.target.value})} placeholder="Vd: 123456" />
               </div>
+              <div className="flex-1">
+                <label className="text-xs font-bold mb-1 block">Vai trò</label>
+                <select className="form-control" value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})}>
+                  <option value="MEMBER">Thành viên</option>
+                  <option value="ADMIN">Quản trị viên</option>
+                </select>
+              </div>
               <div>
                 <button type="submit" className="btn btn-primary">Tạo mới</button>
               </div>
@@ -131,20 +160,24 @@ const AdminDashboard = () => {
                 <tr className="border-b">
                   <th className="p-3 text-sm font-bold text-muted">Tài khoản (Email)</th>
                   <th className="p-3 text-sm font-bold text-muted">Tên Đơn vị</th>
+                  <th className="p-3 text-sm font-bold text-muted">Vai trò</th>
                   <th className="p-3 text-sm font-bold text-muted">Số điện thoại</th>
                   <th className="p-3 text-sm font-bold text-muted">Ngày tạo</th>
                   <th className="p-3 text-sm font-bold text-muted text-right">Thao tác</th>
                 </tr>
               </thead>
               <tbody>
-                {users.length === 0 ? (
-                  <tr><td colSpan="5" className="p-4 text-center text-muted">Chưa có tài khoản thành viên nào.</td></tr>
+                {filteredUsers.length === 0 ? (
+                  <tr><td colSpan="6" className="p-4 text-center text-muted">Không tìm thấy tài khoản nào.</td></tr>
                 ) : (
-                  users.map(u => (
+                  filteredUsers.map(u => (
                     <React.Fragment key={u.username}>
                       <tr className="border-b hover:bg-muted-light">
                         <td className="p-3 font-semibold">{u.username}</td>
                         <td className="p-3">{u.name}</td>
+                        <td className="p-3 text-sm">
+                          {u.role === 'ADMIN' ? <span className="text-danger font-bold">Quản trị viên</span> : 'Thành viên'}
+                        </td>
                         <td className="p-3 text-sm">{u.phone || 'N/A'}</td>
                         <td className="p-3 text-sm text-muted">{new Date(u.createdAt).toLocaleDateString('vi-VN')}</td>
                         <td className="p-3 text-right">
@@ -160,7 +193,7 @@ const AdminDashboard = () => {
                       </tr>
                       {editingUser === u.username && (
                         <tr className="bg-primary-light/30 border-b">
-                          <td colSpan="5" className="p-4">
+                          <td colSpan="6" className="p-4">
                             <form onSubmit={submitEditUser} className="flex gap-4 items-end bg-white p-4 rounded border shadow-sm">
                               <div className="flex-1">
                                 <label className="text-xs font-bold mb-1 block">Tài khoản</label>
@@ -173,6 +206,13 @@ const AdminDashboard = () => {
                               <div className="flex-1">
                                 <label className="text-xs font-bold mb-1 block">Mật khẩu mới</label>
                                 <input type="text" className="form-control" value={editFormData.password} onChange={e => setEditFormData({...editFormData, password: e.target.value})} placeholder="Nhập mật khẩu mới..." />
+                              </div>
+                              <div className="flex-1">
+                                <label className="text-xs font-bold mb-1 block">Vai trò</label>
+                                <select className="form-control" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})}>
+                                  <option value="MEMBER">Thành viên</option>
+                                  <option value="ADMIN">Quản trị viên</option>
+                                </select>
                               </div>
                               <div className="flex items-center gap-2">
                                 <button type="button" onClick={() => setEditingUser(null)} className="btn btn-secondary text-sm">Hủy</button>
@@ -223,9 +263,9 @@ const AdminDashboard = () => {
                       <td className="p-3 text-sm">{a.userId}</td>
                       <td className="p-3 text-sm text-muted">{new Date(a.createdAt).toLocaleString('vi-VN')}</td>
                       <td className="p-3 text-right">
-                        <button onClick={() => navigate('/dashboard', { state: { selection: a.selection, formData: a.formData, answers: a.answers, assessmentCode: a.id }})} className="btn btn-secondary text-xs">
+                        <Link to={(a.selection == 2 ? '/dashboard2' : '/dashboard1') + '?id=' + a.id} target="_blank" className="btn btn-secondary text-xs inline-block text-center w-full">
                           Xem chi tiết
-                        </button>
+                        </Link>
                       </td>
                     </tr>
                   ))
