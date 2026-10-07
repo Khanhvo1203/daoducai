@@ -43,6 +43,7 @@ const LandingPage = () => {
       otherThirdParty: '',
       orgRole: 'Nhà phát triển',
       otherOrgRole: '',
+      subRole: '',
       purpose: '',
       domain: 'Hành chính',
       otherDomain: '',
@@ -292,10 +293,14 @@ const LandingPage = () => {
                     </select>
                   </div>
                   {formData.orgRole === 'Khác: điền thông tin' && (
-                    <div className="form-group">
+                    <div className="form-group mb-4">
                       <input type="text" name="otherOrgRole" required placeholder="Vui lòng ghi rõ vai trò" value={formData.otherOrgRole} onChange={handleChange} className="form-control" />
                     </div>
                   )}
+                  <div className="form-group">
+                    <label>2. Các vai trò phụ</label>
+                    <input type="text" name="subRole" placeholder="Nếu có nhiều vai trò" value={formData.subRole} onChange={handleChange} className="form-control" />
+                  </div>
                 </div>
 
                 {/* IV. Mục đích sử dụng dự kiến */}
