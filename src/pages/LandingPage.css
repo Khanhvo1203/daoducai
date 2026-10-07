@@ -174,8 +174,8 @@ textarea.form-control {
 .mb-8 { margin-bottom: 2rem; }
 
 .section-divider {
-  border-top: 1px solid var(--border);
-  margin: 32px 0 24px 0;
+  border-top: 2px dashed #94a3b8; /* slate-400 */
+  margin: 40px 0 32px 0;
   width: 100%;
 }
 
