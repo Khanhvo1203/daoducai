@@ -179,3 +179,9 @@ textarea.form-control {
   width: 100%;
 }
 
+
+.form-control::placeholder {
+  font-size: 0.9em;
+  font-style: italic;
+}
+
