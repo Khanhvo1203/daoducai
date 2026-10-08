@@ -404,49 +404,38 @@ const Dashboard2 = () => {
                 </div>
 
                 {/* 3. Mô tả hệ thống */}
-                <div>
+                <div className="mb-6">
                   <h5 className="font-bold text-primary mb-3 border-b pb-2">3. Mô tả hệ thống</h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
-                    <div className="flex flex-col md:col-span-2 mt-1 font-bold text-main">Loại công nghệ & Nhà cung cấp</div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Loại công nghệ AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.aiTechType || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Nguồn gốc phát triển:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.developType || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Nhà cung cấp (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.provider || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Mô hình nền (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.foundationModel || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các thành phần AI bên thứ ba khác:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.otherThirdParty || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Vai trò tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.orgRole === 'Khác: điền thông tin' ? formData.otherOrgRole : formData.orgRole || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Các vai trò phụ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.subRole || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Lĩnh vực ứng dụng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.domain === 'Khác' ? formData.otherDomain : formData.domain || '-'}</span></div>
                     
+                    <div className="flex flex-col md:col-span-2 mt-1 font-bold text-main">Mục đích sử dụng, phạm vi và giới hạn sử dụng</div>
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mục đích chính:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.purpose || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Giới hạn ứng dụng (Out of scope):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outOfScope || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Bài toán nghiệp vụ hỗ trợ/giải quyết:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.businessProblem || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Lĩnh vực ứng dụng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.domain === 'Khác' ? formData.otherDomain : formData.domain || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Người sử dụng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.directUser === 'Khác' ? formData.otherDirectUser : formData.directUser || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng chịu tác động:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.decisionTarget === 'Khác' ? formData.otherDecisionTarget : formData.decisionTarget || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nhóm dễ tổn thương:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.vulnerableGroup || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Ước tính số lượng người dùng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.userCount || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Phạm vi triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.deployScope === 'Khác' ? formData.otherDeployScope : formData.deployScope || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Tác động tiềm tàng nếu hoạt động sai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.potentialImpact || '-'}</span></div>
                     
-                    <div className="flex flex-col"><span className="text-muted mb-1">Loại dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputType || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Nguồn dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputSource || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Loại dữ liệu đầu ra:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outputType || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Mức độ tự động hóa:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.automationLevel || '-'}</span></div>
-                    
-                    <div className="flex flex-col"><span className="text-muted mb-1">Người sử dụng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.directUser || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng quyết định của AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.decisionTarget === 'Khác: điền thông tin' ? formData.otherDecisionTarget : formData.decisionTarget || '-'}</span></div>
-                    
-                    <div className="flex flex-col"><span className="text-muted mb-1">Số lượng người dùng dự kiến:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.userCount || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Phạm vi triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.deployScope || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Kênh triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.deployChannel || '-'}</span></div>
-                    
-                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Các trường hợp sử dụng sai có thể dự đoán</div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Sử dụng ngoài mục đích chính:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseMain || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Sử dụng cho nhóm đối tượng không dự kiến:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseTarget || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Cố ý lạm dụng mục đích trái pháp luật:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseIllegal || '-'}</span></div>
-                    
-                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Cảnh báo cho người vận hành</div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các tình huống cần thận trọng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.cautionSituations || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các hạn chế kỹ thuật biết trước:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.technicalLimits || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Nhận diện nhóm chịu tác động</div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Người dùng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDirectUser || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng quyết định của AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDecisionTarget || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Bên thứ ba bị ảnh hưởng gián tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactThirdParty || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Nhóm dễ tổn thương:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactVulnerable || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Nhân viên tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactEmployee || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Cộng đồng/môi trường:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactCommunity || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Công nghệ, dữ liệu, đầu vào và đầu ra</div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại công nghệ AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.aiTechType === 'Khác' ? formData.otherAiTechType : formData.aiTechType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Phát triển/Bên thứ ba:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.developType || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Nhà cung cấp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.provider || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mô hình nền/API/Thành phần:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.foundationModel || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputType === 'Khác' ? formData.otherInputType : formData.inputType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nguồn dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputSource === 'Khác' ? formData.otherInputSource : formData.inputSource || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Dữ liệu cá nhân/nhạy cảm:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.hasPersonalData || '-'} {formData.hasPersonalData === 'Có' && formData.personalDataDesc ? `- ${formData.personalDataDesc}` : ''}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại đầu ra AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outputType === 'Khác' ? formData.otherOutputType : formData.outputType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Mức độ tự động hóa:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.automationLevel === 'Khác' ? formData.otherAutomationLevel : formData.automationLevel || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mức tham gia của con người:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.humanInvolvement || '-'}</span></div>
+
+                    <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Thông tin quản trị đầu mối quản trị, vận hành</div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đơn vị quản lý nghiệp vụ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.managementUnit || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Người chịu trách nhiệm cấp lãnh đạo:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.leaderInCharge || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đầu mối chuyên môn/vận hành AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.technicalContact || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Kênh tiếp nhận phản ánh/khiếu nại/sự cố:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.supportChannel || '-'}</span></div>
                   </div>
                 </div>
 
