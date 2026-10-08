@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PrincipleResult from '../components/PrincipleResult';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
@@ -84,6 +84,52 @@ const Dashboard2 = () => {
   };
   const scoreD = getScoreD();
 
+  const [activeView, setActiveView] = useState('weights');
+  const [weights, setWeights] = useState({ C1: 25, C2: 25, C3: 25, C4: 25 });
+  const [preset, setPreset] = useState('chia_deu');
+
+  const handlePresetChange = (e) => {
+    const val = e.target.value;
+    setPreset(val);
+    if (val === 'yt_hcc') setWeights({ C1: 40, C2: 30, C3: 20, C4: 10 });
+    else if (val === 'tc_ht') setWeights({ C1: 35, C2: 30, C3: 15, C4: 20 });
+    else if (val === 'dmst') setWeights({ C1: 20, C2: 15, C3: 35, C4: 30 });
+    else if (val === 'chia_deu') setWeights({ C1: 25, C2: 25, C3: 25, C4: 25 });
+  };
+
+  const handleWeightChange = (key, newValue) => {
+    setPreset('custom');
+    let val = parseInt(newValue, 10);
+    if (isNaN(val)) val = 0;
+    if (val > 100) val = 100;
+    if (val < 0) val = 0;
+    
+    let newWeights = { ...weights, [key]: val };
+    let remaining = 100 - val;
+    const otherKeys = ['C1', 'C2', 'C3', 'C4'].filter(k => k !== key);
+    let otherSum = otherKeys.reduce((sum, k) => sum + weights[k], 0);
+    
+    if (otherSum === 0) {
+       otherKeys.forEach(k => newWeights[k] = Math.floor(remaining / 3));
+       newWeights[otherKeys[0]] += remaining - Math.floor(remaining / 3) * 3;
+    } else {
+       otherKeys.forEach(k => {
+         newWeights[k] = Math.round((weights[k] / otherSum) * remaining);
+       });
+       let currentSum = newWeights.C1 + newWeights.C2 + newWeights.C3 + newWeights.C4;
+       let err = 100 - currentSum;
+       if (err !== 0) {
+           newWeights[otherKeys[0]] += err; 
+       }
+    }
+    setWeights(newWeights);
+  };
+
+  const convC1 = (scoreC1 / 15) * weights.C1;
+  const convC2 = (scoreC2 / 15) * weights.C2;
+  const convC3 = (scoreC3 / 15) * weights.C3;
+  const convC4 = (scoreC4 / 15) * weights.C4;
+  const finalScore = convC1 + convC2 + convC3 + convC4;
   const getDComplianceLevel = (score) => {
     if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: '', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
     if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: '', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
@@ -469,7 +515,7 @@ const Dashboard2 = () => {
                       </div>
                     </div>
                     <div>
-                      <div className={`text-lg font-bold mb-1 ${overall.color}`}>{overall.text}</div>
+                      <div className={`text-lg font-bold mb-1 ${overall.color}`}>{overall.label}</div>
                       <p className="text-sm text-muted">{overall.desc}</p>
                     </div>
                   </div>
