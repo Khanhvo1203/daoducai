@@ -25,7 +25,6 @@ const Assessment2 = () => {
     allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'blue', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
   }
   if (selection.partC) {
-    allSteps.push({ id: 'partC_weight', name: 'Đánh trọng số 4 nguyên tắc', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thiết lập trọng số phần trăm cho 4 nguyên tắc đạo đức cốt lõi.' });
     allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
     allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
     allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
@@ -413,8 +412,8 @@ const Assessment2 = () => {
           </div>
 
           
-          {activeStep.id === 'partC_weight' ? (
-            <div className="card fade-in">
+          {activeStep.id.startsWith('partC') && (
+            <div className="card fade-in mb-6">
               <div className="flex justify-between items-center mb-6 border-b pb-4">
                 <div>
                   <h2 className="text-xl font-bold uppercase text-main">HỒ SƠ ĐANG ĐÁNH TRỌNG SỐ</h2>
@@ -481,9 +480,9 @@ const Assessment2 = () => {
                 </tbody>
               </table>
             </div>
-          ) : (
-            <>
-              <div className="card">
+          )}
+
+          <div className="card">
                 <div className="flex justify-end mb-4">
                   <button className="theme-text text-sm flex items-center gap-1 font-semibold" onClick={() => setOpenQuestion(null)}>
                     Thu gọn tất cả <ChevronUp size={16} />
@@ -581,8 +580,6 @@ const Assessment2 = () => {
               </button>
             </div>
           </div>
-            </>
-          )}
         </section>
       </div>
     </div>
