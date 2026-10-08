@@ -273,7 +273,7 @@ const AdminDashboard = () => {
                       <td className="p-3 text-sm">{a.userId}</td>
                       <td className="p-3 text-sm text-muted">{new Date(a.createdAt).toLocaleString('vi-VN')}</td>
                       <td className="p-3 text-right">
-                        <Link to={(a.selection == 2 ? '/dashboard2' : '/dashboard1') + '?id=' + a.id} target="_blank" className="btn btn-secondary text-xs inline-block text-center w-full">
+                        <Link to={(a.dashboardRoute || '/dashboard1') + '?id=' + a.id} target="_blank" className="btn btn-secondary text-xs inline-block text-center w-full">
                           Xem chi tiết
                         </Link>
                       </td>
