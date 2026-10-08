@@ -451,10 +451,10 @@ const Assessment2 = () => {
                 </thead>
                 <tbody>
                   {[
-                    { id: 'C1', title: 'C1 – Bảo đảm an toàn, độ tin cậy và không gây hại', qRange: 'C1.1 - C1.15' },
-                    { id: 'C2', title: 'C2 – Tôn trọng quyền con người, công bằng, minh bạch', qRange: 'C2.1 - C2.15' },
-                    { id: 'C3', title: 'C3 – Hạnh phúc, thịnh vượng, phát triển bền vững', qRange: 'C3.1 - C3.15' },
-                    { id: 'C4', title: 'C4 – Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', qRange: 'C4.1 - C4.15' }
+                    { id: 'C1', title: 'C1 – Bảo đảm an toàn, độ tin cậy và không gây hại', desc: 'Thiết kế an toàn • Kiểm thử và xác nhận chất lượng • Giám sát và quản lý sự cố', qRange: 'C1.1 - C1.15' },
+                    { id: 'C2', title: 'C2 – Tôn trọng quyền con người, công bằng, minh bạch', desc: 'Kiểm soát của con người • Minh bạch và khả năng giải thích • Phòng chống phân biệt đối xử và thiên lệch', qRange: 'C2.1 - C2.15' },
+                    { id: 'C3', title: 'C3 – Hạnh phúc, thịnh vượng, phát triển bền vững', desc: 'Lợi ích xã hội và bao trùm kỹ thuật số • Thiết kế bao trùm và giảm khoảng cách số • Tác động đến môi trường và tính bền vững', qRange: 'C3.1 - C3.15' },
+                    { id: 'C4', title: 'C4 – Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', desc: 'Đổi mới có trách nhiệm • Trách nhiệm giải trình và năng lực quản trị • Hợp tác và phát triển hệ sinh thái AI', qRange: 'C4.1 - C4.15' }
                   ].map(p => {
                      // Calculate current achieved score for this principle from answers
                      const answeredYes = Object.keys(answers).filter(k => k.startsWith(p.id) && answers[k] === 'Có').length;
@@ -463,6 +463,7 @@ const Assessment2 = () => {
                       <tr className="border-b" key={p.id}>
                         <td className="py-4 pr-4">
                           <div className="font-bold text-sm text-main">{p.title}</div>
+                          <div className="text-xs text-muted mt-1" style={{ fontSize: '0.75rem', lineHeight: '1.2rem', color: '#64748b' }}>{p.desc}</div>
                         </td>
                         <td className="py-4 text-center text-sm text-muted font-medium">{p.qRange}</td>
                         <td className="py-4 px-4">
