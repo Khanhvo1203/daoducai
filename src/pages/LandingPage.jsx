@@ -134,7 +134,7 @@ const LandingPage = () => {
             <ShieldCheck size={42} className="text-primary flex-shrink-0" />
             <h1 className="hero-title" style={{ margin: 0, lineHeight: 1 }}>
               {step === 1 && 'Hồ sơ đăng ký'}
-              {step === 2 && 'Mô tả hệ thống AI'}
+              {step === 2 && 'Thông tin hệ thống'}
               {step === 3 && 'Khai báo đánh giá rủi ro'}
               {step === 4 && 'Chọn nội dung đánh giá'}
             </h1>
@@ -157,7 +157,7 @@ const LandingPage = () => {
             <div className="flex gap-4 items-start">
               <div className={`step-circle ${step >= 2 ? '' : 'inactive'}`}>02</div>
               <div>
-                <h4 className={`font-bold mb-1 ${step >= 2 ? 'text-primary' : 'text-muted'}`}>Mô tả hệ thống AI</h4>
+                <h4 className={`font-bold mb-1 ${step >= 2 ? 'text-primary' : 'text-muted'}`}>Thông tin hệ thống</h4>
                 <p className="text-sm text-muted">Đặc tả hệ thống, đầu vào/đầu ra, tác động.</p>
               </div>
             </div>
@@ -210,7 +210,7 @@ const LandingPage = () => {
 
                 <div className="form-actions mt-6 pt-4 border-t flex justify-end">
                   <button type="submit" className="btn btn-primary btn-lg">
-                    Tiếp tục Mô tả hệ thống AI <ArrowRight size={18} />
+                    Tiếp tục Thông tin hệ thống <ArrowRight size={18} />
                   </button>
                 </div>
               </form>
@@ -219,7 +219,7 @@ const LandingPage = () => {
 
           {step === 2 && (
             <div className="card glass-card form-card fade-in" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
-              <h3 className="mb-4 border-b pb-4 sticky top-0 bg-white z-10 text-xl text-primary flex items-center gap-2"><HardDrive size={22}/> Mô tả hệ thống AI</h3>
+              <h3 className="mb-4 border-b pb-4 sticky top-0 bg-white z-10 text-xl text-primary flex items-center gap-2"><HardDrive size={22}/> Thông tin hệ thống</h3>
               
               <form onSubmit={handleNextStep} className="flex-col gap-8 pb-4">
                 

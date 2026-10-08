@@ -377,9 +377,9 @@ const Dashboard2 = () => {
                   </div>
                 </div>
 
-                {/* 2. Mô tả hệ thống AI */}
+                {/* 2. Thông tin hệ thống */}
                 <div>
-                  <h5 className="font-bold text-primary mb-3 border-b pb-2">2. Mô tả hệ thống AI</h5>
+                  <h5 className="font-bold text-primary mb-3 border-b pb-2">2. Thông tin hệ thống</h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Tên hệ thống AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.systemName || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Mã hệ thống nội bộ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.internalCode || '-'}</span></div>

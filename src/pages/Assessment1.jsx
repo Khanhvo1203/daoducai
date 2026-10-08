@@ -17,7 +17,7 @@ const Assessment1 = () => {
 
   // Define steps dynamically with Themes and Icons
   const allSteps = [];
-  allSteps.push({ id: 'partA1', name: 'Mô tả hệ thống', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A1-A5 để định danh hệ thống, mục đích và công nghệ cốt lõi.' });
+  allSteps.push({ id: 'partA1', name: 'Thông tin hệ thống', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A1-A5 để định danh hệ thống, mục đích và công nghệ cốt lõi.' });
   allSteps.push({ id: 'partA2', name: 'Phạm vi & Nhóm đối tượng', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A6-A10 về mức độ tương tác và ảnh hưởng đến người dùng cuối.' });
   allSteps.push({ id: 'partA3', name: 'Sàng lọc rủi ro ban đầu', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A11-A15 để phân loại nhóm rủi ro của hệ thống theo quy định.' });
   
