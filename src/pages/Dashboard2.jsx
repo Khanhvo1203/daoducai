@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PrincipleResult from '../components/PrincipleResult';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Share2, RotateCcw, Download, CheckSquare, Target, Shield, BookOpen, AlertCircle, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, User } from 'lucide-react';
@@ -84,52 +84,6 @@ const Dashboard2 = () => {
   };
   const scoreD = getScoreD();
 
-  const [activeView, setActiveView] = useState('weights');
-  const [weights, setWeights] = useState({ C1: 25, C2: 25, C3: 25, C4: 25 });
-  const [preset, setPreset] = useState('chia_deu');
-
-  const handlePresetChange = (e) => {
-    const val = e.target.value;
-    setPreset(val);
-    if (val === 'yt_hcc') setWeights({ C1: 40, C2: 30, C3: 20, C4: 10 });
-    else if (val === 'tc_ht') setWeights({ C1: 35, C2: 30, C3: 15, C4: 20 });
-    else if (val === 'dmst') setWeights({ C1: 20, C2: 15, C3: 35, C4: 30 });
-    else if (val === 'chia_deu') setWeights({ C1: 25, C2: 25, C3: 25, C4: 25 });
-  };
-
-  const handleWeightChange = (key, newValue) => {
-    setPreset('custom');
-    let val = parseInt(newValue, 10);
-    if (isNaN(val)) val = 0;
-    if (val > 100) val = 100;
-    if (val < 0) val = 0;
-    
-    let newWeights = { ...weights, [key]: val };
-    let remaining = 100 - val;
-    const otherKeys = ['C1', 'C2', 'C3', 'C4'].filter(k => k !== key);
-    let otherSum = otherKeys.reduce((sum, k) => sum + weights[k], 0);
-    
-    if (otherSum === 0) {
-       otherKeys.forEach(k => newWeights[k] = Math.floor(remaining / 3));
-       newWeights[otherKeys[0]] += remaining - Math.floor(remaining / 3) * 3;
-    } else {
-       otherKeys.forEach(k => {
-         newWeights[k] = Math.round((weights[k] / otherSum) * remaining);
-       });
-       let currentSum = newWeights.C1 + newWeights.C2 + newWeights.C3 + newWeights.C4;
-       let err = 100 - currentSum;
-       if (err !== 0) {
-           newWeights[otherKeys[0]] += err; 
-       }
-    }
-    setWeights(newWeights);
-  };
-
-  const convC1 = (scoreC1 / 15) * weights.C1;
-  const convC2 = (scoreC2 / 15) * weights.C2;
-  const convC3 = (scoreC3 / 15) * weights.C3;
-  const convC4 = (scoreC4 / 15) * weights.C4;
-  const finalScore = convC1 + convC2 + convC3 + convC4;
   const getDComplianceLevel = (score) => {
     if (score >= 8) return { label: 'Tuân thủ đầy đủ', color: 'text-success', bgColor: '', desc: 'Hệ thống đáp ứng tốt các yêu cầu về kế hoạch giảm thiểu rủi ro và giám sát.' };
     if (score >= 4) return { label: 'Tuân thủ một phần', color: 'text-warning', bgColor: '', desc: 'Đã có kế hoạch giám sát nhưng còn một số nội dung cần hoàn thiện.' };
@@ -300,241 +254,199 @@ const Dashboard2 = () => {
         </aside>
 
         <section className="content-area">
-          <div className="flex gap-4 mb-6 border-b">
-            <button 
-              className={`pb-3 px-4 font-bold flex items-center gap-2 ${activeView === 'weights' ? 'border-b-2 border-primary text-primary' : 'text-muted'}`}
-              onClick={() => setActiveView('weights')}
-            >
-              Màn hình 1 - Đánh trọng số 4 nguyên tắc
-            </button>
-            <button 
-              className={`pb-3 px-4 font-bold flex items-center gap-2 ${activeView === 'results' ? 'border-b-2 border-primary text-primary' : 'text-muted'}`}
-              onClick={() => setActiveView('results')}
-            >
-              Màn hình 2 - Kết quả tuân thủ có trọng số
-            </button>
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="mb-1 text-2xl">KẾT QUẢ ĐÁNH GIÁ MỨC ĐỘ TUÂN THỦ</h2>
+              <div className="text-sm text-muted">Ngày đánh giá: {new Date().toLocaleDateString('vi-VN')}</div>
+            </div>
+            
+            <div className="flex gap-4 items-center">
+              {assessmentCode && (
+                <div className="bg-primary-light text-primary px-4 py-2 rounded-md font-bold text-lg border border-primary">
+                  MÃ HỒ SƠ: #{assessmentCode}
+                </div>
+              )}
+              <div className="flex gap-3">
+                <button className="btn btn-secondary text-sm border-primary text-primary">
+                  <Share2 size={16}/> Chia sẻ kết quả
+                </button>
+                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
+                  const user = getCurrentUser();
+                  if (user) {
+                    localStorage.removeItem(`landing_formData_${user.username}`);
+                    localStorage.removeItem(`landing_step_${user.username}`);
+                    localStorage.removeItem(`assessment_answers_${user.username}`);
+                    localStorage.removeItem(`assessment_evidences_${user.username}`);
+                    localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
+                  }
+                  navigate('/');
+                }}>
+                  <RotateCcw size={16}/> Đánh giá lại
+                </button>
+              </div>
+            </div>
           </div>
 
-          {activeView === 'weights' && (
-            <div className="fade-in">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="mb-1 text-2xl uppercase">HỒ SƠ ĐANG ĐÁNH TRỌNG SỐ</h2>
-                  <div className="flex gap-6 text-sm text-muted mt-2">
-                    <div>Mã hồ sơ: <span className="font-bold text-main">#{assessmentCode || formData.id || 'Đang cập nhật'}</span></div>
-                    <div>Hệ thống: <span className="font-bold text-main">{formData.systemName}</span></div>
-                  </div>
-                </div>
-                <div className="w-1/3">
-                  <div className="text-sm font-bold mb-1">Đơn vị chọn (Loại hệ thống)</div>
-                  <select className="form-control text-sm font-semibold" value={preset} onChange={handlePresetChange}>
-                    <option value="chia_deu">Chia đều (25/25/25/25)</option>
-                    <option value="yt_hcc">YT/HCC - Y tế & hành chính công (40/30/20/10)</option>
-                    <option value="tc_ht">TC-HT - Tài chính, hạ tầng (35/30/15/20)</option>
-                    <option value="dmst">ĐMST - Đổi mới sáng tạo, R&D (20/15/35/30)</option>
-                    <option value="custom">Tùy chỉnh</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="flex justify-between items-end border-b pb-3 mb-4">
-                  <h4 className="font-bold">TRỌNG SỐ 04 TRỤ CỘT</h4>
-                  <div className="text-sm text-muted">Tổng trọng số 04 trụ cột = 100%</div>
-                </div>
-                
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="text-xs text-muted uppercase border-b">
-                      <th className="pb-3 w-1/3">Nguyên tắc</th>
-                      <th className="pb-3 text-center">Mã câu</th>
-                      <th className="pb-3 text-center w-1/2">Trọng số (%)</th>
-                      <th className="pb-3 text-right">Điểm quy đổi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-4 pr-4">
-                        <div className="font-bold text-sm">C1 – Bảo đảm an toàn, độ tin cậy và không gây hại</div>
-                      </td>
-                      <td className="py-4 text-center text-sm">C1.1 - C1.15</td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-4">
-                          <input type="number" className="form-control text-center font-bold" style={{ width: '60px' }} value={weights.C1} onChange={(e) => handleWeightChange('C1', e.target.value)} />
-                          <input type="range" className="w-full" min="0" max="100" value={weights.C1} onChange={(e) => handleWeightChange('C1', e.target.value)} />
-                        </div>
-                      </td>
-                      <td className="py-4 text-right font-bold text-primary">{convC1.toFixed(2)}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-4 pr-4">
-                        <div className="font-bold text-sm">C2 – Tôn trọng quyền con người, công bằng, minh bạch</div>
-                      </td>
-                      <td className="py-4 text-center text-sm">C2.1 - C2.15</td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-4">
-                          <input type="number" className="form-control text-center font-bold" style={{ width: '60px' }} value={weights.C2} onChange={(e) => handleWeightChange('C2', e.target.value)} />
-                          <input type="range" className="w-full" min="0" max="100" value={weights.C2} onChange={(e) => handleWeightChange('C2', e.target.value)} />
-                        </div>
-                      </td>
-                      <td className="py-4 text-right font-bold text-primary">{convC2.toFixed(2)}</td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-4 pr-4">
-                        <div className="font-bold text-sm">C3 – Hạnh phúc, thịnh vượng, phát triển bền vững</div>
-                      </td>
-                      <td className="py-4 text-center text-sm">C3.1 - C3.15</td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-4">
-                          <input type="number" className="form-control text-center font-bold" style={{ width: '60px' }} value={weights.C3} onChange={(e) => handleWeightChange('C3', e.target.value)} />
-                          <input type="range" className="w-full" min="0" max="100" value={weights.C3} onChange={(e) => handleWeightChange('C3', e.target.value)} />
-                        </div>
-                      </td>
-                      <td className="py-4 text-right font-bold text-primary">{convC3.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                      <td className="py-4 pr-4">
-                        <div className="font-bold text-sm">C4 – Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội</div>
-                      </td>
-                      <td className="py-4 text-center text-sm">C4.1 - C4.15</td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-4">
-                          <input type="number" className="form-control text-center font-bold" style={{ width: '60px' }} value={weights.C4} onChange={(e) => handleWeightChange('C4', e.target.value)} />
-                          <input type="range" className="w-full" min="0" max="100" value={weights.C4} onChange={(e) => handleWeightChange('C4', e.target.value)} />
-                        </div>
-                      </td>
-                      <td className="py-4 text-right font-bold text-primary">{convC4.toFixed(2)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {activeView === 'results' && (
-            <div className="fade-in">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="mb-1 text-2xl uppercase">KẾT QUẢ ĐÁNH GIÁ MỨC ĐỘ TUÂN THỦ (CÓ TRỌNG SỐ)</h2>
-                  <div className="text-sm text-muted">Ngày đánh giá: {new Date().toLocaleDateString('vi-VN')}</div>
-                </div>
-                <div className="flex gap-3">
-                  <button className="btn btn-secondary text-sm border-primary text-primary">
-                    <Share2 size={16}/> Chia sẻ kết quả
-                  </button>
-                  <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
-                    const user = getCurrentUser();
-                    if (user) {
-                      localStorage.removeItem(`landing_formData_${user.username}`);
-                      localStorage.removeItem(`landing_step_${user.username}`);
-                      localStorage.removeItem(`assessment_answers_${user.username}`);
-                      localStorage.removeItem(`assessment_evidences_${user.username}`);
-                      localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
-                    }
-                    navigate('/');
-                  }}>
-                    <RotateCcw size={16}/> Đánh giá lại
-                  </button>
-                </div>
-              </div>
-
-              <div className="card mb-6">
-                <h4 className="font-bold text-lg mb-4 text-primary uppercase">CẤU TRÚC THANG ĐIỂM THEO 60 CÂU HỎI:</h4>
-                <ul className="list-disc pl-6 mb-4 text-sm space-y-1">
-                  <li><strong>Bộ câu hỏi cấu trúc:</strong> 4 Nguyên tắc x 3 nhóm nội dung x 5 câu = <strong>60 câu hỏi</strong>.</li>
-                  <li><strong>Thang điểm chuẩn:</strong> 1 câu tương ứng với 1 điểm.</li>
-                  <li><strong>Mỗi tối đa nguyên tắc:</strong> 15 điểm (15/15 = 100%).</li>
-                </ul>
-                <div className="bg-primary-light p-3 rounded font-bold text-main border border-primary/20 mb-6">
-                  Công thức tính điểm: Điểm quy đổi = (Số câu đạt được / 15) * 100% * Trọng số
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse border border-gray-200">
-                    <thead>
-                      <tr className="bg-gray-50 border-b border-gray-200">
-                        <th className="p-3 border-r border-gray-200 font-bold">Nguyên tắc</th>
-                        <th className="p-3 border-r border-gray-200 font-bold text-center">Trọng số (W)</th>
-                        <th className="p-3 border-r border-gray-200 font-bold text-center">Số câu đạt thực tế (P/15)</th>
-                        <th className="p-3 border-r border-gray-200 font-bold text-center">Tỷ lệ từng nguyên tắc (p/15)</th>
-                        <th className="p-3 font-bold text-center">Con số quy đổi điểm (P\W)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-gray-200">
-                        <td className="p-3 border-r border-gray-200">C1 – An toàn, tin cậy</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold text-primary">{weights.C1}%</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{scoreC1} / 15 câu</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{((scoreC1/15)*100).toFixed(1)}%</td>
-                        <td className="p-3 text-center">{((scoreC1/15)*100).toFixed(1)}% x {weights.C1}% = <strong>{convC1.toFixed(1)} điểm</strong></td>
-                      </tr>
-                      <tr className="border-b border-gray-200">
-                        <td className="p-3 border-r border-gray-200">C2 – Minh bạch & Kiểm soát</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold text-primary">{weights.C2}%</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{scoreC2} / 15 câu</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{((scoreC2/15)*100).toFixed(1)}%</td>
-                        <td className="p-3 text-center">{((scoreC2/15)*100).toFixed(1)}% x {weights.C2}% = <strong>{convC2.toFixed(1)} điểm</strong></td>
-                      </tr>
-                      <tr className="border-b border-gray-200">
-                        <td className="p-3 border-r border-gray-200">C3 – Lợi ích & bao trùm</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold text-primary">{weights.C3}%</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{scoreC3} / 15 câu</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{((scoreC3/15)*100).toFixed(1)}%</td>
-                        <td className="p-3 text-center">{((scoreC3/15)*100).toFixed(1)}% x {weights.C3}% = <strong>{convC3.toFixed(1)} điểm</strong></td>
-                      </tr>
-                      <tr className="border-b border-gray-200">
-                        <td className="p-3 border-r border-gray-200">C4 – Đổi mới sáng tạo</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold text-primary">{weights.C4}%</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{scoreC4} / 15 câu</td>
-                        <td className="p-3 border-r border-gray-200 text-center">{((scoreC4/15)*100).toFixed(1)}%</td>
-                        <td className="p-3 text-center">{((scoreC4/15)*100).toFixed(1)}% x {weights.C4}% = <strong>{convC4.toFixed(1)} điểm</strong></td>
-                      </tr>
-                      <tr className="bg-muted-light">
-                        <td className="p-3 border-r border-gray-200 font-bold uppercase">Tổng cộng</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold text-primary">100%</td>
-                        <td className="p-3 border-r border-gray-200 text-center font-bold">{totalCScore} / 60 câu</td>
-                        <td className="p-3 border-r border-gray-200 text-center"></td>
-                        <td className="p-3 text-center font-bold text-lg text-primary">Tổng điểm: {finalScore.toFixed(1)}/100</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="grid-2col mb-6 gap-6">
-                <div className="card">
-                  <h4 className="font-bold mb-6 text-sm uppercase">KẾT QUẢ TỔNG THỂ</h4>
-                  <div className="flex gap-6 items-center">
-                    <div className="score-circle">
-                      <svg viewBox="0 0 36 36" className={`circular-chart ${overall.color.replace('text-', '')}`}>
-                        <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        <path className="circle" strokeDasharray={`${finalScore}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)'} />
-                      </svg>
-                      <div className="score-text">
-                        <span className="score-number" style={{ color: overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)' }}>{finalScore.toFixed(1)}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div className={`text-lg font-bold mb-1 ${overall.color}`}>{overall.label}</div>
-                      <p className="text-sm text-muted">{overall.desc}</p>
-                    </div>
+          <div className="grid-2col mb-6 gap-6">
+            <div className="card">
+              <h4 className="font-bold mb-6 text-sm">KẾT QUẢ TỔNG THỂ</h4>
+              <div className="flex gap-6 items-center">
+                <div className="score-circle">
+                  <svg viewBox="0 0 36 36" className={`circular-chart ${overall.color.replace('text-', '')}`}>
+                    <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path className="circle" strokeDasharray={`${(totalCScore / 60) * 100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)'} />
+                  </svg>
+                  <div className="score-text">
+                    <span className="score-number" style={{ color: overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)' }}>{totalCScore}</span>
+                    <span className="score-total">/60</span>
                   </div>
                 </div>
                 
-                <div className="card">
-                  <h4 className="font-bold mb-4 text-sm uppercase">ĐÁNH GIÁ 9 ĐIỀU KIỆN QUẢN TRỊ (PHẦN B)</h4>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="text-3xl font-black text-main">{scoreD}/9</div>
-                    <div className="text-sm text-muted">điều kiện được đáp ứng hoàn toàn.</div>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2.5 mb-2">
-                    <div className="bg-primary h-2.5 rounded-full" style={{ width: `${(scoreD/9)*100}%` }}></div>
-                  </div>
-                  <p className="text-xs text-muted">Hệ thống AI cần tối thiểu 5/9 điều kiện để được phép triển khai giới hạn.</p>
+                <div className="score-details flex-1">
+                  <div className="text-muted text-sm mb-1">Tuân thủ nguyên tắc đạo đức</div>
+                  <h3 className={`text-2xl font-bold mb-2 ${overall.color}`}>{overall.label}</h3>
+                  <p className="text-sm text-muted mb-4">{overall.desc}</p>
                 </div>
               </div>
             </div>
-          )}
+
+            <div className="card">
+              <h4 className="font-bold mb-2 text-sm text-center">ĐIỂM THEO LĨNH VỰC</h4>
+              <div className="radar-container" style={{height: '250px'}}>
+                <Radar data={chartData} options={chartOptions} />
+              </div>
+            </div>
+          </div>
+
+          <div className="card mb-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">SỐ CÂU "CÓ" / "KHÔNG" THEO NGUYÊN TẮC — ngưỡng 11 (đầy đủ) và 6 (một phần)</h4>
+            <div style={{height: '250px'}}>
+              <Bar data={barChartData} options={barChartOptions} />
+            </div>
+          </div>
+
+          <div className="card mb-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">Kết quả từng nguyên tắc (Phần C)</h4>
+            <div className="flex-col gap-4">
+              
+              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: An toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Kiểm soát của con người" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Lợi ích xã hội và bao trùm kỹ thuật số" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Đổi mới có trách nhiệm" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} />
+            </div>
+          </div>
+
+          <div className="card mt-6">
+            <h4 className="font-bold mb-4 text-sm uppercase">Kết quả kế hoạch giám sát (Phần D)</h4>
+            <div className="flex items-center gap-4 p-4 border rounded-md recommendation-item">
+              <div className={`icon-box ${dLevel.bgColor} ${dLevel.color}`}>
+                {scoreD < 4 ? <AlertTriangle size={20}/> : <CheckSquare size={20}/>}
+              </div>
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <h5 className="font-bold text-main mb-0">Mức độ tuân thủ</h5>
+                  <div className="font-bold text-sm">
+                    <span className={dLevel.color}>{dLevel.label}</span>
+                    <span className="text-muted ml-2">({scoreD}/10)</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted">{dLevel.desc}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card mt-6">
+            <div 
+              className="flex justify-between items-center cursor-pointer" 
+              onClick={() => setIsProfileExpanded(!isProfileExpanded)}
+            >
+              <h4 className="font-bold text-sm uppercase mb-0">CHI TIẾT HỒ SƠ KHAI BÁO</h4>
+              {isProfileExpanded ? <ChevronUp size={20} className="text-muted" /> : <ChevronDown size={20} className="text-muted" />}
+            </div>
+            
+            {isProfileExpanded && (
+              <div className="flex-col gap-6 mt-6 pt-4 border-t fade-in">
+                
+                {/* 1. Hồ sơ đăng ký */}
+                <div>
+                  <h5 className="font-bold text-primary mb-3 border-b pb-2">1. Thông tin liên hệ (Hồ sơ đăng ký)</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div className="flex flex-col"><span className="text-muted mb-1">Họ và tên:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.fullName || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Chức vụ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.role || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Email:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.email || '-'}</span></div>
+                  </div>
+                </div>
+
+                {/* 2. Mô tả hệ thống AI */}
+                <div>
+                  <h5 className="font-bold text-primary mb-3 border-b pb-2">2. Mô tả hệ thống AI</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Tên hệ thống AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.systemName || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Mã hệ thống nội bộ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.internalCode || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Phiên bản:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.version || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đơn vị quản lý:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.managementUnit || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Người phụ trách:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.personInCharge || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại công nghệ AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.aiTechType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nguồn gốc phát triển:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.developType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nhà cung cấp (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.provider || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Mô hình nền (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.foundationModel || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các thành phần AI bên thứ ba khác:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.otherThirdParty || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Vai trò tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.orgRole === 'Khác: điền thông tin' ? formData.otherOrgRole : formData.orgRole || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Các vai trò phụ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.subRole || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Lĩnh vực ứng dụng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.domain === 'Khác' ? formData.otherDomain : formData.domain || '-'}</span></div>
+                    
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mục đích chính:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.purpose || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Giới hạn ứng dụng (Out of scope):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outOfScope || '-'}</span></div>
+                    
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nguồn dữ liệu đầu vào:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.inputSource || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Loại dữ liệu đầu ra:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.outputType || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Mức độ tự động hóa:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.automationLevel || '-'}</span></div>
+                    
+                    <div className="flex flex-col"><span className="text-muted mb-1">Người sử dụng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.directUser || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng quyết định của AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.decisionTarget === 'Khác: điền thông tin' ? formData.otherDecisionTarget : formData.decisionTarget || '-'}</span></div>
+                    
+                    <div className="flex flex-col"><span className="text-muted mb-1">Số lượng người dùng dự kiến:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.userCount || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Phạm vi triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.deployScope || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Kênh triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.deployChannel || '-'}</span></div>
+                    
+                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Các trường hợp sử dụng sai có thể dự đoán</div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Sử dụng ngoài mục đích chính:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseMain || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Sử dụng cho nhóm đối tượng không dự kiến:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseTarget || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Cố ý lạm dụng mục đích trái pháp luật:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.misuseIllegal || '-'}</span></div>
+                    
+                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Cảnh báo cho người vận hành</div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các tình huống cần thận trọng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.cautionSituations || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các hạn chế kỹ thuật biết trước:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.technicalLimits || '-'}</span></div>
+                  </div>
+                </div>
+
+                {/* 3. Khai báo đánh giá rủi ro */}
+                <div>
+                  <h5 className="font-bold text-primary mb-3 border-b pb-2">3. Khai báo đánh giá rủi ro</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div className="flex flex-col"><span className="text-muted mb-1">Thuộc DM rủi ro cao theo QĐ 33/2026/QĐ-TTg:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.isHighRisk || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đánh giá theo Điều 7 NĐ 142/NĐ-CP:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.decree142 || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Phân loại rủi ro (Tự đánh giá):</span>
+                      <span className={`px-3 py-2 rounded font-bold w-fit ${formData.riskLevel === 'Cao' ? 'bg-danger-light text-danger' : formData.riskLevel === 'Trung bình' ? 'bg-warning-light text-warning' : formData.riskLevel === 'Thấp' ? 'bg-success-light text-success' : 'bg-muted-light text-muted'}`}>
+                        {formData.riskLevel || 'Chưa đánh giá'}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Nhận diện nhóm chịu tác động</div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Người dùng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDirectUser || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng quyết định của AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDecisionTarget || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Bên thứ ba bị ảnh hưởng gián tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactThirdParty || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nhóm dễ tổn thương:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactVulnerable || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Nhân viên tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactEmployee || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Cộng đồng/môi trường:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactCommunity || '-'}</span></div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+            
+          </div>
         </section>
       </div>
     </div>
