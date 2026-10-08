@@ -26,10 +26,10 @@ const Assessment2 = () => {
   }
   if (selection.partC) {
     allSteps.push({ id: 'partC_weight', name: 'Đánh trọng số 4 nguyên tắc', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thiết lập trọng số phần trăm cho 4 nguyên tắc đạo đức cốt lõi.' });
-    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: An toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
-    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Kiểm soát của con người', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
-    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Lợi ích xã hội và bao trùm kỹ thuật số', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
-    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Đổi mới có trách nhiệm', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
+    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
+    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
+    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
+    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
   }
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });

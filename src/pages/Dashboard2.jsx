@@ -329,10 +329,10 @@ const Dashboard2 = () => {
             <h4 className="font-bold mb-4 text-sm uppercase">Kết quả từng nguyên tắc (Phần C)</h4>
             <div className="flex-col gap-4">
               
-              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: An toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Kiểm soát của con người" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Lợi ích xã hội và bao trùm kỹ thuật số" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Đổi mới có trách nhiệm" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} />
             </div>
           </div>
 
