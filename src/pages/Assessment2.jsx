@@ -443,11 +443,11 @@ const Assessment2 = () => {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="text-xs text-muted uppercase border-b">
-                    <th className="pb-3 w-1/3">Nguyên tắc và ba nhóm nội dung</th>
-                    <th className="pb-3 text-center">Mã câu</th>
-                    <th className="pb-3 text-center w-1/4">Trọng số (Đơn vị chọn)</th>
-                    <th className="pb-3 text-center">Ví dụ trọng số gợi ý<br/><span className="text-[10px] font-normal normal-case">(Theo loại hệ thống)</span></th>
-                    <th className="pb-3 text-right">Điểm đóng góp<br/>dự kiến</th>
+                    <th className="pb-3 w-[35%]">Nguyên tắc và ba nhóm nội dung</th>
+                    <th className="pb-3 text-center whitespace-nowrap px-2">Mã câu</th>
+                    <th className="pb-3 text-center w-[25%] px-2">Trọng số (Đơn vị chọn)</th>
+                    <th className="pb-3 text-center w-[25%] px-2">Ví dụ trọng số gợi ý<br/><span className="text-[10px] font-normal normal-case">(Theo loại hệ thống)</span></th>
+                    <th className="pb-3 text-center whitespace-nowrap pl-2">Điểm đóng góp<br/>dự kiến</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -466,15 +466,15 @@ const Assessment2 = () => {
                           <div className="font-bold text-sm text-main">{p.title}</div>
                           <div className="text-xs text-muted mt-1" style={{ fontSize: '0.75rem', lineHeight: '1.2rem', color: '#64748b' }}>{p.desc}</div>
                         </td>
-                        <td className="py-4 text-center text-sm text-muted font-medium">{p.qRange}</td>
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-4">
-                            <input type="number" className="form-control text-center font-bold text-main" style={{ width: '70px', padding: '0.25rem 0.5rem' }} value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
-                            <input type="range" className="w-full cursor-pointer accent-primary" min="0" max="100" value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
+                        <td className="py-4 text-center text-sm text-muted font-medium whitespace-nowrap px-2">{p.qRange}</td>
+                        <td className="py-4 px-2">
+                          <div className="flex items-center justify-center gap-3">
+                            <input type="number" className="form-control text-center font-bold text-main" style={{ width: '65px', padding: '0.25rem 0.25rem' }} value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
+                            <input type="range" className="w-full max-w-[120px] cursor-pointer accent-primary" min="0" max="100" value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
                           </div>
                         </td>
-                        <td className="py-4 text-center text-xs text-muted" style={{ lineHeight: '1.4' }}>{p.suggestion}</td>
-                        <td className="py-4 text-right font-bold text-main" style={{ fontSize: '1rem' }}>{convScore.toFixed(2)}</td>
+                        <td className="py-4 text-center text-xs text-muted px-2" style={{ lineHeight: '1.4' }}>{p.suggestion}</td>
+                        <td className="py-4 text-center font-bold text-main pl-2" style={{ fontSize: '1rem' }}>{convScore.toFixed(2)}</td>
                       </tr>
                      );
                   })}
