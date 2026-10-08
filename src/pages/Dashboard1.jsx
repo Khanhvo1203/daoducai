@@ -378,14 +378,36 @@ const Dashboard1 = () => {
                 </div>
 
                 {/* 2. Thông tin hệ thống */}
-                <div>
+                <div className="mb-6">
                   <h5 className="font-bold text-primary mb-3 border-b pb-2">2. Thông tin hệ thống</h5>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Tên hệ thống AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.systemName || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Mã hệ thống nội bộ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.internalCode || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Phiên bản:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.version || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Đơn vị quản lý:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.managementUnit || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Người phụ trách:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.personInCharge || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2 mt-1 font-bold text-main">Thông tin quản trị đầu mối</div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Tên hệ thống AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.systemName || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Mã hệ thống:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.internalCode || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Phiên bản / Cập nhật:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.version || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Cơ quan/Đơn vị triển khai:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.agencyName || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Vai trò tổ chức:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.orgRole === 'Khác: điền thông tin' ? formData.otherOrgRole : formData.orgRole || '-'}</span></div>
+                    <div className="flex flex-col"><span className="text-muted mb-1">Căn cứ pháp lý:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.legalBasis || '-'}</span></div>
+
+                    <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Mức độ rủi ro</div>
+                    <div className="flex flex-col md:col-span-2">
+                        <span className="text-muted mb-1">Mức độ rủi ro:</span>
+                        <div className="bg-muted-light p-2 rounded">
+                            <span className={`px-2 py-1 rounded font-bold mr-2 ${formData.riskLevel === 'Rủi ro cao' ? 'bg-danger-light text-danger' : formData.riskLevel === 'Trung bình' ? 'bg-warning-light text-warning' : formData.riskLevel === 'Thấp' ? 'bg-success-light text-success' : 'bg-muted-light text-muted'}`}>{formData.riskLevel || '-'}</span>
+                            <span>{formData.riskLevelBasis ? `Căn cứ: ${formData.riskLevelBasis}` : ''}</span>
+                        </div>
+                    </div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Thuộc danh mục rủi ro cao:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.isInHighRiskList || '-'} {formData.isInHighRiskList === 'Có' && formData.highRiskCategoryDesc ? `- ${formData.highRiskCategoryDesc}` : ''}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Mô tả cụ thể (nếu thuộc DM rủi ro cao):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.highRiskDetail || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Đánh giá sự phù hợp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.complianceAssessment || '-'} {formData.complianceAssessment === 'Đã thực hiện' && formData.complianceAssessmentDetail ? `- ${formData.complianceAssessmentDetail}` : ''}</span></div>
+                  </div>
+                </div>
+
+                {/* 3. Mô tả hệ thống */}
+                <div>
+                  <h5 className="font-bold text-primary mb-3 border-b pb-2">3. Mô tả hệ thống</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                    <div className="flex flex-col md:col-span-2 mt-1 font-bold text-main">Loại công nghệ & Nhà cung cấp</div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Loại công nghệ AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.aiTechType || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Nguồn gốc phát triển:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.developType || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Nhà cung cấp (nếu có):</span><span className="font-medium bg-muted-light p-2 rounded">{formData.provider || '-'}</span></div>
@@ -418,22 +440,7 @@ const Dashboard1 = () => {
                     <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Cảnh báo cho người vận hành</div>
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các tình huống cần thận trọng:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.cautionSituations || '-'}</span></div>
                     <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Các hạn chế kỹ thuật biết trước:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.technicalLimits || '-'}</span></div>
-                  </div>
-                </div>
-
-                {/* 3. Khai báo đánh giá rủi ro */}
-                <div>
-                  <h5 className="font-bold text-primary mb-3 border-b pb-2">3. Khai báo đánh giá rủi ro</h5>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-3 text-sm">
-                    <div className="flex flex-col"><span className="text-muted mb-1">Thuộc DM rủi ro cao theo QĐ 33/2026/QĐ-TTg:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.isHighRisk || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Đánh giá theo Điều 7 NĐ 142/NĐ-CP:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.decree142 || '-'}</span></div>
-                    <div className="flex flex-col md:col-span-2"><span className="text-muted mb-1">Phân loại rủi ro (Tự đánh giá):</span>
-                      <span className={`px-3 py-2 rounded font-bold w-fit ${formData.riskLevel === 'Cao' ? 'bg-danger-light text-danger' : formData.riskLevel === 'Trung bình' ? 'bg-warning-light text-warning' : formData.riskLevel === 'Thấp' ? 'bg-success-light text-success' : 'bg-muted-light text-muted'}`}>
-                        {formData.riskLevel || 'Chưa đánh giá'}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col md:col-span-2 mt-2 font-bold text-main">Nhận diện nhóm chịu tác động</div>
+                    <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Nhận diện nhóm chịu tác động</div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Người dùng trực tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDirectUser || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Đối tượng quyết định của AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactDecisionTarget || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Bên thứ ba bị ảnh hưởng gián tiếp:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.impactThirdParty || '-'}</span></div>

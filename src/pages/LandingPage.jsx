@@ -34,8 +34,8 @@ const LandingPage = () => {
       systemName: '',
       internalCode: '',
       version: '',
-      managementUnit: '',
-      personInCharge: '',
+      agencyName: '',
+      legalBasis: '',
       aiTechType: 'ML truyền thống',
       developType: 'Tự phát triển',
       provider: '',
@@ -66,10 +66,13 @@ const LandingPage = () => {
       technicalLimits: '',
 
       // Step 3: Đánh giá rủi ro
-      isHighRisk: '',
-      highRiskDesc: '',
-      decree142: 'Chưa thực hiện',
-      riskLevel: '',
+      riskLevel: 'Trung bình',
+      riskLevelBasis: '',
+      isInHighRiskList: 'Không',
+      highRiskCategoryDesc: '',
+      highRiskDetail: '',
+      complianceAssessment: 'Chưa thực hiện',
+      complianceAssessmentDetail: '',
       impactDirectUser: '',
       impactDecisionTarget: '',
       impactThirdParty: '',
@@ -135,14 +138,14 @@ const LandingPage = () => {
             <h1 className="hero-title" style={{ margin: 0, lineHeight: 1 }}>
               {step === 1 && 'Hồ sơ đăng ký'}
               {step === 2 && 'Thông tin hệ thống'}
-              {step === 3 && 'Khai báo đánh giá rủi ro'}
+              {step === 3 && 'Mô tả hệ thống'}
               {step === 4 && 'Chọn nội dung đánh giá'}
             </h1>
           </div>
           <p className="hero-subtitle text-muted mt-4 mb-8">
             {step === 1 && 'Để bắt đầu, vui lòng cung cấp thông tin liên hệ của cá nhân/đơn vị đại diện.'}
             {step === 2 && 'Cung cấp các đặc tả kỹ thuật, vai trò, mục đích và giới hạn của hệ thống AI.'}
-            {step === 3 && 'Đánh giá các rủi ro pháp lý và tác động đến con người, xã hội.'}
+            {step === 3 && 'Mô tả chi tiết kỹ thuật và đánh giá các tác động đến con người, xã hội.'}
             {step === 4 && 'Hệ thống cho phép bạn tùy biến bài đánh giá theo 2 phần chính. Bạn có thể chọn 1 trong 2 hoặc cả 2.'}
           </p>
 
@@ -158,14 +161,14 @@ const LandingPage = () => {
               <div className={`step-circle ${step >= 2 ? '' : 'inactive'}`}>02</div>
               <div>
                 <h4 className={`font-bold mb-1 ${step >= 2 ? 'text-primary' : 'text-muted'}`}>Thông tin hệ thống</h4>
-                <p className="text-sm text-muted">Đặc tả hệ thống, đầu vào/đầu ra, tác động.</p>
+                <p className="text-sm text-muted">Thông tin cơ bản và mức độ rủi ro.</p>
               </div>
             </div>
             <div className="flex gap-4 items-start">
               <div className={`step-circle ${step >= 3 ? '' : 'inactive'}`}>03</div>
               <div>
-                <h4 className={`font-bold mb-1 ${step >= 3 ? 'text-primary' : 'text-muted'}`}>Khai báo đánh giá rủi ro</h4>
-                <p className="text-sm text-muted">Đối chiếu pháp lý và nhận diện nhóm chịu tác động.</p>
+                <h4 className={`font-bold mb-1 ${step >= 3 ? 'text-primary' : 'text-muted'}`}>Mô tả hệ thống</h4>
+                <p className="text-sm text-muted">Đặc tả hệ thống, quy trình và tác động.</p>
               </div>
             </div>
             <div className="flex gap-4 items-start">
@@ -223,36 +226,110 @@ const LandingPage = () => {
               
               <form onSubmit={handleNextStep} className="flex-col gap-8 pb-4">
                 
-                {/* I. Thông tin chung */}
                 <div>
-                  <h4 className="font-bold text-main mb-4 mt-2">I. Thông tin chung</h4>
-                  <div className="grid-2 gap-4 mb-4">
-                    <div className="form-group">
-                      <label>1. Tên hệ thống AI <span className="text-danger">*</span></label>
-                      <input type="text" name="systemName" required placeholder="Tên đầy đủ, không viết tắt" value={formData.systemName} onChange={handleChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label>2. Mã hệ thống nội bộ</label>
-                      <input type="text" name="internalCode" placeholder="Mã quản lý nội bộ, ví dụ AI-2026-001" value={formData.internalCode} onChange={handleChange} className="form-control" />
-                    </div>
+                  <h4 className="font-bold text-main mb-4 mt-2">1. Thông tin hệ thống AI và thông tin quản trị đầu mối</h4>
+                  <div className="form-group mb-4">
+                    <label>1. Tên hệ thống trí tuệ nhân tạo <span className="text-danger">*</span></label>
+                    <input type="text" name="systemName" required placeholder="Ghi đầy đủ tên hệ thống, không viết tắt nếu có thể" value={formData.systemName} onChange={handleChange} className="form-control" />
                   </div>
-                  <div className="grid-3 gap-4 mb-4">
-                    <div className="form-group">
-                      <label>3. Phiên bản</label>
-                      <input type="text" name="version" placeholder="Số phiên bản, ngày phát hành" value={formData.version} onChange={handleChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label>4. Đơn vị quản lý</label>
-                      <input type="text" name="managementUnit" placeholder="Phòng/ban chịu trách nhiệm vận hành" value={formData.managementUnit} onChange={handleChange} className="form-control" />
-                    </div>
-                    <div className="form-group">
-                      <label>5. Người phụ trách</label>
-                      <input type="text" name="personInCharge" placeholder="Họ tên, chức vụ, thông tin liên hệ" value={formData.personInCharge} onChange={handleChange} className="form-control" />
-                    </div>
+                  
+                  <div className="form-group mb-4">
+                    <label>2. Mã hệ thống AI (nếu có)</label>
+                    <input type="text" name="internalCode" placeholder="Mã đồng bộ từ cổng dịch vụ công AI. Nếu chưa có, nên bổ sung mã nội bộ để quản lý (ví dụ: AI-01/2026)." value={formData.internalCode} onChange={handleChange} className="form-control" />
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>3. Phiên bản hệ thống / ngày cập nhật gần nhất</label>
+                    <input type="text" name="version" placeholder="Bổ sung để phục vụ theo dõi thay đổi mô hình hoặc cấu hình." value={formData.version} onChange={handleChange} className="form-control" />
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>4. Tên cơ quan, đơn vị triển khai</label>
+                    <input type="text" name="agencyName" placeholder="Ghi rõ tên pháp lý của tổ chức/đơn vị sử dụng hoặc triển khai." value={formData.agencyName || ''} onChange={handleChange} className="form-control" />
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>5. Vai trò chính của tổ chức</label>
+                    <select name="orgRole" value={formData.orgRole} onChange={handleChange} className="form-control select-control mb-2">
+                      <option value="Nhà phát triển">Nhà phát triển</option>
+                      <option value="Nhà cung cấp">Nhà cung cấp</option>
+                      <option value="Bên triển khai">Bên triển khai</option>
+                      <option value="Người sử dụng">Người sử dụng</option>
+                      <option value="Khác: điền thông tin">Khác, ghi rõ</option>
+                    </select>
+                    {formData.orgRole === 'Khác: điền thông tin' && (
+                      <input type="text" name="otherOrgRole" required placeholder="Vui lòng ghi rõ vai trò" value={formData.otherOrgRole} onChange={handleChange} className="form-control" />
+                    )}
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>6. Căn cứ pháp lý triển khai hệ thống (nếu có)</label>
+                    <input type="text" name="legalBasis" placeholder="Ghi văn bản pháp lý, quyết định triển khai, quy chế nội bộ hoặc hợp đồng liên quan." value={formData.legalBasis || ''} onChange={handleChange} className="form-control" />
                   </div>
                 </div>
 
-                {/* II. Loại công nghệ nhà cung cấp */}
+                <div>
+                  <div className="section-divider"></div>
+                  <h4 className="font-bold text-main mb-4 mt-2">2. Mức độ Rủi ro</h4>
+                  <div className="form-group mb-4">
+                    <label>1. Mức độ rủi ro của hệ thống theo quy định nội bộ hoặc theo Luật AI</label>
+                    <select name="riskLevel" value={formData.riskLevel} onChange={handleChange} className="form-control select-control mb-2">
+                      <option value="Rủi ro cao">Rủi ro cao</option>
+                      <option value="Trung bình">Trung bình</option>
+                      <option value="Thấp">Thấp</option>
+                    </select>
+                    <input type="text" name="riskLevelBasis" placeholder="Nêu rõ căn cứ xác định..." value={formData.riskLevelBasis || ''} onChange={handleChange} className="form-control" />
+                  </div>
+                  
+                  <div className="form-group mb-4">
+                    <label>2. Hệ thống có thuộc danh mục DMRR / hệ thống AI rủi ro cao hay không</label>
+                    <select name="isInHighRiskList" value={formData.isInHighRiskList || 'Không'} onChange={handleChange} className="form-control select-control mb-2">
+                      <option value="Có">Có</option>
+                      <option value="Không">Không</option>
+                      <option value="Đang xem xét">Đang xem xét</option>
+                    </select>
+                    {formData.isInHighRiskList === 'Có' && (
+                      <input type="text" name="highRiskCategoryDesc" placeholder="Mô tả rõ nhóm/lĩnh vực thuộc danh mục..." value={formData.highRiskCategoryDesc || ''} onChange={handleChange} className="form-control" />
+                    )}
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>3. Mô tả cụ thể nếu thuộc danh mục rủi ro cao</label>
+                    <textarea name="highRiskDetail" rows="3" placeholder="Ghi rõ hệ thống thuộc mục nào trong danh mục liên quan" value={formData.highRiskDetail || ''} onChange={handleChange} className="form-control"></textarea>
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>4. Đã thực hiện đánh giá sự phù hợp theo yêu cầu pháp lý hay chưa</label>
+                    <select name="complianceAssessment" value={formData.complianceAssessment || 'Chưa thực hiện'} onChange={handleChange} className="form-control select-control mb-2">
+                      <option value="Đã thực hiện">Đã thực hiện</option>
+                      <option value="Chưa thực hiện">Chưa thực hiện</option>
+                      <option value="Không áp dụng">Không áp dụng</option>
+                    </select>
+                    {formData.complianceAssessment === 'Đã thực hiện' && (
+                      <input type="text" name="complianceAssessmentDetail" placeholder="Nêu số/văn bản hoặc kết quả chính..." value={formData.complianceAssessmentDetail || ''} onChange={handleChange} className="form-control" />
+                    )}
+                  </div>
+                </div>
+
+                <div className="form-actions mt-6 pt-6 border-t flex justify-between sticky bottom-0 bg-white z-10">
+                  <button type="button" className="btn btn-secondary border-none" onClick={handlePrevStep}>
+                    Quay lại
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Tiếp tục Mô tả hệ thống <ArrowRight size={18} />
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="card glass-card form-card fade-in" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
+              <h3 className="mb-4 border-b pb-4 sticky top-0 bg-white z-10 text-xl text-primary flex items-center gap-2"><AlertTriangle size={22}/> Mô tả hệ thống</h3>
+              
+              <form onSubmit={handleNextStep} className="flex-col gap-8 pb-4">
+                
+{/* II. Loại công nghệ nhà cung cấp */}
                 <div>
                   <div className="section-divider"></div>
                   <h4 className="font-bold text-main mb-4">II. Loại công nghệ & Nhà cung cấp</h4>
@@ -439,64 +516,6 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                <div className="form-actions mt-6 pt-6 border-t flex justify-between sticky bottom-0 bg-white z-10">
-                  <button type="button" className="btn btn-secondary border-none" onClick={handlePrevStep}>
-                    Quay lại
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Tiếp tục Đánh giá rủi ro <ArrowRight size={18} />
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="card glass-card form-card fade-in" style={{ maxHeight: '85vh', overflowY: 'auto' }}>
-              <h3 className="mb-4 border-b pb-4 sticky top-0 bg-white z-10 text-xl text-primary flex items-center gap-2"><AlertTriangle size={22}/> Khai báo đánh giá rủi ro</h3>
-              
-              <form onSubmit={handleNextStep} className="flex-col gap-8 pb-4">
-                
-                {/* I. Cổng pháp lý */}
-                <div>
-                  <h4 className="font-bold text-main mb-4 mt-2">I. Cổng pháp lý - Đối chiếu danh mục rủi ro</h4>
-                  <div className="form-group mb-4">
-                    <label className="font-bold block mb-2">1. Hệ thống có thuộc danh mục rủi ro cao theo QĐ 33/2026/QĐ-TTg không?</label>
-                    <div className="flex gap-6 mt-2">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" checked={formData.isHighRisk === 'Có'} onChange={() => setFormData({...formData, isHighRisk: 'Có'})} style={{width: '18px', height: '18px'}} />
-                        <span>Có</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" checked={formData.isHighRisk === 'Không'} onChange={() => setFormData({...formData, isHighRisk: 'Không'})} style={{width: '18px', height: '18px'}} />
-                        <span>Không</span>
-                      </label>
-                    </div>
-                  </div>
-
-
-                  <div className="form-group mb-4">
-                    <label>2. Đã thực hiện đánh giá sự phù hợp theo Điều 7 Nghị định 142/NĐ-CP?</label>
-                    <select name="decree142" value={formData.decree142} onChange={handleChange} className="form-control select-control">
-                      <option>Đã thực hiện</option><option>Chưa thực hiện</option><option>Hệ thống không thuộc yêu cầu</option>
-                    </select>
-                  </div>
-
-                  <div className="form-group mb-4">
-                    <label className="font-bold block mb-2">3. Phân loại rủi ro (Tự đánh giá)</label>
-                    <div className="flex gap-6 mt-2">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="riskLevel" value="Thấp" checked={formData.riskLevel === 'Thấp'} onChange={handleChange} style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
-                        <span>Thấp</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="riskLevel" value="Trung bình" checked={formData.riskLevel === 'Trung bình'} onChange={handleChange} style={{width: '16px', height: '16px', accentColor: '#2b56f5'}} />
-                        <span>Trung bình</span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
                 {/* II. Nhận diện nhóm chịu tác động */}
                 <div>
                   <div className="section-divider"></div>
@@ -531,6 +550,7 @@ const LandingPage = () => {
                   </div>
                 </div>
 
+                
                 <div className="form-actions mt-6 pt-6 border-t flex justify-between sticky bottom-0 bg-white z-10">
                   <button type="button" className="btn btn-secondary border-none" onClick={handlePrevStep}>
                     Quay lại
