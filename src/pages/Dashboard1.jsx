@@ -433,7 +433,15 @@ const Dashboard1 = () => {
 
                     <div className="flex flex-col md:col-span-2 mt-4 font-bold text-main">Thông tin quản trị đầu mối quản trị, vận hành</div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Đơn vị quản lý nghiệp vụ:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.managementUnit || '-'}</span></div>
-                    <div className="flex flex-col"><span className="text-muted mb-1">Người chịu trách nhiệm cấp lãnh đạo:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.leaderInCharge || '-'}</span></div>
+                    <div className="flex flex-col md:col-span-2">
+                      <span className="text-muted mb-1">Người chịu trách nhiệm cấp lãnh đạo:</span>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-muted-light p-3 rounded">
+                        <div><span className="text-muted text-xs">Họ và tên:</span> <span className="font-medium">{formData.leaderName || '-'}</span></div>
+                        <div><span className="text-muted text-xs">Chức vụ:</span> <span className="font-medium">{formData.leaderRole || '-'}</span></div>
+                        <div><span className="text-muted text-xs">Email:</span> <span className="font-medium">{formData.leaderEmail || '-'}</span></div>
+                        <div><span className="text-muted text-xs">Điện thoại:</span> <span className="font-medium">{formData.leaderPhone || '-'}</span></div>
+                      </div>
+                    </div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Đầu mối chuyên môn/vận hành AI:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.technicalContact || '-'}</span></div>
                     <div className="flex flex-col"><span className="text-muted mb-1">Kênh tiếp nhận phản ánh/khiếu nại/sự cố:</span><span className="font-medium bg-muted-light p-2 rounded">{formData.supportChannel || '-'}</span></div>
                   </div>

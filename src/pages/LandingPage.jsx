@@ -498,8 +498,25 @@ const LandingPage = () => {
                   </div>
                   
                   <div className="form-group mb-4">
-                    <label>2. Người chịu trách nhiệm cấp lãnh đạo</label>
-                    <input type="text" name="leaderInCharge" placeholder="Họ tên, chức vụ, email/điện thoại: đây là trường nên có để phục vụ quản trị tối thiểu." value={formData.leaderInCharge} onChange={handleChange} className="form-control" />
+                    <label className="font-bold block mb-2">2. Người chịu trách nhiệm cấp lãnh đạo</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-muted mb-1 block">2.1 Họ và tên</label>
+                        <input type="text" name="leaderName" placeholder="Nhập họ và tên..." value={formData.leaderName || ''} onChange={handleChange} className="form-control" />
+                      </div>
+                      <div>
+                        <label className="text-sm text-muted mb-1 block">2.2 Chức vụ</label>
+                        <input type="text" name="leaderRole" placeholder="Nhập chức vụ..." value={formData.leaderRole || ''} onChange={handleChange} className="form-control" />
+                      </div>
+                      <div>
+                        <label className="text-sm text-muted mb-1 block">2.3 Email</label>
+                        <input type="email" name="leaderEmail" placeholder="Nhập email..." value={formData.leaderEmail || ''} onChange={handleChange} className="form-control" />
+                      </div>
+                      <div>
+                        <label className="text-sm text-muted mb-1 block">2.4 Điện thoại</label>
+                        <input type="tel" name="leaderPhone" placeholder="Nhập số điện thoại..." value={formData.leaderPhone || ''} onChange={handleChange} className="form-control" />
+                      </div>
+                    </div>
                   </div>
                   
                   <div className="form-group mb-4">
