@@ -67,6 +67,8 @@ const Dashboard2 = () => {
     return score;
   };
 
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
   
   const [weights, setWeights] = useState(() => {
     const saved = localStorage.getItem(`assessment_weights_${userId}`);

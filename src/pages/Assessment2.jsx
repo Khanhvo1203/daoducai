@@ -457,7 +457,7 @@ const Assessment2 = () => {
                     { id: 'C4', title: 'C4 – Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', desc: 'Đổi mới có trách nhiệm • Trách nhiệm giải trình và năng lực quản trị • Hợp tác và phát triển hệ sinh thái AI', qRange: 'C4.1 - C4.15', suggestion: 'YT/HCC 10 % • TC-HT 20 % • ĐMST 30 %' }
                   ].map(p => {
                      // Calculate current achieved score for this principle from answers
-                     const answeredYes = Object.keys(answers).filter(k => k.startsWith(p.id) && answers[k] === 'Có').length;
+                     const answeredYes = Object.keys(answers).filter(k => k.startsWith(p.id) && answers[k] === 0).length;
                      const convScore = (answeredYes / 15) * weights[p.id];
                      return (
                       <tr className="border-b" key={p.id}>
