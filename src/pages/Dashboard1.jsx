@@ -67,7 +67,19 @@ const Dashboard1 = () => {
     return score;
   };
 
-  const scoreC1 = getScore('C1');
+  
+  const [weights, setWeights] = useState(() => {
+    const saved = localStorage.getItem(`assessment_weights_${userId}`);
+    return saved ? JSON.parse(saved) : { C1: 25, C2: 25, C3: 25, C4: 25 };
+  });
+
+  const weightedC1 = (scoreC1 / 15) * weights.C1;
+  const weightedC2 = (scoreC2 / 15) * weights.C2;
+  const weightedC3 = (scoreC3 / 15) * weights.C3;
+  const weightedC4 = (scoreC4 / 15) * weights.C4;
+  const weightedTotalScore = weightedC1 + weightedC2 + weightedC3 + weightedC4;
+
+const scoreC1 = getScore('C1');
   const scoreC2 = getScore('C2');
   const scoreC3 = getScore('C3');
   const scoreC4 = getScore('C4');
@@ -294,11 +306,11 @@ const Dashboard1 = () => {
                 <div className="score-circle">
                   <svg viewBox="0 0 36 36" className={`circular-chart ${overall.color.replace('text-', '')}`}>
                     <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    <path className="circle" strokeDasharray={`${(totalCScore / 60) * 100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)'} />
+                    <path className="circle" strokeDasharray={`${weightedTotalScore}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke={overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)'} />
                   </svg>
                   <div className="score-text">
-                    <span className="score-number" style={{ color: overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)' }}>{totalCScore}</span>
-                    <span className="score-total">/60</span>
+                    <span className="score-number" style={{ color: overall.color === 'text-success' ? 'var(--success)' : overall.color === 'text-warning' ? 'var(--warning)' : 'var(--danger)' }}>{weightedTotalScore.toFixed(1)}</span>
+                    <span className="score-total">/100</span>
                   </div>
                 </div>
                 
@@ -329,10 +341,10 @@ const Dashboard1 = () => {
             <h4 className="font-bold mb-4 text-sm uppercase">Kết quả từng nguyên tắc (Phần C)</h4>
             <div className="flex-col gap-4">
               
-              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} />
-              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} />
+              <PrincipleResult prefix="C1" title="C1. Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại" score={scoreC1} answers={answers} getComplianceLevel={getComplianceLevel} weight={weights.C1} weightedScore={weightedC1} />
+              <PrincipleResult prefix="C2" title="C2. Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch" score={scoreC2} answers={answers} getComplianceLevel={getComplianceLevel} weight={weights.C2} weightedScore={weightedC2} />
+              <PrincipleResult prefix="C3" title="C3. Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững" score={scoreC3} answers={answers} getComplianceLevel={getComplianceLevel} weight={weights.C3} weightedScore={weightedC3} />
+              <PrincipleResult prefix="C4" title="C4. Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội" score={scoreC4} answers={answers} getComplianceLevel={getComplianceLevel} weight={weights.C4} weightedScore={weightedC4} />
             </div>
           </div>
 

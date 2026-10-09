@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CheckSquare, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import { questionsDb } from '../data/questionsData';
 
-const PrincipleResult = ({ prefix, title, score, answers, getComplianceLevel }) => {
+const PrincipleResult = ({ prefix, title, score, answers, getComplianceLevel, weight, weightedScore }) => {
   const [expanded, setExpanded] = useState(false);
   const comp = getComplianceLevel(score);
   
@@ -63,6 +63,9 @@ const PrincipleResult = ({ prefix, title, score, answers, getComplianceLevel }) 
             <div className="font-bold text-sm flex items-center" style={{ gap: '0.5rem' }}>
               <span className={comp.color}>{comp.label}</span>
               <span className="text-muted">({score}/15)</span>
+              {weight !== undefined && weightedScore !== undefined && (
+                <span className="text-muted">• {weight}% = {weightedScore.toFixed(1)} đ</span>
+              )}
               <span className="text-muted" style={{ marginLeft: '4px', display: 'flex', alignItems: 'center' }}>
                 {expanded ? <ChevronUp size={16}/> : <ChevronDown size={16}/>}
               </span>
