@@ -75,17 +75,17 @@ const Dashboard2 = () => {
     return saved ? JSON.parse(saved) : { C1: 25, C2: 25, C3: 25, C4: 25 };
   });
 
+  const scoreC1 = getScore('C1');
+  const scoreC2 = getScore('C2');
+  const scoreC3 = getScore('C3');
+  const scoreC4 = getScore('C4');
+  const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
+
   const weightedC1 = (scoreC1 / 15) * weights.C1;
   const weightedC2 = (scoreC2 / 15) * weights.C2;
   const weightedC3 = (scoreC3 / 15) * weights.C3;
   const weightedC4 = (scoreC4 / 15) * weights.C4;
   const weightedTotalScore = weightedC1 + weightedC2 + weightedC3 + weightedC4;
-
-const scoreC1 = getScore('C1');
-  const scoreC2 = getScore('C2');
-  const scoreC3 = getScore('C3');
-  const scoreC4 = getScore('C4');
-  const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
 
   const getScoreD = () => {
     let score = 0;
