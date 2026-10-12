@@ -81,130 +81,123 @@ const Profile = () => {
   if (!user) return null;
 
   return (
-    <div className="container page-container fade-in min-h-[80vh]">
-      <div className="breadcrumbs text-sm text-muted mb-6 flex items-center gap-2">
+    <div className="container page-container fade-in">
+      <div className="breadcrumbs text-sm text-muted mb-4 flex items-center gap-2">
         <Link to="/" className="hover:text-primary transition-colors">Trang chủ</Link> {'>'} 
         <span className="text-primary font-semibold">Hồ sơ tài khoản</span>
       </div>
 
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/" className="btn btn-secondary p-2 rounded-full hover:bg-muted-light transition-colors border-none shadow-sm text-muted">
-            <ArrowLeft size={20} />
-          </Link>
-          <div>
-            <h2 className="text-3xl font-extrabold text-main mb-1">Hồ sơ Tài khoản</h2>
-            <p className="text-muted">Quản lý thông tin cá nhân và lịch sử hồ sơ của bạn</p>
-          </div>
+      <div className="flex items-center gap-3 mb-6" style={{ maxWidth: '680px', margin: '0 auto 1.5rem auto' }}>
+        <Link to="/" className="btn btn-secondary p-2 rounded-full hover:bg-muted-light transition-colors border-none shadow-sm text-muted" title="Trở về">
+          <ArrowLeft size={20} />
+        </Link>
+        <div>
+          <h2 className="text-2xl font-extrabold text-main" style={{ margin: 0 }}>Hồ sơ Tài khoản</h2>
+          <p className="text-muted text-sm" style={{ margin: '2px 0 0 0' }}>Quản lý thông tin cá nhân và lịch sử hồ sơ của bạn</p>
         </div>
+      </div>
 
+      <div className="profile-page-container" style={{ paddingTop: 0 }}>
         <div className="profile-card">
-          {/* Header Cover */}
-          <div className="profile-cover-banner"></div>
-          
-          <div className="profile-card-body">
-            {/* Avatar */}
-            <div className="profile-avatar-row">
-              <div className="profile-avatar-box">
-                <ShieldCheck size={40} className="text-primary" />
-              </div>
-              <div>
-                <span className="profile-badge-pill">
-                  Tài khoản Thành viên
-                </span>
-              </div>
+          {/* Top row: Shield Icon left, Role Badge right */}
+          <div className="profile-header-row">
+            <div className="profile-shield-icon">
+              <ShieldCheck size={38} strokeWidth={2.2} />
             </div>
-
-            <div className="profile-user-heading">
-              <h3 className="profile-user-name">{user.name || 'Người dùng'}</h3>
-              <p className="profile-user-username">
-                <User size={15} /> {user.username}
-              </p>
+            <div className="profile-role-title">
+              Tài khoản Thành viên
             </div>
-
-            <form onSubmit={handleUpdateProfile}>
-              {profileError && (
-                <div style={{ marginBottom: '24px', padding: '14px 18px', backgroundColor: '#fef2f2', border: '1px solid #f87171', color: '#b91c1c', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444' }}></div>
-                  {profileError}
-                </div>
-              )}
-              {successMsg && (
-                <div style={{ marginBottom: '24px', padding: '14px 18px', backgroundColor: '#f0fdf4', border: '1px solid #4ade80', color: '#15803d', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e' }}></div>
-                  {successMsg}
-                </div>
-              )}
-
-              <div className="profile-form-grid">
-                {/* Cột 1: Thông tin liên hệ */}
-                <div>
-                  <h4 className="profile-section-title">Thông tin liên hệ</h4>
-                  
-                  <div className="profile-field-group">
-                    <label className="profile-field-label">
-                      <Phone size={16} className="text-muted" /> Số điện thoại
-                    </label>
-                    <input 
-                      type="tel" 
-                      className="profile-input" 
-                      value={profileData.phone} 
-                      onChange={e => setProfileData({...profileData, phone: e.target.value})} 
-                      placeholder="Vd: 0987654321" 
-                    />
-                    <p className="profile-field-hint">Dùng để liên hệ khi hồ sơ đánh giá của bạn cần làm rõ.</p>
-                  </div>
-                </div>
-
-                {/* Cột 2: Bảo mật */}
-                <div>
-                  <h4 className="profile-section-title">Bảo mật</h4>
-                  
-                  <div className="profile-field-group">
-                    <label className="profile-field-label">
-                      <Lock size={16} className="text-muted" /> Mật khẩu hiện tại
-                    </label>
-                    <input 
-                      type="password" 
-                      className="profile-input" 
-                      value={profileData.oldPassword} 
-                      onChange={e => setProfileData({...profileData, oldPassword: e.target.value})} 
-                      placeholder="Nhập để xác thực thay đổi" 
-                    />
-                  </div>
-                  
-                  <div className="profile-field-group">
-                    <label className="profile-field-label">Mật khẩu mới</label>
-                    <input 
-                      type="password" 
-                      className="profile-input" 
-                      value={profileData.newPassword} 
-                      onChange={e => setProfileData({...profileData, newPassword: e.target.value})} 
-                      placeholder="Tối thiểu 6 ký tự" 
-                    />
-                  </div>
-                  
-                  <div className="profile-field-group">
-                    <label className="profile-field-label">Xác nhận mật khẩu mới</label>
-                    <input 
-                      type="password" 
-                      className="profile-input" 
-                      value={profileData.confirmPassword} 
-                      onChange={e => setProfileData({...profileData, confirmPassword: e.target.value})} 
-                      placeholder="Nhập lại mật khẩu mới" 
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="profile-actions-row">
-                <Link to="/" className="btn btn-secondary bg-white">Trở về</Link>
-                <button type="submit" className="btn btn-primary flex items-center gap-2 shadow-md">
-                  <Save size={16} /> Lưu thông tin
-                </button>
-              </div>
-            </form>
           </div>
+
+          {/* User identity */}
+          <div className="profile-identity">
+            <h3 className="profile-user-fullname">{user.name || 'Người dùng'}</h3>
+            <p className="profile-user-email">
+              <User size={15} /> {user.username}
+            </p>
+          </div>
+
+          <form onSubmit={handleUpdateProfile}>
+            {profileError && (
+              <div className="profile-alert-box error">
+                <div className="profile-alert-dot"></div>
+                {profileError}
+              </div>
+            )}
+            {successMsg && (
+              <div className="profile-alert-box success">
+                <div className="profile-alert-dot"></div>
+                {successMsg}
+              </div>
+            )}
+
+            {/* Section 1: THÔNG TIN LIÊN HỆ */}
+            <div className="profile-section-heading">Thông tin liên hệ</div>
+
+            <div className="profile-field-item">
+              <label className="profile-label-text">
+                <Phone size={16} className="text-muted" /> Số điện thoại
+              </label>
+              <input 
+                type="tel" 
+                className="profile-text-input" 
+                value={profileData.phone} 
+                onChange={e => setProfileData({...profileData, phone: e.target.value})} 
+                placeholder="Vd: 0987654321" 
+              />
+              <p className="profile-hint-text">Dùng để liên hệ khi hồ sơ đánh giá của bạn cần làm rõ.</p>
+            </div>
+
+            {/* Section 2: BẢO MẬT */}
+            <div className="profile-section-heading security-section">Bảo mật</div>
+
+            <div className="profile-field-item">
+              <label className="profile-label-text">
+                <Lock size={16} className="text-muted" /> Mật khẩu hiện tại
+              </label>
+              <input 
+                type="password" 
+                className="profile-text-input" 
+                value={profileData.oldPassword} 
+                onChange={e => setProfileData({...profileData, oldPassword: e.target.value})} 
+                placeholder="Nhập để xác thực thay đổi" 
+              />
+            </div>
+
+            <div className="profile-field-item">
+              <label className="profile-label-text">
+                Mật khẩu mới
+              </label>
+              <input 
+                type="password" 
+                className="profile-text-input" 
+                value={profileData.newPassword} 
+                onChange={e => setProfileData({...profileData, newPassword: e.target.value})} 
+                placeholder="Tối thiểu 6 ký tự" 
+              />
+            </div>
+
+            <div className="profile-field-item">
+              <label className="profile-label-text">
+                Xác nhận mật khẩu mới
+              </label>
+              <input 
+                type="password" 
+                className="profile-text-input" 
+                value={profileData.confirmPassword} 
+                onChange={e => setProfileData({...profileData, confirmPassword: e.target.value})} 
+                placeholder="Nhập lại mật khẩu mới" 
+              />
+            </div>
+
+            {/* Action buttons */}
+            <div className="profile-button-group">
+              <Link to="/" className="btn-profile-back">Trở về</Link>
+              <button type="submit" className="btn-profile-save">
+                <Save size={16} /> Lưu thông tin
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
