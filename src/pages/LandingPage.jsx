@@ -427,12 +427,7 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>4. Mô hình nền / API / thành phần AI bên thứ ba</label>
-                    <textarea name="foundationModel" rows="2" placeholder="Bổ sung khi dùng foundation model, dịch vụ cloud AI, SDK, API hoặc dataset bên ngoài." value={formData.foundationModel} onChange={handleChange} className="form-control"></textarea>
-                  </div>
-
-                  <div className="form-group mb-4">
-                    <label>5. Loại dữ liệu đầu vào</label>
+                    <label>4. Loại dữ liệu đầu vào</label>
                     <select name="inputType" value={formData.inputType} onChange={handleChange} className="form-control select-control mb-2">
                       <option value="Văn bản">Văn bản</option><option value="Hình ảnh">Hình ảnh</option><option value="Âm thanh">Âm thanh</option><option value="Video">Video</option><option value="Số liệu">Số liệu</option><option value="Hồ sơ cá nhân">Hồ sơ cá nhân</option><option value="Dữ liệu cảm biến">Dữ liệu cảm biến</option><option value="Đa phương thức">Đa phương thức</option><option value="Khác">Khác, ghi rõ</option>
                     </select>
@@ -442,7 +437,7 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>6. Nguồn dữ liệu đầu vào</label>
+                    <label>5. Nguồn dữ liệu đầu vào</label>
                     <select name="inputSource" value={formData.inputSource} onChange={handleChange} className="form-control select-control mb-2">
                       <option value="Người dùng nhập">Người dùng nhập</option><option value="CSDL nội bộ">CSDL nội bộ</option><option value="CSDL đối tác">CSDL đối tác</option><option value="API bên ngoài">API bên ngoài</option><option value="Internet">Internet</option><option value="Dữ liệu tổng hợp">Dữ liệu tổng hợp</option><option value="Khác">Khác, ghi rõ</option>
                     </select>
@@ -452,7 +447,7 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>7. Dữ liệu cá nhân hoặc dữ liệu nhạy cảm có được xử lý hay không</label>
+                    <label>6. Dữ liệu cá nhân hoặc dữ liệu nhạy cảm có được xử lý hay không</label>
                     <select name="hasPersonalData" value={formData.hasPersonalData} onChange={handleChange} className="form-control select-control mb-2">
                       <option value="Có">Có</option><option value="Không">Không</option>
                     </select>
@@ -462,7 +457,7 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>8. Loại đầu ra AI</label>
+                    <label>7. Loại đầu ra AI</label>
                     <select name="outputType" value={formData.outputType} onChange={handleChange} className="form-control select-control mb-2">
                       <option value="Dự đoán">Dự đoán</option><option value="Phân loại">Phân loại</option><option value="Khuyến nghị">Khuyến nghị</option><option value="Chấm điểm">Chấm điểm</option><option value="Phát hiện bất thường">Phát hiện bất thường</option><option value="Nội dung tạo sinh">Nội dung tạo sinh</option><option value="Tóm tắt">Tóm tắt</option><option value="Dịch">Dịch</option><option value="Quyết định hỗ trợ">Quyết định hỗ trợ</option><option value="Khác">Khác, ghi rõ</option>
                     </select>
@@ -472,18 +467,13 @@ const LandingPage = () => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>9. Mức độ tự động hóa đầu ra</label>
+                    <label>8. Mức độ tự động hóa đầu ra</label>
                     <select name="automationLevel" value={formData.automationLevel} onChange={handleChange} className="form-control select-control mb-2">
                       <option value="Gợi ý cho người dùng">Gợi ý cho người dùng</option><option value="Người kiểm tra rồi phê duyệt">Người kiểm tra rồi phê duyệt</option><option value="Tự động thực thi có giám sát">Tự động thực thi có giám sát</option><option value="Tự động thực thi">Tự động thực thi</option><option value="Khác">Khác, ghi rõ</option>
                     </select>
                     {formData.automationLevel === 'Khác' && (
                       <input type="text" name="otherAutomationLevel" required placeholder="Ghi rõ mức độ..." value={formData.otherAutomationLevel} onChange={handleChange} className="form-control" />
                     )}
-                  </div>
-
-                  <div className="form-group mb-4">
-                    <label>10. Mức tham gia của con người</label>
-                    <textarea name="humanInvolvement" rows="2" placeholder="Mô tả: Human-in-the-loop / Human-over-the-loop / Human-out-of-the-loop hoặc mô tả tương đương: nêu quyền can thiệp/dừng hệ thống." value={formData.humanInvolvement} onChange={handleChange} className="form-control"></textarea>
                   </div>
                 </div>
 
