@@ -68,113 +68,50 @@ const Navigation = () => {
 
         <div className="user-profile flex items-center gap-4">
           {user ? (
-            <>
-              {/* Đã chuyển Lịch sử hồ sơ vào trong Profile */}
-              <div style={{ position: 'relative' }}>
-                <button 
-                  onClick={() => setShowDropdown(!showDropdown)} 
-                  className="btn flex items-center gap-2"
-                  style={{ 
-                    padding: '8px 16px', 
-                    borderRadius: '8px', 
-                    border: '1px solid var(--primary)',
-                    backgroundColor: '#fff',
-                    color: 'var(--primary)',
-                    fontSize: '14px',
-                    cursor: 'pointer'
-                  }}
-                >
+            <div style={{ position: 'relative' }}>
+              <div 
+                className="user-profile-anchor"
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <div className="user-avatar-circle">
                   <User size={18} />
-                  <span className="font-bold">{user.name || user.username}</span>
-                  <ChevronDown size={16} />
-                </button>
-                
-                {showDropdown && (
-                  <div 
-                    style={{ 
-                      position: 'absolute',
-                      right: 0,
-                      top: 'calc(100% + 8px)', 
-                      width: '220px', 
-                      backgroundColor: '#fff',
-                      borderRadius: '8px', 
-                      border: '1px solid var(--border)',
-                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
-                      zIndex: 99999,
-                      overflow: 'hidden'
-                    }}
-                  >
-                    {user.role !== 'ADMIN' && (
-                      <>
-                        <Link 
-                          to="/profile"
-                          onClick={() => setShowDropdown(false)}
-                          style={{ 
-                            width: '100%', 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '12px',
-                            padding: '12px 16px', 
-                            textAlign: 'left', 
-                            borderBottom: '1px solid var(--border)',
-                            backgroundColor: 'transparent',
-                            color: 'var(--text-main)',
-                            fontSize: '14px',
-                            cursor: 'pointer',
-                            textDecoration: 'none'
-                          }}
-                          onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-light)'; e.currentTarget.style.color = 'var(--primary)'; }}
-                          onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-main)'; }}
-                        >
-                          <Settings size={16} /> <span className="font-medium">Thông tin tài khoản</span>
-                        </Link>
-                        <Link 
-                          to="/history"
-                          onClick={() => setShowDropdown(false)}
-                          style={{ 
-                            width: '100%', 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '12px',
-                            padding: '12px 16px', 
-                            textAlign: 'left', 
-                            borderBottom: '1px solid var(--border)',
-                            backgroundColor: 'transparent',
-                            color: 'var(--text-main)',
-                            fontSize: '14px',
-                            cursor: 'pointer',
-                            textDecoration: 'none'
-                          }}
-                          onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-light)'; e.currentTarget.style.color = 'var(--primary)'; }}
-                          onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-main)'; }}
-                        >
-                          <History size={16} /> <span className="font-medium">Lịch sử hồ sơ</span>
-                        </Link>
-                      </>
-                    )}
-                    <button 
-                      onClick={() => { logout(); window.location.href = user.role === 'ADMIN' ? '/admin/login' : '/login'; }}
-                      style={{ 
-                        width: '100%', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: '12px',
-                        padding: '12px 16px', 
-                        textAlign: 'left', 
-                        backgroundColor: 'transparent',
-                        color: 'var(--danger)',
-                        fontSize: '14px',
-                        cursor: 'pointer'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fef2f2'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                    >
-                      <LogOut size={16} /> <span className="font-bold">Đăng xuất</span>
-                    </button>
-                  </div>
-                )}
+                </div>
+                <div className="user-meta-info">
+                  <div className="user-fullname">{user ? (user.agency || user.name || user.username) : 'sở nội vụ'}</div>
+                  <div className="user-org-name">{user?.agencyType || 'Cơ quan / Đơn vị'}</div>
+                </div>
               </div>
-            </>
+              
+              {showDropdown && (
+                <div className="user-menu-dropdown">
+                  {user.role !== 'ADMIN' && (
+                    <>
+                      <Link 
+                        to="/profile"
+                        onClick={() => setShowDropdown(false)}
+                        className="dropdown-item"
+                      >
+                        <User size={15} /> <span>Thông tin tài khoản</span>
+                      </Link>
+                      <Link 
+                        to="/history"
+                        onClick={() => setShowDropdown(false)}
+                        className="dropdown-item"
+                      >
+                        <History size={15} /> <span>Lịch sử đánh giá</span>
+                      </Link>
+                      <div className="dropdown-divider"></div>
+                    </>
+                  )}
+                  <div 
+                    onClick={() => { logout(); window.location.href = user.role === 'ADMIN' ? '/admin/login' : '/login'; }}
+                    className="dropdown-item danger"
+                  >
+                    <LogOut size={15} /> <span>Đăng xuất</span>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <Link 
               to="/login" 

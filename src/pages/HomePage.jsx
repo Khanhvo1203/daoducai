@@ -393,24 +393,24 @@ const HomePage = () => {
             {/* User Profile */}
             <div className="user-profile-anchor" onClick={() => setShowUserDropdown(!showUserDropdown)}>
               <div className="user-avatar-circle">
-                <User size={16} />
+                <User size={18} />
               </div>
               <div className="user-meta-info">
-                <div className="user-fullname">{currentUser ? (currentUser.name || currentUser.username) : 'Nguyễn Văn A'}</div>
-                <div className="user-org-name">{currentUser ? (currentUser.agency || 'Cơ quan / Đơn vị') : 'Cơ quan/Đơn vị'}</div>
+                <div className="user-fullname">{currentUser ? (currentUser.agency || currentUser.name || currentUser.username) : 'sở nội vụ'}</div>
+                <div className="user-org-name">{currentUser?.agencyType || 'Cơ quan / Đơn vị'}</div>
               </div>
 
               {/* User Dropdown */}
               {showUserDropdown && (
-                <div className="user-menu-dropdown">
-                  <div className="dropdown-item" onClick={() => navigate('/profile')}>
+                <div className="user-menu-dropdown" onClick={(e) => e.stopPropagation()}>
+                  <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/profile'); }}>
                     <User size={14} /> Thông tin tài khoản
                   </div>
-                  <div className="dropdown-item" onClick={() => navigate('/history')}>
+                  <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/history'); }}>
                     <Layers size={14} /> Lịch sử đánh giá
                   </div>
                   <div className="dropdown-divider"></div>
-                  <div className="dropdown-item danger" onClick={handleLogout}>
+                  <div className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>
                     <LogOut size={14} /> Đăng xuất
                   </div>
                 </div>

@@ -272,32 +272,35 @@
 }
 
 .user-avatar-circle {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #dbeafe;
   color: #2563eb;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
 }
 
 .user-meta-info {
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .user-fullname {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #0f172a;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .user-org-name {
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   color: #64748b;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 
 .user-menu-dropdown {
