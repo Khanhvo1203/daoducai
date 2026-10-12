@@ -16,6 +16,7 @@ import {
 } from 'chart.js';
 import { Radar, Bar } from 'react-chartjs-2';
 import { saveAssessment, getCurrentUser, getAllAssessments } from '../utils/auth';
+import MacroStepper from '../components/MacroStepper';
 import './Dashboard.css';
 
 ChartJS.register(
@@ -199,9 +200,12 @@ const Dashboard1 = () => {
 
   return (
     <div className="container page-container fade-in">
-      <div className="breadcrumbs text-sm text-muted mb-4">
+      <div className="breadcrumbs text-sm text-muted mb-2">
         <Link to="/">Trang chủ</Link> {'>'} Kết quả đánh giá
       </div>
+
+      {/* 3-Phase Process Stepper */}
+      <MacroStepper currentPhase={3} interactive={true} />
 
       <div className="split-layout">
         <aside className="sidebar">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
+import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
 
 const Assessment2 = () => {
@@ -319,7 +320,11 @@ const Assessment2 = () => {
       <div className="breadcrumbs text-sm text-muted mb-2">
         <Link to="/">Trang chủ</Link> {'>'} <span className="text-primary font-semibold">Đánh giá</span> {'>'} {activeStep?.name}
       </div>
-      <div className="flex gap-6 mb-6 text-sm">
+
+      {/* 3-Phase Process Stepper */}
+      <MacroStepper currentPhase={2} interactive={true} />
+
+      <div className="flex gap-6 mb-4 text-sm">
         <div><span className="text-muted">Mã hồ sơ:</span> <span className="font-semibold">Đang cập nhật</span></div>
         <div><span className="text-muted">Ngày thực hiện:</span> <span className="font-semibold">{new Date().toLocaleDateString('vi-VN')}</span></div>
       </div>

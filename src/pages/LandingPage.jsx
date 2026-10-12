@@ -9,6 +9,7 @@ import {
   Scale
 } from 'lucide-react';
 import { getCurrentUser } from '../utils/auth';
+import MacroStepper from '../components/MacroStepper';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -235,41 +236,7 @@ const LandingPage = () => {
           </div>
 
           {/* Macro Stepper (3 Phases Header) */}
-          <div className="macro-stepper-box">
-            <div className="macro-stepper-track">
-              {/* Phase 1 */}
-              <div className="macro-step-node active">
-                <div className="macro-step-circle">1</div>
-                <div className="macro-step-label">
-                  Thông tin hệ thống<br />và sàng lọc rủi ro
-                </div>
-              </div>
-
-              <div className="macro-step-arrow">
-                <ArrowRight size={20} />
-              </div>
-
-              {/* Phase 2 */}
-              <div className="macro-step-node inactive">
-                <div className="macro-step-circle">2</div>
-                <div className="macro-step-label">
-                  Kiểm tra điều kiện quản trị<br />và đánh giá theo 4 nguyên tắc
-                </div>
-              </div>
-
-              <div className="macro-step-arrow">
-                <ArrowRight size={20} />
-              </div>
-
-              {/* Phase 3 */}
-              <div className="macro-step-node inactive">
-                <div className="macro-step-circle">3</div>
-                <div className="macro-step-label">
-                  Đề xuất biện pháp<br />và theo dõi
-                </div>
-              </div>
-            </div>
-          </div>
+          <MacroStepper currentPhase={1} className="flush" />
 
           {/* Sub-stepper Tab Pills */}
           <div className="sub-tabs-container">

@@ -1,0 +1,164 @@
+/* MacroStepper Styles */
+.macro-stepper-container {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.macro-stepper-container.flush {
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.6rem 2rem;
+  box-shadow: none;
+}
+
+
+.macro-stepper-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.macro-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  max-width: 250px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.25s ease;
+}
+
+.macro-step-item.clickable {
+  cursor: pointer;
+}
+
+.macro-step-item.clickable:hover .macro-step-text {
+  color: #2563eb;
+}
+
+/* Step Circle */
+.macro-step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+  transition: all 0.25s ease;
+}
+
+/* State: Pending / Inactive */
+.macro-step-item.pending .macro-step-circle {
+  background: #ffffff;
+  color: #94a3b8;
+  border: 1.5px solid #cbd5e1;
+}
+
+.macro-step-item.pending .macro-step-text {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* State: Active */
+.macro-step-item.active .macro-step-circle {
+  background: #2563eb;
+  color: #ffffff;
+  border: 1.5px solid #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+.macro-step-item.active .macro-step-text {
+  color: #1e3a8a;
+  font-weight: 700;
+}
+
+/* State: Completed */
+.macro-step-item.completed .macro-step-circle {
+  background: #2563eb;
+  color: #ffffff;
+  border: 1.5px solid #2563eb;
+}
+
+.macro-step-item.completed .macro-step-text {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Step Text */
+.macro-step-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  transition: color 0.2s ease;
+}
+
+.macro-line-1,
+.macro-line-2 {
+  white-space: nowrap;
+}
+
+/* Connecting Arrow */
+.macro-step-connector {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  margin: 0 1rem;
+  margin-top: -1.25rem; /* align with circles */
+  transition: color 0.25s ease;
+}
+
+.macro-step-connector.passed {
+  color: #3b82f6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .macro-stepper-container {
+    padding: 0.75rem 1rem;
+  }
+
+  .macro-step-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .macro-step-text {
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+
+  .macro-step-connector {
+    margin: 0 0.5rem;
+    margin-top: -1rem;
+  }
+}
+
+@media (max-width: 540px) {
+  .macro-line-1,
+  .macro-line-2 {
+    white-space: normal;
+  }
+}
