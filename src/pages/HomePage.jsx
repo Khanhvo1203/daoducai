@@ -15,7 +15,11 @@ import {
   BookOpen, 
   Layers, 
   Cpu, 
-  LogOut
+  LogOut,
+  RotateCcw,
+  Building2,
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -47,6 +51,14 @@ const HomePage = () => {
     logout();
     navigate('/login');
   };
+
+  // 4 Features on Banner matching mockup
+  const bannerFeatures = [
+    { label: 'Đơn giản', icon: CheckSquare },
+    { label: 'Thực tiễn', icon: RotateCcw },
+    { label: 'Phù hợp SME', icon: Building2 },
+    { label: 'Bám sát Thông tư 05', icon: ShieldCheck }
+  ];
 
   // 6 Feature Cards matching the mockup design
   const featureCards = [
@@ -392,18 +404,54 @@ const HomePage = () => {
         {/* Viewport Fitted Content */}
         <div className="home-body-viewport">
           {/* ========================================================
-              HERO BANNER (Full uncropped artwork matching mockup)
+              HERO BANNER (Full HD original background with vector fields)
               ======================================================== */}
           <div 
             className="home-hero-banner" 
             onClick={() => navigate('/ho-so-dang-ky')}
             title="Nhấp để bắt đầu đánh giá"
           >
-            <img 
-              src="/banner-home-2x.png" 
-              alt="Công cụ tự đánh giá đạo đức hệ thống AI" 
-              className="home-banner-artwork" 
-            />
+            {/* Left dark gradient overlay for maximum text contrast */}
+            <div className="home-banner-overlay-left" />
+
+            {/* Left Content Area: Title, Subtitle, CTA Button */}
+            <div className="home-banner-left-content">
+              <h1 className="home-banner-heading">
+                <span>CÔNG CỤ TỰ ĐÁNH GIÁ</span>
+                <span>ĐẠO ĐỨC HỆ THỐNG AI</span>
+              </h1>
+              
+              <p className="home-banner-subtext">
+                Hỗ trợ tổ chức đánh giá mức độ tuân thủ Khung đạo đức trí tuệ nhân tạo quốc gia theo Thông tư 05/2026/TT-BKHCN
+              </p>
+
+              <button 
+                type="button" 
+                className="home-banner-cta-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/ho-so-dang-ky');
+                }}
+              >
+                BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={15} strokeWidth={2.4} />
+              </button>
+            </div>
+
+            {/* Right Features Panel: Đơn giản, Thực tiễn, Phù hợp SME, Bám sát Thông tư 05 */}
+            <div className="home-banner-right-panel">
+              {bannerFeatures.map((feat, idx) => {
+                const FeatIcon = feat.icon;
+                return (
+                  <div key={idx} className="banner-feature-item">
+                    <div className="banner-feature-left">
+                      <FeatIcon size={14} className="banner-feat-icon" />
+                      <span className="banner-feat-text">{feat.label}</span>
+                    </div>
+                    <Check size={14} strokeWidth={2.6} className="banner-feat-check" />
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* ========================================================

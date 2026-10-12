@@ -369,31 +369,163 @@
 }
 
 /* ========================================================
-   HERO BANNER (Full Uncropped Artwork matching mockup)
+   HERO BANNER (Full HD original background with vector fields)
    ======================================================== */
 .home-hero-banner {
   position: relative;
   width: 100%;
-  border-radius: 12px;
+  aspect-ratio: 1024 / 534;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(11, 33, 73, 0.14);
+  box-shadow: 0 6px 22px rgba(11, 33, 73, 0.16);
   flex-shrink: 0;
   cursor: pointer;
-  background: #081a44;
-  line-height: 0;
-  transition: all 0.25s ease;
+  background-color: #071e4a;
+  background-image: url('/banner-hd-original.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .home-hero-banner:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(11, 33, 73, 0.22);
+  box-shadow: 0 10px 28px rgba(11, 33, 73, 0.24);
 }
 
-.home-banner-artwork {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
+/* Gradient overlay scrim on left to guarantee text readability */
+.home-banner-overlay-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 58%;
+  background: linear-gradient(90deg, 
+    rgba(5, 20, 56, 0.94) 0%, 
+    rgba(5, 20, 56, 0.85) 45%, 
+    rgba(5, 20, 56, 0.4) 80%, 
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Left Content Area */
+.home-banner-left-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  max-width: 52%;
+  gap: clamp(0.4rem, 1vw, 0.85rem);
+}
+
+.home-banner-heading {
+  font-size: clamp(1.15rem, 2.2vw, 1.85rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.18;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+.home-banner-subtext {
+  font-size: clamp(0.72rem, 1.05vw, 0.88rem);
+  color: #cbd5e1;
+  line-height: 1.4;
+  margin: 0;
+  max-width: 440px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.home-banner-cta-btn {
+  margin-top: clamp(0.2rem, 0.6vw, 0.5rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #1d4ed8;
+  color: #ffffff;
+  font-size: clamp(0.75rem, 1vw, 0.86rem);
+  font-weight: 700;
+  padding: clamp(0.42rem, 0.8vw, 0.65rem) clamp(1.1rem, 1.8vw, 1.6rem);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.6);
+  width: fit-content;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-banner-cta-btn:hover {
+  background: #2563eb;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.8);
+}
+
+/* Right Features Panel matching mockup */
+.home-banner-right-panel {
+  position: relative;
+  z-index: 2;
+  width: clamp(170px, 20vw, 220px);
+  flex-shrink: 0;
+  background: rgba(8, 28, 68, 0.92);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(0.8rem, 1.5vw, 1.4rem);
+  gap: clamp(0.35rem, 0.8vw, 0.65rem);
+}
+
+.banner-feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.35rem, 0.6vw, 0.55rem) clamp(0.5rem, 0.8vw, 0.75rem);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.banner-feature-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(-2px);
+}
+
+.banner-feature-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.banner-feat-icon {
+  color: #93c5fd;
+  flex-shrink: 0;
+}
+
+.banner-feat-text {
+  font-size: clamp(0.7rem, 0.95vw, 0.8rem);
+  font-weight: 600;
+  color: #f8fafc;
+  white-space: nowrap;
+}
+
+.banner-feat-check {
+  color: #38bdf8;
+  flex-shrink: 0;
 }
 
 /* ========================================================
