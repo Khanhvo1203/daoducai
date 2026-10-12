@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { 
   Home,
+  Users,
   FileText, 
   CheckSquare, 
   BarChart2, 
   FileCheck, 
   HelpCircle, 
   ChevronDown, 
-  ChevronRight, 
   Bell, 
   User, 
   ArrowRight, 
   BookOpen, 
-  Shield, 
-  Zap, 
-  Building2, 
   Layers, 
   Cpu, 
-  LogOut,
-  Sparkles,
-  Check
+  LogOut
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -31,6 +26,7 @@ const HomePage = () => {
 
   // Accordion state for sidebar sub-menus
   const [expandedMenus, setExpandedMenus] = useState({
+    admin: false,
     systemInfo: true,
     ethicsAssessment: false,
     weightAssessment: false,
@@ -52,8 +48,23 @@ const HomePage = () => {
     navigate('/login');
   };
 
-  // 5 Feature Cards (Excluding Quản trị hệ thống as requested)
+  // 6 Feature Cards matching the mockup design
   const featureCards = [
+    {
+      num: 1,
+      badgeColor: '#2563eb', // Blue
+      iconBg: '#eff6ff',
+      iconColor: '#2563eb',
+      icon: Users,
+      title: '1. Quản trị hệ thống',
+      desc: 'Quản lý người dùng, đơn vị, phân quyền và cấu hình hệ thống',
+      bullets: [
+        'Quản lý thông tin người dùng',
+        'Phân quyền và vai trò',
+        'Nhật ký hoạt động'
+      ],
+      link: '/admin'
+    },
     {
       num: 2,
       badgeColor: '#059669', // Emerald Green
@@ -101,7 +112,7 @@ const HomePage = () => {
     },
     {
       num: 5,
-      badgeColor: '#e11d48', // Rose / Red
+      badgeColor: '#e11d48', // Red / Rose
       iconBg: '#fff1f2',
       iconColor: '#e11d48',
       icon: FileCheck,
@@ -140,19 +151,52 @@ const HomePage = () => {
         {/* Brand Logo */}
         <div className="sidebar-brand">
           <div className="brand-logo-glow">
-            <Cpu size={26} className="text-cyan-400" />
+            <Cpu size={22} className="text-cyan-400" />
           </div>
           <span className="brand-title">AI ETHICS PORTAL</span>
         </div>
 
         {/* Navigation Menu */}
         <nav className="sidebar-menu">
-          {/* 1. Trang chủ (Active) */}
+          {/* Trang chủ (Active) */}
           <div className="sidebar-menu-item active" onClick={() => navigate('/')}>
             <div className="menu-item-content">
-              <Home size={18} className="menu-icon" />
+              <Home size={16} className="menu-icon" />
               <span>Trang chủ</span>
             </div>
+          </div>
+
+          {/* 1. Quản trị hệ thống */}
+          <div className="sidebar-group">
+            <div 
+              className={`sidebar-menu-item parent ${expandedMenus.admin ? 'expanded' : ''}`}
+              onClick={() => toggleMenu('admin')}
+            >
+              <div className="menu-item-content">
+                <Users size={16} className="menu-icon" />
+                <span>1. Quản trị hệ thống</span>
+              </div>
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.admin ? 'rotated' : ''}`} />
+            </div>
+            {expandedMenus.admin && (
+              <div className="sidebar-submenu">
+                <div className="submenu-item" onClick={() => navigate('/admin')}>
+                  Quản lý người dùng
+                </div>
+                <div className="submenu-item" onClick={() => navigate('/admin')}>
+                  Quản lý đơn vị
+                </div>
+                <div className="submenu-item" onClick={() => navigate('/admin')}>
+                  Phân quyền
+                </div>
+                <div className="submenu-item" onClick={() => navigate('/admin')}>
+                  Nhật ký hoạt động
+                </div>
+                <div className="submenu-item" onClick={() => navigate('/admin')}>
+                  Cấu hình hệ thống
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 2. Thông tin hệ thống AI */}
@@ -162,10 +206,10 @@ const HomePage = () => {
               onClick={() => toggleMenu('systemInfo')}
             >
               <div className="menu-item-content">
-                <FileText size={18} className="menu-icon" />
+                <FileText size={16} className="menu-icon" />
                 <span>2. Thông tin hệ thống AI</span>
               </div>
-              <ChevronDown size={15} className={`chevron-arrow ${expandedMenus.systemInfo ? 'rotated' : ''}`} />
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.systemInfo ? 'rotated' : ''}`} />
             </div>
             {expandedMenus.systemInfo && (
               <div className="sidebar-submenu">
@@ -192,10 +236,10 @@ const HomePage = () => {
               onClick={() => toggleMenu('ethicsAssessment')}
             >
               <div className="menu-item-content">
-                <CheckSquare size={18} className="menu-icon" />
+                <CheckSquare size={16} className="menu-icon" />
                 <span>3. Đánh giá đạo đức</span>
               </div>
-              <ChevronDown size={15} className={`chevron-arrow ${expandedMenus.ethicsAssessment ? 'rotated' : ''}`} />
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.ethicsAssessment ? 'rotated' : ''}`} />
             </div>
             {expandedMenus.ethicsAssessment && (
               <div className="sidebar-submenu">
@@ -219,10 +263,10 @@ const HomePage = () => {
               onClick={() => toggleMenu('weightAssessment')}
             >
               <div className="menu-item-content">
-                <BarChart2 size={18} className="menu-icon" />
+                <BarChart2 size={16} className="menu-icon" />
                 <span>4. Đánh giá theo trọng số</span>
               </div>
-              <ChevronDown size={15} className={`chevron-arrow ${expandedMenus.weightAssessment ? 'rotated' : ''}`} />
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.weightAssessment ? 'rotated' : ''}`} />
             </div>
             {expandedMenus.weightAssessment && (
               <div className="sidebar-submenu">
@@ -246,10 +290,10 @@ const HomePage = () => {
               onClick={() => toggleMenu('reports')}
             >
               <div className="menu-item-content">
-                <FileCheck size={18} className="menu-icon" />
+                <FileCheck size={16} className="menu-icon" />
                 <span>5. Báo cáo tự đánh giá</span>
               </div>
-              <ChevronDown size={15} className={`chevron-arrow ${expandedMenus.reports ? 'rotated' : ''}`} />
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.reports ? 'rotated' : ''}`} />
             </div>
             {expandedMenus.reports && (
               <div className="sidebar-submenu">
@@ -273,10 +317,10 @@ const HomePage = () => {
               onClick={() => toggleMenu('help')}
             >
               <div className="menu-item-content">
-                <HelpCircle size={18} className="menu-icon" />
+                <HelpCircle size={16} className="menu-icon" />
                 <span>6. Trợ giúp</span>
               </div>
-              <ChevronDown size={15} className={`chevron-arrow ${expandedMenus.help ? 'rotated' : ''}`} />
+              <ChevronDown size={14} className={`chevron-arrow ${expandedMenus.help ? 'rotated' : ''}`} />
             </div>
             {expandedMenus.help && (
               <div className="sidebar-submenu">
@@ -299,7 +343,7 @@ const HomePage = () => {
       </aside>
 
       {/* ========================================================
-          MAIN CONTENT AREA (Header + Banner + Features Grid)
+          MAIN CONTENT AREA (Single Viewport - 100vh)
           ======================================================== */}
       <div className="home-main-container">
         {/* Top Header Bar */}
@@ -312,14 +356,14 @@ const HomePage = () => {
           <div className="topbar-right">
             {/* Notification Bell */}
             <div className="notification-bell-btn" title="Thông báo hệ thống">
-              <Bell size={20} />
+              <Bell size={18} />
               <span className="notification-badge">1</span>
             </div>
 
             {/* User Profile */}
             <div className="user-profile-anchor" onClick={() => setShowUserDropdown(!showUserDropdown)}>
               <div className="user-avatar-circle">
-                <User size={18} />
+                <User size={16} />
               </div>
               <div className="user-meta-info">
                 <div className="user-fullname">{currentUser ? (currentUser.name || currentUser.username) : 'Nguyễn Văn A'}</div>
@@ -330,14 +374,14 @@ const HomePage = () => {
               {showUserDropdown && (
                 <div className="user-menu-dropdown">
                   <div className="dropdown-item" onClick={() => navigate('/profile')}>
-                    <User size={15} /> Thông tin tài khoản
+                    <User size={14} /> Thông tin tài khoản
                   </div>
                   <div className="dropdown-item" onClick={() => navigate('/history')}>
-                    <Layers size={15} /> Lịch sử đánh giá
+                    <Layers size={14} /> Lịch sử đánh giá
                   </div>
                   <div className="dropdown-divider"></div>
                   <div className="dropdown-item danger" onClick={handleLogout}>
-                    <LogOut size={15} /> Đăng xuất
+                    <LogOut size={14} /> Đăng xuất
                   </div>
                 </div>
               )}
@@ -345,112 +389,84 @@ const HomePage = () => {
           </div>
         </header>
 
-        {/* Scrollable Content */}
-        <div className="home-content-scroll">
+        {/* Viewport Fitted Content (No Scrolling on standard screens) */}
+        <div className="home-body-viewport">
           {/* ========================================================
-              HERO BANNER (With provided cover image)
+              HERO BANNER (Pixel-perfect matching user provided graphic)
               ======================================================== */}
-          <div className="hero-banner-card">
-            {/* Background Image Container */}
-            <div className="banner-bg-wrapper">
-              <img src="/banner-home.jpg" alt="Cover AI Ethics" className="banner-bg-img" />
-              <div className="banner-gradient-overlay"></div>
-            </div>
-
-            {/* Left Content */}
-            <div className="banner-text-content">
-              <h1 className="banner-headline">
-                CÔNG CỤ TỰ ĐÁNH GIÁ<br />
-                ĐẠO ĐỨC HỆ THỐNG AI
-              </h1>
-              <p className="banner-subtext">
-                Hỗ trợ tổ chức đánh giá mức độ tuân thủ Khung đạo đức<br />
-                trí tuệ nhân tạo quốc gia theo Thông tư 05/2026/TT-BKHCN
-              </p>
-              <button 
-                type="button" 
-                className="banner-cta-button"
-                onClick={() => navigate('/ho-so-dang-ky')}
-              >
-                BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={17} strokeWidth={2.4} />
-              </button>
-            </div>
-
-            {/* Right Overlaid Feature Pills */}
-            <div className="banner-features-column">
-              <div className="banner-feature-pill">
-                <div className="feature-pill-icon"><CheckSquare size={17} /></div>
-                <span className="feature-pill-label">Đơn giản</span>
-                <Check size={17} strokeWidth={2.8} className="feature-pill-check" />
-              </div>
-              <div className="banner-feature-pill">
-                <div className="feature-pill-icon"><Zap size={17} /></div>
-                <span className="feature-pill-label">Thực tiễn</span>
-                <Check size={17} strokeWidth={2.8} className="feature-pill-check" />
-              </div>
-              <div className="banner-feature-pill">
-                <div className="feature-pill-icon"><Building2 size={17} /></div>
-                <span className="feature-pill-label">Phù hợp SME</span>
-                <Check size={17} strokeWidth={2.8} className="feature-pill-check" />
-              </div>
-              <div className="banner-feature-pill">
-                <div className="feature-pill-icon"><Shield size={17} /></div>
-                <span className="feature-pill-label">Bám sát Thông tư 05</span>
-                <Check size={17} strokeWidth={2.8} className="feature-pill-check" />
-              </div>
-            </div>
+          <div 
+            className="home-hero-banner" 
+            onClick={() => navigate('/ho-so-dang-ky')}
+            title="Nhấp để bắt đầu đánh giá"
+          >
+            <img 
+              src="/banner-home.png" 
+              alt="Công cụ tự đánh giá đạo đức hệ thống AI" 
+              className="home-banner-artwork" 
+            />
+            {/* Clickable Action Button matching banner position */}
+            <button 
+              type="button" 
+              className="home-banner-btn-hotspot"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate('/ho-so-dang-ky');
+              }}
+            >
+              BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={15} strokeWidth={2.4} />
+            </button>
           </div>
 
           {/* ========================================================
-              FEATURE MODULE CARDS ("Các phân hệ chức năng chính")
+              FEATURE MODULE CARDS (3 Columns x 2 Rows Grid)
               ======================================================== */}
-          <section className="feature-section">
-            <h3 className="section-title">Các phân hệ chức năng chính</h3>
+          <section className="feature-section-viewport">
+            <h3 className="section-title-compact">Các phân hệ chức năng chính</h3>
 
-            <div className="feature-cards-grid">
+            <div className="feature-cards-grid-compact">
               {featureCards.map((card) => {
                 const IconComponent = card.icon;
                 return (
                   <div 
                     key={card.num} 
-                    className="feature-card"
+                    className="feature-card-compact"
                     onClick={() => navigate(card.link)}
                   >
                     {/* Card Top: Number badge + Title + Subtitle */}
-                    <div className="card-header-row">
+                    <div className="card-top-row">
                       <div 
-                        className="card-num-circle"
+                        className="card-num-circle-sm"
                         style={{ backgroundColor: card.badgeColor }}
                       >
                         {card.num}
                       </div>
-                      <div className="card-header-text">
-                        <h4 className="card-title">{card.title}</h4>
-                        <p className="card-desc">{card.desc}</p>
+                      <div className="card-heading-box">
+                        <h4 className="card-title-sm">{card.title}</h4>
+                        <p className="card-desc-sm">{card.desc}</p>
                       </div>
                     </div>
 
-                    {/* Card Body: Bullets */}
-                    <ul className="card-bullets-list">
+                    {/* Card Body: 3 Bullets */}
+                    <ul className="card-bullets-list-sm">
                       {card.bullets.map((item, bIdx) => (
                         <li key={bIdx}>{item}</li>
                       ))}
                     </ul>
 
-                    {/* Card Footer: Icon left + Arrow action right */}
-                    <div className="card-footer-row">
+                    {/* Card Footer: Icon left + Arrow right */}
+                    <div className="card-footer-sm">
                       <div 
-                        className="card-feature-icon"
+                        className="card-icon-box-sm"
                         style={{ 
                           backgroundColor: card.iconBg, 
                           color: card.iconColor 
                         }}
                       >
-                        <IconComponent size={20} />
+                        <IconComponent size={16} />
                       </div>
                       
-                      <div className="card-arrow-action">
-                        <ArrowRight size={16} />
+                      <div className="card-arrow-sm">
+                        <ArrowRight size={14} strokeWidth={2.2} />
                       </div>
                     </div>
                   </div>
