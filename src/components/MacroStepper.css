@@ -3,10 +3,10 @@
   width: 100%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 0.9rem 1.5rem;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .macro-stepper-container.flush {
@@ -30,7 +30,7 @@
   position: relative;
 }
 
-/* Step Node Item ("Ô bước thực hiện") */
+/* Step Node Item */
 .macro-step-item {
   display: flex;
   flex-direction: column;
@@ -40,10 +40,7 @@
   max-width: 250px;
   position: relative;
   z-index: 2;
-  padding: 0.55rem 0.75rem;
-  border-radius: 12px;
-  border: 1.5px solid transparent;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
 }
 
 .macro-step-item.clickable {
@@ -54,7 +51,7 @@
   color: #2563eb;
 }
 
-/* Step Circle ("Ô tròn số bước") */
+/* Step Circle (Ô tròn số bước) */
 .macro-step-circle {
   width: 32px;
   height: 32px;
@@ -71,10 +68,6 @@
 /* ========================================================
    TRẠNG THÁI 1: PENDING (Chưa thực hiện)
    ======================================================== */
-.macro-step-item.pending {
-  background: transparent;
-}
-
 .macro-step-item.pending .macro-step-circle {
   background: #ffffff;
   color: #94a3b8;
@@ -87,43 +80,24 @@
 }
 
 /* ========================================================
-   TRẠNG THÁI 2: ACTIVE (Đang thực hiện - PHÁT SÁNG NỔI BẬT)
+   TRẠNG THÁI 2: ACTIVE (Đang thực hiện - CHỈ PHÁT SÁNG Ô SỐ)
    ======================================================== */
-.macro-step-item.active {
-  /* Ô phát sáng với viền và nền aura sáng dịu */
-  background: radial-gradient(ellipse at 50% 30%, rgba(239, 246, 255, 0.98), rgba(219, 234, 254, 0.45));
-  border: 1.5px solid rgba(96, 165, 250, 0.7);
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.18), 0 2px 8px rgba(37, 99, 235, 0.08);
-  animation: stepItemGlow 2.6s infinite ease-in-out;
-}
-
-@keyframes stepItemGlow {
-  0%, 100% {
-    box-shadow: 0 0 16px rgba(37, 99, 235, 0.16), 0 2px 6px rgba(37, 99, 235, 0.08);
-    border-color: rgba(96, 165, 250, 0.6);
-  }
-  50% {
-    box-shadow: 0 0 26px rgba(37, 99, 235, 0.32), 0 4px 12px rgba(37, 99, 235, 0.15);
-    border-color: rgba(37, 99, 235, 0.9);
-  }
-}
-
-/* Vòng tròn số bước phát sáng hào quang (Halo Ring) */
 .macro-step-item.active .macro-step-circle {
   background: #2563eb;
   color: #ffffff;
   border: 2px solid #2563eb;
-  box-shadow: 0 0 0 7px rgba(37, 99, 235, 0.22), 0 0 18px rgba(37, 99, 235, 0.55);
-  animation: stepCircleHalo 2.6s infinite ease-in-out;
+  /* Hào quang phát sáng tỏa rộng quanh ô số */
+  box-shadow: 0 0 0 7px rgba(37, 99, 235, 0.22), 0 0 18px rgba(37, 99, 235, 0.5);
+  animation: stepCircleHalo 2.5s infinite ease-in-out;
 }
 
 @keyframes stepCircleHalo {
   0%, 100% {
-    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2), 0 0 14px rgba(37, 99, 235, 0.45);
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.2), 0 0 12px rgba(37, 99, 235, 0.35);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0.3), 0 0 26px rgba(37, 99, 235, 0.75);
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0.3), 0 0 22px rgba(37, 99, 235, 0.65);
     transform: scale(1.05);
   }
 }
@@ -131,16 +105,11 @@
 .macro-step-item.active .macro-step-text {
   color: #1e40af;
   font-weight: 700;
-  text-shadow: 0 0 8px rgba(37, 99, 235, 0.12);
 }
 
 /* ========================================================
    TRẠNG THÁI 3: COMPLETED (Đã hoàn thành)
    ======================================================== */
-.macro-step-item.completed {
-  background: transparent;
-}
-
 .macro-step-item.completed .macro-step-circle {
   background: #2563eb;
   color: #ffffff;
@@ -174,8 +143,8 @@
   align-items: center;
   justify-content: center;
   color: #cbd5e1;
-  margin: 0 0.5rem;
-  margin-top: -1.35rem; /* align vertically with circles */
+  margin: 0 1rem;
+  margin-top: -1.25rem; /* align with circles */
   transition: color 0.25s ease;
 }
 
@@ -186,11 +155,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .macro-stepper-container {
-    padding: 0.75rem 0.8rem;
-  }
-
-  .macro-step-item {
-    padding: 0.4rem 0.4rem;
+    padding: 0.75rem 1rem;
   }
 
   .macro-step-circle {
@@ -206,8 +171,8 @@
   }
 
   .macro-step-connector {
-    margin: 0 0.25rem;
-    margin-top: -1.15rem;
+    margin: 0 0.5rem;
+    margin-top: -1rem;
   }
 }
 
