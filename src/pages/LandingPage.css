@@ -14,7 +14,9 @@
 
 .declaration-info {
   flex: 1;
-  padding-top: 2.5rem;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-title {
@@ -310,6 +312,8 @@
 
 .declaration-form-container {
   flex: 1.2;
+  display: flex;
+  flex-direction: column;
 }
 
 .glass-card {
@@ -323,6 +327,9 @@
 .form-card {
   padding: 2.5rem;
   border-radius: var(--border-radius-lg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .fade-in {

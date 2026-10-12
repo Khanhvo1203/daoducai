@@ -275,7 +275,7 @@ const LandingPage = () => {
           {step === 1 && (
             <div className="card glass-card form-card fade-in">
               <h3 className="mb-6 border-b pb-4">Hồ sơ đăng ký đánh giá</h3>
-              <form onSubmit={handleNextStep} className="flex-col gap-6">
+              <form onSubmit={handleNextStep} className="flex-col gap-6" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <div className="form-section">
                   <div className="flex items-center gap-2 mb-4">
                     <User size={18} className="text-primary" />
@@ -299,7 +299,7 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                <div className="form-actions mt-6 pt-4 border-t flex justify-end">
+                <div className="form-actions mt-auto pt-4 border-t flex justify-end">
                   <button type="submit" className="btn btn-primary btn-lg">
                     Tiếp tục Thông tin hệ thống <ArrowRight size={18} />
                   </button>
@@ -627,7 +627,7 @@ const LandingPage = () => {
                 Chọn một hoặc cả hai để xây dựng bộ câu hỏi phù hợp cho hệ thống {formData.systemName}.
               </p>
               
-              <div className="flex-col gap-4 mb-8">
+              <div className="flex-col gap-4 mb-6" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 {/* Lựa chọn 1 */}
                 <button 
                   type="button" 
@@ -677,7 +677,7 @@ const LandingPage = () => {
                 <a 
                   href="/Khung_dao_duc_Unesco.xlsx" 
                   download
-                  className="selection-card block hover:border-primary transition-colors cursor-pointer mt-4"
+                  className="selection-card block hover:border-primary transition-colors cursor-pointer mt-2"
                   style={{ display: 'block', background: 'white', border: '1px solid var(--border)', padding: '1.25rem', borderRadius: '0.75rem', textDecoration: 'none', textAlign: 'left', width: '100%' }}
                 >
                   <div className="flex items-start gap-2">
@@ -690,7 +690,7 @@ const LandingPage = () => {
                 </a>
               </div>
 
-              <div className="flex justify-start items-center mt-6 pt-4 border-t">
+              <div className="flex justify-start items-center mt-auto pt-4 border-t">
                 <button className="btn btn-secondary text-muted border-none bg-transparent" onClick={handlePrevStep}>
                   Quay lại
                 </button>
