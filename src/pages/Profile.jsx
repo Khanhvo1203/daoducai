@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, ShieldCheck, Phone, Lock, Save, ArrowLeft } from 'lucide-react';
+import { User, ShieldCheck, Phone, Lock, Save, ArrowLeft, Building2 } from 'lucide-react';
 import { getCurrentUser, getAllUsers, updateUser } from '../utils/auth';
 import './Profile.css';
 
@@ -111,10 +111,17 @@ const Profile = () => {
 
           {/* User identity */}
           <div className="profile-identity">
-            <h3 className="profile-user-fullname">{user.name || 'Người dùng'}</h3>
-            <p className="profile-user-email">
-              <User size={15} /> {user.username}
-            </p>
+            <h3 className="profile-user-fullname">{user.agency || user.name || 'Cơ quan / Đơn vị'}</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px' }}>
+              {user.name && user.name !== user.agency && (
+                <p className="profile-user-email" style={{ margin: 0 }}>
+                  <User size={15} /> Người đại diện: <strong style={{ color: '#1e293b' }}>{user.name}</strong>
+                </p>
+              )}
+              <p className="profile-user-email" style={{ margin: 0 }}>
+                <ShieldCheck size={15} /> Email tài khoản: {user.username}
+              </p>
+            </div>
           </div>
 
           <form onSubmit={handleUpdateProfile}>
@@ -133,6 +140,20 @@ const Profile = () => {
 
             {/* Section 1: THÔNG TIN LIÊN HỆ */}
             <div className="profile-section-heading">Thông tin liên hệ</div>
+
+            <div className="profile-field-item">
+              <label className="profile-label-text">
+                <Building2 size={16} className="text-muted" /> Tên cơ quan / Đơn vị
+              </label>
+              <input 
+                type="text" 
+                disabled
+                className="profile-text-input" 
+                style={{ backgroundColor: '#f8fafc', color: '#1e293b', fontWeight: 600 }}
+                value={user.agency || user.name || 'Chưa cập nhật'} 
+              />
+              <p className="profile-hint-text">Đơn vị quản lý và triển khai hệ thống do Quản trị viên cấp.</p>
+            </div>
 
             <div className="profile-field-item">
               <label className="profile-label-text">

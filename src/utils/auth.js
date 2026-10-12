@@ -79,28 +79,42 @@ export const logout = () => {
 
 export const getCurrentUser = () => {
   const userStr = localStorage.getItem('currentUser');
-  return userStr ? JSON.parse(userStr) : null;
+  if (!userStr) return null;
+  const user = JSON.parse(userStr);
+  const agency = user.agency || user.name || (user.role === 'ADMIN' ? 'Quản trị viên' : 'sở nội vụ');
+  const name = user.name || user.agency || (user.role === 'ADMIN' ? 'Quản trị viên' : 'Người dùng');
+  return {
+    ...user,
+    agency,
+    name
+  };
 };
 
 // === QUẢN LÝ THÀNH VIÊN (Dành cho Admin) ===
 export const getAllUsers = () => {
-  return JSON.parse(localStorage.getItem('users')) || [];
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  return users.map(u => ({
+    ...u,
+    agency: u.agency || u.name || '',
+    name: u.name || u.agency || ''
+  }));
 };
 
 export const createUser = ({ username, password, name, agency, phone, role = 'MEMBER' }) => {
   if (!username.includes('@') && role !== 'ADMIN') {
     return { success: false, message: 'Tên đăng nhập bắt buộc phải là địa chỉ Email.' };
   }
-  const users = getAllUsers();
+  const users = JSON.parse(localStorage.getItem('users')) || [];
   if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
     return { success: false, message: 'Tên đăng nhập này đã tồn tại trong hệ thống.' };
   }
-  const finalAgency = (agency || name || '').trim();
+  const finalAgency = (agency || '').trim();
+  const finalName = (name || '').trim();
   users.push({ 
     username, 
     password, 
-    name: name ? name.trim() : finalAgency, 
-    agency: finalAgency, 
+    name: finalName || finalAgency, 
+    agency: finalAgency || finalName, 
     phone, 
     role, 
     createdAt: new Date().toISOString() 

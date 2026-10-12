@@ -8,11 +8,11 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [assessments, setAssessments] = useState([]);
   const [showAddUser, setShowAddUser] = useState(false);
-  const [newUser, setNewUser] = useState({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
+  const [newUser, setNewUser] = useState({ username: '', password: '', agency: '', name: '', phone: '', role: 'MEMBER' });
   const [searchTerm, setSearchTerm] = useState('');
   const [assessmentSearch, setAssessmentSearch] = useState('');
   const [editingUser, setEditingUser] = useState(null);
-  const [editFormData, setEditFormData] = useState({ name: '', phone: '', password: '', role: 'MEMBER' });
+  const [editFormData, setEditFormData] = useState({ agency: '', name: '', phone: '', password: '', role: 'MEMBER' });
   
   const navigate = useNavigate();
 
@@ -38,11 +38,15 @@ const AdminDashboard = () => {
   const handleAddUser = (e) => {
     e.preventDefault();
     const res = createUser({
-      ...newUser,
-      agency: newUser.name
+      username: newUser.username,
+      password: newUser.password,
+      agency: newUser.agency || newUser.name,
+      name: newUser.name || newUser.agency,
+      phone: newUser.phone,
+      role: newUser.role
     });
     if (res.success) {
-      setNewUser({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
+      setNewUser({ username: '', password: '', agency: '', name: '', phone: '', role: 'MEMBER' });
       setShowAddUser(false);
       loadData();
     } else {
@@ -60,6 +64,7 @@ const AdminDashboard = () => {
   const handleEditUser = (user) => {
     setEditingUser(user.username);
     setEditFormData({ 
+      agency: user.agency || user.name || '',
       name: user.name || user.agency || '',
       phone: user.phone || '', 
       password: user.password || '', 
@@ -70,8 +75,11 @@ const AdminDashboard = () => {
   const submitEditUser = (e) => {
     e.preventDefault();
     updateUser(editingUser, {
-      ...editFormData,
-      agency: editFormData.name
+      agency: editFormData.agency || editFormData.name,
+      name: editFormData.name || editFormData.agency,
+      phone: editFormData.phone,
+      password: editFormData.password,
+      role: editFormData.role
     });
     setEditingUser(null);
     loadData();
@@ -145,32 +153,79 @@ const AdminDashboard = () => {
           </div>
 
           {showAddUser && (
-            <form onSubmit={handleAddUser} className="bg-muted-light p-4 rounded-md mb-6 flex gap-4 items-end border">
-              <div className="flex-1">
-                <label className="text-xs font-bold mb-1 block">Tên đơn vị / Người dùng</label>
-                <input type="text" required className="form-control" value={newUser.name} onChange={e => setNewUser({...newUser, name: e.target.value})} placeholder="Vd: Sở Thông tin Truyền thông" />
+            <form onSubmit={handleAddUser} className="bg-muted-light p-4 rounded-md mb-6 border shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3 items-end mb-3">
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Tên cơ quan / Đơn vị <span className="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="form-control" 
+                    value={newUser.agency} 
+                    onChange={e => setNewUser({...newUser, agency: e.target.value})} 
+                    placeholder="Vd: Sở Thông tin Truyền thông" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Tên người dùng</label>
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    value={newUser.name} 
+                    onChange={e => setNewUser({...newUser, name: e.target.value})} 
+                    placeholder="Vd: Nguyễn Văn A" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Email đăng nhập <span className="text-danger">*</span></label>
+                  <input 
+                    type="email" 
+                    required 
+                    className="form-control" 
+                    value={newUser.username} 
+                    onChange={e => setNewUser({...newUser, username: e.target.value})} 
+                    placeholder="Vd: email@donvi.vn" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Số điện thoại <span className="text-danger">*</span></label>
+                  <input 
+                    type="tel" 
+                    required 
+                    className="form-control" 
+                    value={newUser.phone} 
+                    onChange={e => setNewUser({...newUser, phone: e.target.value})} 
+                    placeholder="Vd: 0987654321" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Mật khẩu <span className="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    required 
+                    className="form-control" 
+                    value={newUser.password} 
+                    onChange={e => setNewUser({...newUser, password: e.target.value})} 
+                    placeholder="Vd: 123456" 
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold mb-1 block text-main">Vai trò</label>
+                  <select 
+                    className="form-control" 
+                    value={newUser.role} 
+                    onChange={e => setNewUser({...newUser, role: e.target.value})}
+                  >
+                    <option value="MEMBER">Thành viên</option>
+                    <option value="ADMIN">Quản trị viên</option>
+                  </select>
+                </div>
               </div>
-              <div className="flex-1">
-                <label className="text-xs font-bold mb-1 block">Email đăng nhập</label>
-                <input type="email" required className="form-control" value={newUser.username} onChange={e => setNewUser({...newUser, username: e.target.value})} placeholder="Vd: email@donvi.vn" />
-              </div>
-              <div className="flex-1">
-                <label className="text-xs font-bold mb-1 block">Số điện thoại</label>
-                <input type="tel" required className="form-control" value={newUser.phone} onChange={e => setNewUser({...newUser, phone: e.target.value})} placeholder="Vd: 0987654321" />
-              </div>
-              <div className="flex-1">
-                <label className="text-xs font-bold mb-1 block">Mật khẩu</label>
-                <input type="text" required className="form-control" value={newUser.password} onChange={e => setNewUser({...newUser, password: e.target.value})} placeholder="Vd: 123456" />
-              </div>
-              <div className="flex-1">
-                <label className="text-xs font-bold mb-1 block">Vai trò</label>
-                <select className="form-control" value={newUser.role} onChange={e => setNewUser({...newUser, role: e.target.value})}>
-                  <option value="MEMBER">Thành viên</option>
-                  <option value="ADMIN">Quản trị viên</option>
-                </select>
-              </div>
-              <div>
-                <button type="submit" className="btn btn-primary">Tạo mới</button>
+              <div className="flex justify-end gap-2">
+                <button type="button" onClick={() => setShowAddUser(false)} className="btn btn-secondary text-sm">Hủy</button>
+                <button type="submit" className="btn btn-primary text-sm font-bold">
+                  <Plus size={16} /> Tạo mới
+                </button>
               </div>
             </form>
           )}
@@ -180,7 +235,8 @@ const AdminDashboard = () => {
               <thead>
                 <tr className="border-b">
                   <th className="p-3 text-sm font-bold text-muted">Tài khoản (Email)</th>
-                  <th className="p-3 text-sm font-bold text-muted">Tên Đơn vị</th>
+                  <th className="p-3 text-sm font-bold text-muted">Tên cơ quan / Đơn vị</th>
+                  <th className="p-3 text-sm font-bold text-muted">Tên người dùng</th>
                   <th className="p-3 text-sm font-bold text-muted">Vai trò</th>
                   <th className="p-3 text-sm font-bold text-muted">Số điện thoại</th>
                   <th className="p-3 text-sm font-bold text-muted">Ngày tạo</th>
@@ -189,13 +245,14 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {filteredUsers.length === 0 ? (
-                  <tr><td colSpan="6" className="p-4 text-center text-muted">Không tìm thấy tài khoản nào.</td></tr>
+                  <tr><td colSpan="7" className="p-4 text-center text-muted">Không tìm thấy tài khoản nào.</td></tr>
                 ) : (
                   filteredUsers.map(u => (
                     <React.Fragment key={u.username}>
                       <tr className="border-b hover:bg-muted-light">
                         <td className="p-3 font-semibold">{u.username}</td>
-                        <td className="p-3">{u.name || u.agency || '-'}</td>
+                        <td className="p-3 font-medium text-main">{u.agency || u.name || '-'}</td>
+                        <td className="p-3 text-sm">{u.name || '-'}</td>
                         <td className="p-3 text-sm">
                           {u.role === 'ADMIN' ? <span className="text-danger font-bold">Quản trị viên</span> : 'Thành viên'}
                         </td>
@@ -214,34 +271,68 @@ const AdminDashboard = () => {
                       </tr>
                       {editingUser === u.username && (
                         <tr className="bg-primary-light/30 border-b">
-                          <td colSpan="6" className="p-4">
-                            <form onSubmit={submitEditUser} className="flex gap-4 items-end bg-white p-4 rounded border shadow-sm">
-                              <div className="flex-1">
-                                <label className="text-xs font-bold mb-1 block">Tài khoản</label>
-                                <input type="text" disabled className="form-control bg-gray-100" value={u.username} />
+                          <td colSpan="7" className="p-4">
+                            <form onSubmit={submitEditUser} className="bg-white p-4 rounded border shadow-sm">
+                              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3 items-end mb-3">
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Tài khoản</label>
+                                  <input type="text" disabled className="form-control bg-gray-100" value={u.username} />
+                                </div>
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Tên cơ quan / Đơn vị</label>
+                                  <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={editFormData.agency} 
+                                    onChange={e => setEditFormData({...editFormData, agency: e.target.value})} 
+                                    placeholder="Vd: Sở Thông tin Truyền thông" 
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Tên người dùng</label>
+                                  <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={editFormData.name} 
+                                    onChange={e => setEditFormData({...editFormData, name: e.target.value})} 
+                                    placeholder="Vd: Nguyễn Văn A" 
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Số điện thoại mới</label>
+                                  <input 
+                                    type="tel" 
+                                    className="form-control" 
+                                    value={editFormData.phone} 
+                                    onChange={e => setEditFormData({...editFormData, phone: e.target.value})} 
+                                    placeholder="Vd: 0987654321" 
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Mật khẩu mới</label>
+                                  <input 
+                                    type="text" 
+                                    className="form-control" 
+                                    value={editFormData.password} 
+                                    onChange={e => setEditFormData({...editFormData, password: e.target.value})} 
+                                    placeholder="Nhập mật khẩu mới..." 
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-xs font-bold mb-1 block">Vai trò</label>
+                                  <select 
+                                    className="form-control" 
+                                    value={editFormData.role} 
+                                    onChange={e => setEditFormData({...editFormData, role: e.target.value})}
+                                  >
+                                    <option value="MEMBER">Thành viên</option>
+                                    <option value="ADMIN">Quản trị viên</option>
+                                  </select>
+                                </div>
                               </div>
-                              <div className="flex-1">
-                                <label className="text-xs font-bold mb-1 block">Tên cơ quan / Đơn vị</label>
-                                <input type="text" className="form-control" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} placeholder="Vd: Sở Thông tin Truyền thông" />
-                              </div>
-                              <div className="flex-1">
-                                <label className="text-xs font-bold mb-1 block">Số điện thoại mới</label>
-                                <input type="tel" className="form-control" value={editFormData.phone} onChange={e => setEditFormData({...editFormData, phone: e.target.value})} placeholder="Vd: 0987654321" />
-                              </div>
-                              <div className="flex-1">
-                                <label className="text-xs font-bold mb-1 block">Mật khẩu mới</label>
-                                <input type="text" className="form-control" value={editFormData.password} onChange={e => setEditFormData({...editFormData, password: e.target.value})} placeholder="Nhập mật khẩu mới..." />
-                              </div>
-                              <div className="flex-1">
-                                <label className="text-xs font-bold mb-1 block">Vai trò</label>
-                                <select className="form-control" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})}>
-                                  <option value="MEMBER">Thành viên</option>
-                                  <option value="ADMIN">Quản trị viên</option>
-                                </select>
-                              </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex justify-end gap-2">
                                 <button type="button" onClick={() => setEditingUser(null)} className="btn btn-secondary text-sm">Hủy</button>
-                                <button type="submit" className="btn btn-primary text-sm">Lưu cập nhật</button>
+                                <button type="submit" className="btn btn-primary text-sm font-bold">Lưu cập nhật</button>
                               </div>
                             </form>
                           </td>
