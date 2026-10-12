@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, User, HardDrive, ArrowRight, CheckSquare, Settings, Scale, AlertTriangle, FileText } from 'lucide-react';
+import { ShieldCheck, User, HardDrive, ArrowRight, CheckSquare, Settings, Scale, AlertTriangle, FileText, Check, Sparkles } from 'lucide-react';
 import { getCurrentUser } from '../utils/auth';
 import './LandingPage.css';
 
@@ -129,55 +129,143 @@ const LandingPage = () => {
     });
   };
 
+  const stepItems = [
+    {
+      num: 1,
+      title: 'Hồ sơ đăng ký',
+      desc: 'Thông tin cá nhân người đại diện.',
+      icon: User
+    },
+    {
+      num: 2,
+      title: 'Thông tin hệ thống',
+      desc: 'Thông tin cơ bản và mức độ rủi ro.',
+      icon: HardDrive
+    },
+    {
+      num: 3,
+      title: 'Mô tả hệ thống',
+      desc: 'Đặc tả hệ thống, quy trình và tác động.',
+      icon: FileText
+    },
+    {
+      num: 4,
+      title: 'Chọn nội dung đánh giá',
+      desc: 'Quản trị & Đạo đức theo thông tư.',
+      icon: CheckSquare
+    }
+  ];
+
   return (
     <div className="declaration-page">
       <div className="container split-layout declaration-split">
         <div className="declaration-info">
-          <div className="flex items-center gap-3 mb-6">
-            <ShieldCheck size={42} className="text-primary flex-shrink-0" />
-            <h1 className="hero-title" style={{ margin: 0, lineHeight: 1 }}>
-              {step === 1 && 'Hồ sơ đăng ký'}
-              {step === 2 && 'Thông tin hệ thống'}
-              {step === 3 && 'Mô tả hệ thống'}
-              {step === 4 && 'Chọn nội dung đánh giá'}
-            </h1>
-          </div>
-          <p className="hero-subtitle text-muted mt-4 mb-8">
-            {step === 1 && 'Để bắt đầu, vui lòng cung cấp thông tin liên hệ của cá nhân/đơn vị đại diện.'}
-            {step === 2 && 'Cung cấp các đặc tả kỹ thuật, vai trò, mục đích và giới hạn của hệ thống AI.'}
-            {step === 3 && 'Mô tả chi tiết kỹ thuật và đánh giá các tác động đến con người, xã hội.'}
-            {step === 4 && 'Hệ thống cho phép bạn tùy biến bài đánh giá theo 2 phần chính. Bạn có thể chọn 1 trong 2 hoặc cả 2.'}
-          </p>
+          {/* Header & Title */}
+          <div className="stepper-header mb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="stepper-icon-box">
+                <ShieldCheck size={30} className="text-primary" />
+              </div>
+              <div>
+                <span className="stepper-kicker">
+                  BƯỚC 0{step} / 04
+                </span>
+                <h1 className="hero-title" style={{ margin: 0, lineHeight: 1.15 }}>
+                  {step === 1 && 'Hồ sơ đăng ký'}
+                  {step === 2 && 'Thông tin hệ thống'}
+                  {step === 3 && 'Mô tả hệ thống'}
+                  {step === 4 && 'Chọn nội dung đánh giá'}
+                </h1>
+              </div>
+            </div>
+            
+            <p className="hero-subtitle text-muted mt-2 mb-5">
+              {step === 1 && 'Để bắt đầu, vui lòng cung cấp thông tin liên hệ của cá nhân/đơn vị đại diện.'}
+              {step === 2 && 'Cung cấp các đặc tả kỹ thuật, vai trò, mục đích và giới hạn của hệ thống AI.'}
+              {step === 3 && 'Mô tả chi tiết kỹ thuật và đánh giá các tác động đến con người, xã hội.'}
+              {step === 4 && 'Hệ thống cho phép bạn tùy biến bài đánh giá theo 2 phần chính. Bạn có thể chọn 1 trong 2 hoặc cả 2.'}
+            </p>
 
-          <div className="info-steps flex-col gap-5">
-            <div className="flex gap-4 items-start">
-              <div className={`step-circle ${step >= 1 ? '' : 'inactive'}`}>01</div>
-              <div>
-                <h4 className={`font-bold mb-1 ${step >= 1 ? 'text-primary' : 'text-muted'}`}>Hồ sơ đăng ký</h4>
-                <p className="text-sm text-muted">Thông tin cá nhân người đại diện.</p>
+            {/* Progress Bar */}
+            <div className="stepper-progress-box">
+              <div className="flex justify-between items-center text-xs font-semibold mb-2">
+                <span className="text-muted flex items-center gap-1.5">
+                  <Sparkles size={13} className="text-primary" /> Tiến trình khai báo
+                </span>
+                <span className="text-primary font-bold">{step * 25}%</span>
+              </div>
+              <div className="stepper-progress-track">
+                <div 
+                  className="stepper-progress-fill" 
+                  style={{ width: `${(step / 4) * 100}%` }}
+                />
               </div>
             </div>
-            <div className="flex gap-4 items-start">
-              <div className={`step-circle ${step >= 2 ? '' : 'inactive'}`}>02</div>
-              <div>
-                <h4 className={`font-bold mb-1 ${step >= 2 ? 'text-primary' : 'text-muted'}`}>Thông tin hệ thống</h4>
-                <p className="text-sm text-muted">Thông tin cơ bản và mức độ rủi ro.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className={`step-circle ${step >= 3 ? '' : 'inactive'}`}>03</div>
-              <div>
-                <h4 className={`font-bold mb-1 ${step >= 3 ? 'text-primary' : 'text-muted'}`}>Mô tả hệ thống</h4>
-                <p className="text-sm text-muted">Đặc tả hệ thống, quy trình và tác động.</p>
-              </div>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className={`step-circle ${step >= 4 ? '' : 'inactive'}`}>04</div>
-              <div>
-                <h4 className={`font-bold mb-1 ${step >= 4 ? 'text-primary' : 'text-muted'}`}>Chọn nội dung đánh giá</h4>
-                <p className="text-sm text-muted">Quản trị & Đạo đức.</p>
-              </div>
-            </div>
+          </div>
+
+          {/* Stepper Timeline */}
+          <div className="stepper-timeline">
+            {stepItems.map((item, idx) => {
+              const isCompleted = step > item.num;
+              const isActive = step === item.num;
+              const isUpcoming = step < item.num;
+              const isLast = idx === stepItems.length - 1;
+
+              return (
+                <div 
+                  key={item.num} 
+                  className={`stepper-step-wrapper ${isActive ? 'is-active' : ''} ${isCompleted ? 'is-completed' : ''} ${isUpcoming ? 'is-upcoming' : ''}`}
+                  onClick={() => {
+                    if (isCompleted) {
+                      setStep(item.num);
+                    }
+                  }}
+                  role={isCompleted ? "button" : undefined}
+                  title={isCompleted ? "Nhấp để xem lại bước này" : undefined}
+                >
+                  <div className="stepper-step-card">
+                    {/* Circle Indicator */}
+                    <div className="stepper-indicator-container">
+                      <div className="stepper-circle">
+                        {isCompleted ? (
+                          <Check size={18} strokeWidth={3} className="check-icon" />
+                        ) : (
+                          <span>0{item.num}</span>
+                        )}
+                      </div>
+                      {!isLast && (
+                        <div className={`stepper-line ${isCompleted ? 'filled' : ''}`} />
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div className="stepper-step-content">
+                      <div className="flex justify-between items-center mb-1">
+                        <h4 className="stepper-step-title">{item.title}</h4>
+                        {isActive && (
+                          <span className="stepper-badge active">
+                            <span className="stepper-pulse-dot"></span>
+                            Đang thực hiện
+                          </span>
+                        )}
+                        {isCompleted && (
+                          <span className="stepper-badge completed">
+                            <Check size={11} strokeWidth={3} />
+                            Đã xong
+                          </span>
+                        )}
+                        {isUpcoming && (
+                          <span className="stepper-badge upcoming">
+                            Chờ
+                          </span>
+                        )}
+                      </div>
+                      <p className="stepper-step-desc">{item.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

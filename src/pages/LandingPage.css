@@ -31,24 +31,281 @@
   justify-content: center;
 }
 
-.step-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--primary);
-  color: white;
+/* ===================================
+   ENHANCED INTERACTIVE STEPPER STYLES
+   =================================== */
+
+.stepper-header {
+  position: relative;
+}
+
+.stepper-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(43, 86, 245, 0.12);
+  border: 1px solid rgba(43, 86, 245, 0.15);
   flex-shrink: 0;
-  border: 2px solid var(--primary);
 }
 
-.step-circle.inactive {
-  background-color: transparent;
-  color: var(--text-muted);
-  border-color: var(--border);
+.stepper-kicker {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: rgba(43, 86, 245, 0.08);
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  margin-bottom: 0.25rem;
+}
+
+.stepper-progress-box {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 0.85rem 1.15rem;
+  border-radius: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.stepper-progress-track {
+  width: 100%;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.stepper-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2b56f5 0%, #3b82f6 50%, #60a5fa 100%);
+  border-radius: 999px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Stepper Timeline */
+.stepper-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  position: relative;
+}
+
+.stepper-step-wrapper {
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.stepper-step-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  padding: 1rem 1.15rem;
+  border-radius: 14px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Indicator & Line */
+.stepper-indicator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.stepper-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.stepper-circle .check-icon {
+  color: #ffffff;
+}
+
+.stepper-line {
+  position: absolute;
+  top: 38px;
+  bottom: -20px;
+  width: 2px;
+  background: #cbd5e1;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.stepper-line.filled {
+  background: linear-gradient(to bottom, #10b981 0%, #2b56f5 100%);
+}
+
+/* Stepper Content */
+.stepper-step-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepper-step-title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+
+.stepper-step-desc {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+}
+
+/* Badges */
+.stepper-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.stepper-badge.active {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
+
+.stepper-badge.completed {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.stepper-badge.upcoming {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+}
+
+/* Pulse dot animation */
+.stepper-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  position: relative;
+}
+
+.stepper-pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background-color: rgba(37, 99, 235, 0.6);
+  animation: pulse-dot-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse-dot-ping {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* -----------------------------
+   STATES: ACTIVE, COMPLETED, UPCOMING
+   ----------------------------- */
+
+/* 1. ACTIVE (DIEM NHAN CHINH) */
+.stepper-step-wrapper.is-active .stepper-step-card {
+  background: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 12px 28px -6px rgba(43, 86, 245, 0.18), 0 4px 10px -2px rgba(43, 86, 245, 0.08);
+  transform: translateX(6px);
+}
+
+.stepper-step-wrapper.is-active .stepper-circle {
+  background: linear-gradient(135deg, #2b56f5 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(43, 86, 245, 0.22);
+}
+
+.stepper-step-wrapper.is-active .stepper-step-title {
+  color: #1e3a8a;
+  font-size: 1.05rem;
+}
+
+.stepper-step-wrapper.is-active .stepper-step-desc {
+  color: #334155;
+  font-weight: 500;
+}
+
+/* 2. COMPLETED */
+.stepper-step-wrapper.is-completed {
+  cursor: pointer;
+}
+
+.stepper-step-wrapper.is-completed .stepper-step-card {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(203, 213, 225, 0.7);
+}
+
+.stepper-step-wrapper.is-completed:hover .stepper-step-card {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateX(3px);
+}
+
+.stepper-step-wrapper.is-completed .stepper-circle {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.stepper-step-wrapper.is-completed .stepper-step-title {
+  color: #334155;
+}
+
+.stepper-step-wrapper.is-completed .stepper-step-desc {
+  color: #64748b;
+}
+
+/* 3. UPCOMING */
+.stepper-step-wrapper.is-upcoming .stepper-step-card {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(226, 232, 240, 0.6);
+  opacity: 0.75;
+}
+
+.stepper-step-wrapper.is-upcoming .stepper-circle {
+  background: #f8fafc;
+  color: #94a3b8;
+  border: 1.5px dashed #cbd5e1;
+}
+
+.stepper-step-wrapper.is-upcoming .stepper-step-title {
+  color: #64748b;
+}
+
+.stepper-step-wrapper.is-upcoming .stepper-step-desc {
+  color: #94a3b8;
 }
 
 .declaration-form-container {
