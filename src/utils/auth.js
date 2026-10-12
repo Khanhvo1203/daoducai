@@ -2,13 +2,32 @@
 
 // Khởi tạo dữ liệu mặc định nếu chưa có
 const initDB = () => {
-  if (!localStorage.getItem('users')) {
-    // Chỉ lưu danh sách thành viên trong users (Admin ẩn không lưu ở đây)
-    const initialUsers = [
-      { username: 'thanhvien@donvi.vn', password: '123', name: 'Tài khoản Thành viên (Test)', phone: '0901234567', createdAt: new Date().toISOString() }
-    ];
-    localStorage.setItem('users', JSON.stringify(initialUsers));
+  const defaultAccounts = [
+    { username: 'khanhvo12032000@gmail.com', password: '123', name: 'sở tài nguyên', agency: 'sở tài nguyên', phone: '0915386475', role: 'MEMBER', createdAt: '2026-08-13T08:00:00.000Z' },
+    { username: 'khcn@gmail.com', password: '123', name: 'sở nội vụ', agency: 'sở nội vụ', phone: '5165656565', role: 'MEMBER', createdAt: '2026-10-01T08:00:00.000Z' }
+  ];
+
+  const currentUsers = JSON.parse(localStorage.getItem('users'));
+  if (!currentUsers || currentUsers.length === 0) {
+    localStorage.setItem('users', JSON.stringify(defaultAccounts));
+  } else {
+    // Đảm bảo các tài khoản mẫu từ thiết kế có sẵn nếu chưa tồn tại
+    let changed = false;
+    defaultAccounts.forEach(acc => {
+      const existing = currentUsers.find(u => u.username.toLowerCase() === acc.username.toLowerCase());
+      if (!existing) {
+        currentUsers.push(acc);
+        changed = true;
+      } else if (!existing.agency) {
+        existing.agency = existing.name || acc.agency;
+        changed = true;
+      }
+    });
+    if (changed) {
+      localStorage.setItem('users', JSON.stringify(currentUsers));
+    }
   }
+
   if (!localStorage.getItem('assessments')) {
     localStorage.setItem('assessments', JSON.stringify([]));
   }
@@ -21,7 +40,7 @@ export const login = (username, password, role = 'MEMBER') => {
   if (role === 'ADMIN') {
     // Tài khoản Admin cứng
     if (username === 'admin' && password === 'admin123') {
-      const user = { username: 'admin', role: 'ADMIN', name: 'Quản trị viên' };
+      const user = { username: 'admin', role: 'ADMIN', name: 'Quản trị viên', agency: 'Quản trị viên' };
       localStorage.setItem('currentUser', JSON.stringify(user));
       return { success: true, user };
     }
@@ -29,18 +48,25 @@ export const login = (username, password, role = 'MEMBER') => {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const dbAdmin = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password && u.role === 'ADMIN');
     if (dbAdmin) {
-      localStorage.setItem('currentUser', JSON.stringify(dbAdmin));
-      return { success: true, user: dbAdmin };
+      const adminUser = { ...dbAdmin, agency: dbAdmin.agency || dbAdmin.name || 'Quản trị viên', name: dbAdmin.name || 'Quản trị viên' };
+      localStorage.setItem('currentUser', JSON.stringify(adminUser));
+      return { success: true, user: adminUser };
     }
     return { success: false, message: 'Sai tài khoản hoặc mật khẩu Quản trị.' };
   }
 
-// Đăng nhập thành viên
+  // Đăng nhập thành viên
   const users = JSON.parse(localStorage.getItem('users')) || [];
   const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
   
   if (user) {
-    const loggedInUser = { ...user, role: user.role || 'MEMBER' };
+    const agencyName = user.agency || user.name || '';
+    const loggedInUser = { 
+      ...user, 
+      agency: agencyName,
+      name: user.name || agencyName,
+      role: user.role || 'MEMBER' 
+    };
     localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
     return { success: true, user: loggedInUser };
   }
@@ -61,7 +87,7 @@ export const getAllUsers = () => {
   return JSON.parse(localStorage.getItem('users')) || [];
 };
 
-export const createUser = ({ username, password, name, phone, role = 'MEMBER' }) => {
+export const createUser = ({ username, password, name, agency, phone, role = 'MEMBER' }) => {
   if (!username.includes('@') && role !== 'ADMIN') {
     return { success: false, message: 'Tên đăng nhập bắt buộc phải là địa chỉ Email.' };
   }
@@ -69,7 +95,16 @@ export const createUser = ({ username, password, name, phone, role = 'MEMBER' })
   if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
     return { success: false, message: 'Tên đăng nhập này đã tồn tại trong hệ thống.' };
   }
-  users.push({ username, password, name, phone, role, createdAt: new Date().toISOString() });
+  const finalAgency = (agency || name || '').trim();
+  users.push({ 
+    username, 
+    password, 
+    name: name ? name.trim() : finalAgency, 
+    agency: finalAgency, 
+    phone, 
+    role, 
+    createdAt: new Date().toISOString() 
+  });
   localStorage.setItem('users', JSON.stringify(users));
   return { success: true };
 };
@@ -85,12 +120,16 @@ export const updateUser = (username, data) => {
   const userIndex = users.findIndex(u => u.username === username);
   if (userIndex === -1) return { success: false, message: 'Tài khoản không tồn tại' };
   
-  users[userIndex] = { ...users[userIndex], ...data };
+  const updatedData = { ...data };
+  if (data.name && !data.agency) updatedData.agency = data.name;
+  if (data.agency && !data.name) updatedData.name = data.agency;
+
+  users[userIndex] = { ...users[userIndex], ...updatedData };
   localStorage.setItem('users', JSON.stringify(users));
   
   const currentUser = getCurrentUser();
   if (currentUser && currentUser.username === username) {
-    localStorage.setItem('currentUser', JSON.stringify({ ...currentUser, ...data }));
+    localStorage.setItem('currentUser', JSON.stringify({ ...currentUser, ...updatedData }));
   }
   return { success: true };
 };

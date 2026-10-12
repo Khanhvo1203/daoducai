@@ -77,8 +77,12 @@ const Navigation = () => {
                   <User size={18} />
                 </div>
                 <div className="user-meta-info">
-                  <div className="user-fullname">{user ? (user.agency || user.name || user.username) : 'sở nội vụ'}</div>
-                  <div className="user-org-name">{user?.agencyType || 'Cơ quan / Đơn vị'}</div>
+                  <div className="user-fullname">
+                    {user?.role === 'ADMIN' 
+                      ? (user.name || 'Quản trị viên') 
+                      : (user ? (user.agency || user.name || user.username) : 'sở nội vụ')}
+                  </div>
+                  <div className="user-org-name">Cơ quan / Đơn vị</div>
                 </div>
               </div>
               

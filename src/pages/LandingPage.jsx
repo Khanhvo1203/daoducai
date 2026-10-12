@@ -37,16 +37,16 @@ const LandingPage = () => {
     }
     return {
       // Step 1: Hồ sơ đăng ký
-      fullName: '',
+      fullName: currentUser?.name || '',
       role: '',
-      email: '',
+      email: currentUser?.username || '',
       
       // Step 2: Thông tin AI
       systemName: '',
       internalCode: '',
       version: '',
       updatedDate: '',
-      agencyName: '',
+      agencyName: currentUser?.agency || currentUser?.name || '',
       legalBasis: '',
       orgRole: 'Nhà phát triển',
       otherOrgRole: '',

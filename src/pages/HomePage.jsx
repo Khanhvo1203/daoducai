@@ -396,8 +396,12 @@ const HomePage = () => {
                 <User size={18} />
               </div>
               <div className="user-meta-info">
-                <div className="user-fullname">{currentUser ? (currentUser.agency || currentUser.name || currentUser.username) : 'sở nội vụ'}</div>
-                <div className="user-org-name">{currentUser?.agencyType || 'Cơ quan / Đơn vị'}</div>
+                <div className="user-fullname">
+                  {currentUser?.role === 'ADMIN' 
+                    ? (currentUser.name || 'Quản trị viên') 
+                    : (currentUser ? (currentUser.agency || currentUser.name || currentUser.username) : 'sở nội vụ')}
+                </div>
+                <div className="user-org-name">Cơ quan / Đơn vị</div>
               </div>
 
               {/* User Dropdown */}

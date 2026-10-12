@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [assessmentSearch, setAssessmentSearch] = useState('');
   const [editingUser, setEditingUser] = useState(null);
-  const [editFormData, setEditFormData] = useState({ phone: '', password: '', role: 'MEMBER' });
+  const [editFormData, setEditFormData] = useState({ name: '', phone: '', password: '', role: 'MEMBER' });
   
   const navigate = useNavigate();
 
@@ -37,7 +37,10 @@ const AdminDashboard = () => {
 
   const handleAddUser = (e) => {
     e.preventDefault();
-    const res = createUser(newUser);
+    const res = createUser({
+      ...newUser,
+      agency: newUser.name
+    });
     if (res.success) {
       setNewUser({ username: '', password: '', name: '', phone: '', role: 'MEMBER' });
       setShowAddUser(false);
@@ -56,12 +59,20 @@ const AdminDashboard = () => {
 
   const handleEditUser = (user) => {
     setEditingUser(user.username);
-    setEditFormData({ phone: user.phone || '', password: user.password || '', role: user.role || 'MEMBER' });
+    setEditFormData({ 
+      name: user.name || user.agency || '',
+      phone: user.phone || '', 
+      password: user.password || '', 
+      role: user.role || 'MEMBER' 
+    });
   };
 
   const submitEditUser = (e) => {
     e.preventDefault();
-    updateUser(editingUser, editFormData);
+    updateUser(editingUser, {
+      ...editFormData,
+      agency: editFormData.name
+    });
     setEditingUser(null);
     loadData();
     alert('Cập nhật tài khoản thành công!');
@@ -184,7 +195,7 @@ const AdminDashboard = () => {
                     <React.Fragment key={u.username}>
                       <tr className="border-b hover:bg-muted-light">
                         <td className="p-3 font-semibold">{u.username}</td>
-                        <td className="p-3">{u.name}</td>
+                        <td className="p-3">{u.name || u.agency || '-'}</td>
                         <td className="p-3 text-sm">
                           {u.role === 'ADMIN' ? <span className="text-danger font-bold">Quản trị viên</span> : 'Thành viên'}
                         </td>
@@ -208,6 +219,10 @@ const AdminDashboard = () => {
                               <div className="flex-1">
                                 <label className="text-xs font-bold mb-1 block">Tài khoản</label>
                                 <input type="text" disabled className="form-control bg-gray-100" value={u.username} />
+                              </div>
+                              <div className="flex-1">
+                                <label className="text-xs font-bold mb-1 block">Tên cơ quan / Đơn vị</label>
+                                <input type="text" className="form-control" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} placeholder="Vd: Sở Thông tin Truyền thông" />
                               </div>
                               <div className="flex-1">
                                 <label className="text-xs font-bold mb-1 block">Số điện thoại mới</label>
