@@ -19,7 +19,8 @@ import {
   RotateCcw,
   Building2,
   ShieldCheck,
-  Check
+  Check,
+  Download
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -50,6 +51,17 @@ const HomePage = () => {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  // Tải file Excel biểu mẫu đánh giá UNESCO
+  const handleDownloadUnesco = (e) => {
+    if (e) e.stopPropagation();
+    const link = document.createElement('a');
+    link.href = '/Khung_dao_duc_Unesco.xlsx';
+    link.download = 'Khung_dao_duc_Unesco.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // 4 Features on Banner matching mockup
@@ -342,8 +354,14 @@ const HomePage = () => {
                 <div className="submenu-item" onClick={() => window.open('https://unesdoc.unesco.org', '_blank')}>
                   Tài liệu tham khảo
                 </div>
-                <div className="submenu-item" onClick={() => window.open('https://asean.org', '_blank')}>
-                  Công cụ quốc tế (UNESCO, ...)
+                <div 
+                  className="submenu-item flex items-center justify-between" 
+                  onClick={handleDownloadUnesco}
+                  title="Nhấp để tải về file Excel biểu mẫu đánh giá của UNESCO"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+                >
+                  <span>Công cụ quốc tế (UNESCO, ...)</span>
+                  <Download size={13} style={{ opacity: 0.7 }} />
                 </div>
                 <div className="submenu-item" onClick={() => navigate('/ho-so-dang-ky')}>
                   Câu hỏi thường gặp (FAQ)

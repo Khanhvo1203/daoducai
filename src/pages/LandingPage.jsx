@@ -1386,69 +1386,45 @@ const LandingPage = () => {
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
               <div className="portal-table-body" style={{ padding: '1.25rem 2rem' }}>
                 <p className="text-muted text-sm mb-4">
-                  Chọn một hoặc cả hai để xây dựng bộ câu hỏi phù hợp cho hệ thống <strong>{formData.systemName || '(Chưa đặt tên)'}</strong>:
+                  Chọn phương thức đánh giá phù hợp cho hệ thống <strong>{formData.systemName || '(Chưa đặt tên)'}</strong> theo Thông tư 05/2026/TT-BKHCN:
                 </p>
 
                 <div className="flex flex-col gap-3">
-                  {/* Lựa chọn 1 */}
-                  <div 
-                    className={`portal-selection-card ${showSubSelect ? 'selected' : ''}`}
-                    onClick={() => setShowSubSelect(!showSubSelect)}
-                  >
+                  {/* Lựa chọn đánh giá */}
+                  <div className="portal-selection-card selected">
                     <div className="flex items-start gap-3">
                       <Settings size={20} className="text-primary flex-shrink-0" style={{ marginTop: '2px' }} />
                       <div className="flex-1">
                         <h4 className="font-bold text-main mb-0.5" style={{ fontSize: '1rem' }}>
-                          1. Đánh giá khung đạo đức theo thông tư 05/2026/TT-BKHCN
+                          Đánh giá khung đạo đức theo Thông tư 05/2026/TT-BKHCN
                         </h4>
                         <p className="text-muted text-xs" style={{ margin: 0 }}>
-                          Ấn vào đây để tiến hành làm bài đánh giá trực tiếp trên hệ thống theo tiêu chuẩn Bộ KH&CN.
+                          Tiến hành làm bài đánh giá trực tiếp trên hệ thống theo tiêu chuẩn Bộ Khoa học và Công nghệ.
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  {showSubSelect && (
-                    <div className="p-3 bg-muted-light rounded-md border" style={{ marginLeft: '1rem' }}>
-                      <label className="text-xs font-semibold mb-1.5 block text-main">Chọn phương thức đánh giá chi tiết:</label>
-                      <select 
-                        className="portal-select mb-3" 
-                        value={selectedAssessment} 
-                        onChange={(e) => setSelectedAssessment(parseInt(e.target.value, 10))}
+                  <div className="p-3 bg-muted-light rounded-md border" style={{ marginLeft: '1rem' }}>
+                    <label className="text-xs font-semibold mb-1.5 block text-main">Chọn phương thức đánh giá chi tiết:</label>
+                    <select 
+                      className="portal-select mb-3" 
+                      value={selectedAssessment} 
+                      onChange={(e) => setSelectedAssessment(parseInt(e.target.value, 10))}
+                    >
+                      <option value={1}>1. Đánh giá khung đạo đức theo các tiêu chí (Thang điểm 60)</option>
+                      <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số (Thang điểm 100)</option>
+                    </select>
+                    <div className="flex justify-end">
+                      <button 
+                        type="button"
+                        className="btn btn-primary flex items-center gap-1.5"
+                        onClick={handleStartAssessment}
                       >
-                        <option value={1}>1. Đánh giá khung đạo đức theo các tiêu chí (Thang điểm 60)</option>
-                        <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số (Thang điểm 100)</option>
-                      </select>
-                      <div className="flex justify-end">
-                        <button 
-                          type="button"
-                          className="btn btn-primary flex items-center gap-1.5"
-                          onClick={handleStartAssessment}
-                        >
-                          Bắt đầu đánh giá <ArrowRight size={16} />
-                        </button>
-                      </div>
+                        Bắt đầu đánh giá <ArrowRight size={16} />
+                      </button>
                     </div>
-                  )}
-
-                  {/* Lựa chọn 2 */}
-                  <a 
-                    href="/Khung_dao_duc_Unesco.xlsx" 
-                    download
-                    className="portal-selection-card"
-                  >
-                    <div className="flex items-start gap-3">
-                      <Scale size={20} className="text-primary flex-shrink-0" style={{ marginTop: '2px' }} />
-                      <div className="flex-1">
-                        <h4 className="font-bold text-main mb-0.5" style={{ fontSize: '1rem' }}>
-                          2. Đánh giá tham khảo khung đạo đức theo UNESCO
-                        </h4>
-                        <p className="text-muted text-xs" style={{ margin: 0 }}>
-                          Ấn vào đây để tải về file Excel biểu mẫu đánh giá của Unesco.
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+                  </div>
                 </div>
               </div>
 
