@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import LandingPage from './pages/LandingPage';
 import Assessment1 from './pages/Assessment1';
 import Assessment2 from './pages/Assessment2';
@@ -40,8 +41,8 @@ const Navigation = () => {
   const location = useLocation();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Ẩn Navigation ở màn hình Login Admin
-  if (location.pathname === '/admin/login') return null;
+  // Ẩn Navigation ở màn hình Login Admin hoặc Trang chủ (Trang chủ có header & sidebar riêng)
+  if (location.pathname === '/admin/login' || location.pathname === '/') return null;
 
   return (
     <header className="navbar glass">
@@ -204,7 +205,7 @@ function App() {
             <Route path="/admin/login" element={<AdminLogin />} />
 
             {/* Member Protected Routes */}
-            <Route path="/" element={<RootRedirect />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/ho-so-dang-ky" element={<ProtectedRoute allowedRole="MEMBER"><LandingPage /></ProtectedRoute>} />
             <Route path="/assessment1" element={<ProtectedRoute allowedRole="MEMBER"><Assessment1 /></ProtectedRoute>} />
             <Route path="/assessment2" element={<ProtectedRoute allowedRole="MEMBER"><Assessment2 /></ProtectedRoute>} />
