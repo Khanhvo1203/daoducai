@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, ShieldCheck, Phone, Lock, Save, ArrowLeft } from 'lucide-react';
 import { getCurrentUser, getAllUsers, updateUser } from '../utils/auth';
+import './Profile.css';
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -97,98 +98,97 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 mb-10" style={{ borderColor: 'var(--border)' }}>
+        <div className="profile-card">
           {/* Header Cover */}
-          <div className="relative h-32 bg-gradient-to-r from-blue-600 to-indigo-600" style={{ background: 'linear-gradient(135deg, var(--primary), #1a56db)' }}>
-          </div>
+          <div className="profile-cover-banner"></div>
           
-          <div className="px-8 pb-4">
+          <div className="profile-card-body">
             {/* Avatar */}
-            <div className="relative flex justify-between items-end -mt-12 mb-6">
-              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+            <div className="profile-avatar-row">
+              <div className="profile-avatar-box">
                 <ShieldCheck size={40} className="text-primary" />
               </div>
-              <div className="pb-2">
-                <span className="inline-block bg-primary-light text-primary text-xs font-bold px-3 py-1 rounded-full border border-blue-200">
+              <div>
+                <span className="profile-badge-pill">
                   Tài khoản Thành viên
                 </span>
               </div>
             </div>
 
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-main">{user.name || 'Người dùng'}</h3>
-              <p className="text-muted flex items-center gap-2 mt-1">
-                <User size={14} /> {user.username}
+            <div className="profile-user-heading">
+              <h3 className="profile-user-name">{user.name || 'Người dùng'}</h3>
+              <p className="profile-user-username">
+                <User size={15} /> {user.username}
               </p>
             </div>
 
             <form onSubmit={handleUpdateProfile}>
               {profileError && (
-                <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#fef2f2', border: '1px solid #f87171', color: '#b91c1c', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ marginBottom: '24px', padding: '14px 18px', backgroundColor: '#fef2f2', border: '1px solid #f87171', color: '#b91c1c', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#ef4444' }}></div>
                   {profileError}
                 </div>
               )}
               {successMsg && (
-                <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f0fdf4', border: '1px solid #4ade80', color: '#15803d', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ marginBottom: '24px', padding: '14px 18px', backgroundColor: '#f0fdf4', border: '1px solid #4ade80', color: '#15803d', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#22c55e' }}></div>
                   {successMsg}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="profile-form-grid">
                 {/* Cột 1: Thông tin liên hệ */}
                 <div>
-                  <h4 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 border-b pb-2" style={{ borderColor: 'var(--border)' }}>Thông tin liên hệ</h4>
+                  <h4 className="profile-section-title">Thông tin liên hệ</h4>
                   
-                  <div className="mb-5">
-                    <label className="flex items-center gap-2 text-sm font-bold text-main mb-2">
+                  <div className="profile-field-group">
+                    <label className="profile-field-label">
                       <Phone size={16} className="text-muted" /> Số điện thoại
                     </label>
                     <input 
                       type="tel" 
-                      className="form-control" 
+                      className="profile-input" 
                       value={profileData.phone} 
                       onChange={e => setProfileData({...profileData, phone: e.target.value})} 
                       placeholder="Vd: 0987654321" 
                     />
-                    <p className="text-xs text-muted mt-2">Dùng để liên hệ khi hồ sơ đánh giá của bạn cần làm rõ.</p>
+                    <p className="profile-field-hint">Dùng để liên hệ khi hồ sơ đánh giá của bạn cần làm rõ.</p>
                   </div>
                 </div>
 
                 {/* Cột 2: Bảo mật */}
                 <div>
-                  <h4 className="text-sm font-bold text-primary uppercase tracking-wider mb-4 border-b pb-2" style={{ borderColor: 'var(--border)' }}>Bảo mật</h4>
+                  <h4 className="profile-section-title">Bảo mật</h4>
                   
-                  <div className="mb-4">
-                    <label className="flex items-center gap-2 text-sm font-bold text-main mb-2">
+                  <div className="profile-field-group">
+                    <label className="profile-field-label">
                       <Lock size={16} className="text-muted" /> Mật khẩu hiện tại
                     </label>
                     <input 
                       type="password" 
-                      className="form-control" 
+                      className="profile-input" 
                       value={profileData.oldPassword} 
                       onChange={e => setProfileData({...profileData, oldPassword: e.target.value})} 
                       placeholder="Nhập để xác thực thay đổi" 
                     />
                   </div>
                   
-                  <div className="mb-4">
-                    <label className="block text-sm font-bold text-main mb-2">Mật khẩu mới</label>
+                  <div className="profile-field-group">
+                    <label className="profile-field-label">Mật khẩu mới</label>
                     <input 
                       type="password" 
-                      className="form-control" 
+                      className="profile-input" 
                       value={profileData.newPassword} 
                       onChange={e => setProfileData({...profileData, newPassword: e.target.value})} 
                       placeholder="Tối thiểu 6 ký tự" 
                     />
                   </div>
                   
-                  <div className="mb-6">
-                    <label className="block text-sm font-bold text-main mb-2">Xác nhận mật khẩu mới</label>
+                  <div className="profile-field-group">
+                    <label className="profile-field-label">Xác nhận mật khẩu mới</label>
                     <input 
                       type="password" 
-                      className="form-control" 
+                      className="profile-input" 
                       value={profileData.confirmPassword} 
                       onChange={e => setProfileData({...profileData, confirmPassword: e.target.value})} 
                       placeholder="Nhập lại mật khẩu mới" 
@@ -197,7 +197,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="mt-8 pt-6 border-t flex justify-end gap-3" style={{ borderColor: 'var(--border)' }}>
+              <div className="profile-actions-row">
                 <Link to="/" className="btn btn-secondary bg-white">Trở về</Link>
                 <button type="submit" className="btn btn-primary flex items-center gap-2 shadow-md">
                   <Save size={16} /> Lưu thông tin
