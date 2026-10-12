@@ -80,9 +80,13 @@ const Navigation = () => {
                   <div className="user-fullname">
                     {user?.role === 'ADMIN' 
                       ? (user.name || 'Quản trị viên') 
-                      : (user ? (user.agency || user.name || user.username) : 'sở nội vụ')}
+                      : (user ? (user.name || user.username) : 'Nguyễn Văn A')}
                   </div>
-                  <div className="user-org-name">Cơ quan / Đơn vị</div>
+                  <div className="user-org-name">
+                    {user?.role === 'ADMIN' 
+                      ? 'Cơ quan / Đơn vị' 
+                      : (user ? (user.agency || 'Cơ quan / Đơn vị') : 'sở nội vụ')}
+                  </div>
                 </div>
               </div>
               

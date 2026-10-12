@@ -399,9 +399,13 @@ const HomePage = () => {
                 <div className="user-fullname">
                   {currentUser?.role === 'ADMIN' 
                     ? (currentUser.name || 'Quản trị viên') 
-                    : (currentUser ? (currentUser.agency || currentUser.name || currentUser.username) : 'sở nội vụ')}
+                    : (currentUser ? (currentUser.name || currentUser.username) : 'Nguyễn Văn A')}
                 </div>
-                <div className="user-org-name">Cơ quan / Đơn vị</div>
+                <div className="user-org-name">
+                  {currentUser?.role === 'ADMIN' 
+                    ? 'Cơ quan / Đơn vị' 
+                    : (currentUser ? (currentUser.agency || 'Cơ quan / Đơn vị') : 'sở nội vụ')}
+                </div>
               </div>
 
               {/* User Dropdown */}

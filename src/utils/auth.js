@@ -3,8 +3,8 @@
 // Khởi tạo dữ liệu mặc định nếu chưa có
 const initDB = () => {
   const defaultAccounts = [
-    { username: 'khanhvo12032000@gmail.com', password: '123', name: 'sở tài nguyên', agency: 'sở tài nguyên', phone: '0915386475', role: 'MEMBER', createdAt: '2026-08-13T08:00:00.000Z' },
-    { username: 'khcn@gmail.com', password: '123', name: 'sở nội vụ', agency: 'sở nội vụ', phone: '5165656565', role: 'MEMBER', createdAt: '2026-10-01T08:00:00.000Z' }
+    { username: 'khanhvo12032000@gmail.com', password: '123', name: 'Võ Quốc Khánh', agency: 'sở tài nguyên', phone: '0915386475', role: 'MEMBER', createdAt: '2026-08-13T08:00:00.000Z' },
+    { username: 'khcn@gmail.com', password: '123', name: 'Nguyễn Văn A', agency: 'sở nội vụ', phone: '5165656565', role: 'MEMBER', createdAt: '2026-10-01T08:00:00.000Z' }
   ];
 
   const currentUsers = JSON.parse(localStorage.getItem('users'));
@@ -18,9 +18,15 @@ const initDB = () => {
       if (!existing) {
         currentUsers.push(acc);
         changed = true;
-      } else if (!existing.agency) {
-        existing.agency = existing.name || acc.agency;
-        changed = true;
+      } else {
+        if (!existing.agency) {
+          existing.agency = acc.agency;
+          changed = true;
+        }
+        if (!existing.name || existing.name === existing.agency) {
+          existing.name = acc.name;
+          changed = true;
+        }
       }
     });
     if (changed) {
@@ -40,7 +46,7 @@ export const login = (username, password, role = 'MEMBER') => {
   if (role === 'ADMIN') {
     // Tài khoản Admin cứng
     if (username === 'admin' && password === 'admin123') {
-      const user = { username: 'admin', role: 'ADMIN', name: 'Quản trị viên', agency: 'Quản trị viên' };
+      const user = { username: 'admin', role: 'ADMIN', name: 'Quản trị viên', agency: 'Cơ quan / Đơn vị' };
       localStorage.setItem('currentUser', JSON.stringify(user));
       return { success: true, user };
     }
@@ -48,7 +54,7 @@ export const login = (username, password, role = 'MEMBER') => {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const dbAdmin = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password && u.role === 'ADMIN');
     if (dbAdmin) {
-      const adminUser = { ...dbAdmin, agency: dbAdmin.agency || dbAdmin.name || 'Quản trị viên', name: dbAdmin.name || 'Quản trị viên' };
+      const adminUser = { ...dbAdmin, agency: dbAdmin.agency || 'Cơ quan / Đơn vị', name: dbAdmin.name || 'Quản trị viên' };
       localStorage.setItem('currentUser', JSON.stringify(adminUser));
       return { success: true, user: adminUser };
     }
@@ -60,11 +66,12 @@ export const login = (username, password, role = 'MEMBER') => {
   const user = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
   
   if (user) {
-    const agencyName = user.agency || user.name || '';
+    const userName = user.name || user.username || 'Người dùng';
+    const agencyName = user.agency || 'Cơ quan / Đơn vị';
     const loggedInUser = { 
       ...user, 
+      name: userName,
       agency: agencyName,
-      name: user.name || agencyName,
       role: user.role || 'MEMBER' 
     };
     localStorage.setItem('currentUser', JSON.stringify(loggedInUser));
@@ -81,12 +88,16 @@ export const getCurrentUser = () => {
   const userStr = localStorage.getItem('currentUser');
   if (!userStr) return null;
   const user = JSON.parse(userStr);
-  const agency = user.agency || user.name || (user.role === 'ADMIN' ? 'Quản trị viên' : 'sở nội vụ');
-  const name = user.name || user.agency || (user.role === 'ADMIN' ? 'Quản trị viên' : 'Người dùng');
+  const name = user.role === 'ADMIN' 
+    ? (user.name || 'Quản trị viên')
+    : (user.name || user.username || 'Người dùng');
+  const agency = user.role === 'ADMIN'
+    ? 'Cơ quan / Đơn vị'
+    : (user.agency || 'Cơ quan / Đơn vị');
   return {
     ...user,
-    agency,
-    name
+    name,
+    agency
   };
 };
 

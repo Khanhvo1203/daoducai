@@ -167,9 +167,10 @@ const AdminDashboard = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold mb-1 block text-main">Tên người dùng</label>
+                  <label className="text-xs font-bold mb-1 block text-main">Tên người dùng <span className="text-danger">*</span></label>
                   <input 
                     type="text" 
+                    required 
                     className="form-control" 
                     value={newUser.name} 
                     onChange={e => setNewUser({...newUser, name: e.target.value})} 

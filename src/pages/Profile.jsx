@@ -111,13 +111,11 @@ const Profile = () => {
 
           {/* User identity */}
           <div className="profile-identity">
-            <h3 className="profile-user-fullname">{user.agency || user.name || 'Cơ quan / Đơn vị'}</h3>
+            <h3 className="profile-user-fullname">{user.name || 'Người dùng'}</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '6px' }}>
-              {user.name && user.name !== user.agency && (
-                <p className="profile-user-email" style={{ margin: 0 }}>
-                  <User size={15} /> Người đại diện: <strong style={{ color: '#1e293b' }}>{user.name}</strong>
-                </p>
-              )}
+              <p className="profile-user-email" style={{ margin: 0, color: '#475569', fontWeight: 600 }}>
+                <Building2 size={15} className="text-primary" /> {user.agency || 'Cơ quan / Đơn vị'}
+              </p>
               <p className="profile-user-email" style={{ margin: 0 }}>
                 <ShieldCheck size={15} /> Email tài khoản: {user.username}
               </p>
