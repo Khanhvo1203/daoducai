@@ -15,7 +15,11 @@ import {
   BookOpen, 
   Layers, 
   Cpu, 
-  LogOut
+  LogOut,
+  RotateCcw,
+  Building2,
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -47,6 +51,14 @@ const HomePage = () => {
     logout();
     navigate('/login');
   };
+
+  // 4 Features on Banner matching mockup
+  const bannerFeatures = [
+    { label: 'Đơn giản', icon: CheckSquare },
+    { label: 'Thực tiễn', icon: RotateCcw },
+    { label: 'Phù hợp SME', icon: Building2 },
+    { label: 'Bám sát Thông tư 05', icon: ShieldCheck }
+  ];
 
   // 6 Feature Cards matching the mockup design
   const featureCards = [
@@ -389,7 +401,7 @@ const HomePage = () => {
           </div>
         </header>
 
-        {/* Viewport Fitted Content (No Scrolling on standard screens) */}
+        {/* Viewport Fitted Content (Strictly fitted without scrolling) */}
         <div className="home-body-viewport">
           {/* ========================================================
               HERO BANNER (Pixel-perfect matching user provided graphic)
@@ -399,22 +411,47 @@ const HomePage = () => {
             onClick={() => navigate('/ho-so-dang-ky')}
             title="Nhấp để bắt đầu đánh giá"
           >
-            <img 
-              src="/banner-home.png" 
-              alt="Công cụ tự đánh giá đạo đức hệ thống AI" 
-              className="home-banner-artwork" 
-            />
-            {/* Clickable Action Button matching banner position */}
-            <button 
-              type="button" 
-              className="home-banner-btn-hotspot"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate('/ho-so-dang-ky');
-              }}
-            >
-              BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={15} strokeWidth={2.4} />
-            </button>
+            {/* Left dark gradient scrim for maximum text contrast */}
+            <div className="home-banner-overlay-left" />
+
+            {/* Left Main Content */}
+            <div className="home-banner-left-content">
+              <h1 className="home-banner-heading">
+                <span>CÔNG CỤ TỰ ĐÁNH GIÁ</span>
+                <span>ĐẠO ĐỨC HỆ THỐNG AI</span>
+              </h1>
+              
+              <p className="home-banner-subtext">
+                Hỗ trợ tổ chức đánh giá mức độ tuân thủ Khung đạo đức trí tuệ nhân tạo quốc gia theo Thông tư 05/2026/TT-BKHCN
+              </p>
+
+              <button 
+                type="button" 
+                className="home-banner-cta-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/ho-so-dang-ky');
+                }}
+              >
+                BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={14} strokeWidth={2.4} />
+              </button>
+            </div>
+
+            {/* Right Features Panel matching mockup */}
+            <div className="home-banner-right-panel">
+              {bannerFeatures.map((feat, idx) => {
+                const FeatIcon = feat.icon;
+                return (
+                  <div key={idx} className="banner-feature-item">
+                    <div className="banner-feature-left">
+                      <FeatIcon size={14} className="banner-feat-icon" />
+                      <span className="banner-feat-text">{feat.label}</span>
+                    </div>
+                    <Check size={14} strokeWidth={2.6} className="banner-feat-check" />
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* ========================================================
@@ -442,19 +479,12 @@ const HomePage = () => {
                       </div>
                       <div className="card-heading-box">
                         <h4 className="card-title-sm">{card.title}</h4>
-                        <p className="card-desc-sm">{card.desc}</p>
+                        <p className="card-desc-sm" title={card.desc}>{card.desc}</p>
                       </div>
                     </div>
 
-                    {/* Card Body: 3 Bullets */}
-                    <ul className="card-bullets-list-sm">
-                      {card.bullets.map((item, bIdx) => (
-                        <li key={bIdx}>{item}</li>
-                      ))}
-                    </ul>
-
-                    {/* Card Footer: Icon left + Arrow right */}
-                    <div className="card-footer-sm">
+                    {/* Card Body: Icon (left) + 3 Bullets (center) + Arrow (right) */}
+                    <div className="card-body-row">
                       <div 
                         className="card-icon-box-sm"
                         style={{ 
@@ -462,11 +492,20 @@ const HomePage = () => {
                           color: card.iconColor 
                         }}
                       >
-                        <IconComponent size={16} />
+                        <IconComponent size={20} strokeWidth={2.2} />
                       </div>
+
+                      <ul className="card-bullets-list-sm">
+                        {card.bullets.map((item, bIdx) => (
+                          <li key={bIdx}>
+                            <span className="bullet-dot">•</span>
+                            <span className="bullet-text">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
                       
                       <div className="card-arrow-sm">
-                        <ArrowRight size={14} strokeWidth={2.2} />
+                        <ArrowRight size={14} strokeWidth={2.4} />
                       </div>
                     </div>
                   </div>
