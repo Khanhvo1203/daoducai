@@ -428,12 +428,9 @@ const Assessment2 = () => {
                   </div>
                 </div>
                 <div className="preset-selector-container">
-                  <div className="preset-selector-header">
-                    <div className="preset-selector-label">
-                      <SlidersHorizontal size={14} className="text-blue-600" />
-                      <span>Đơn vị chọn (Loại hệ thống)</span>
-                    </div>
-                    <span className="preset-selector-badge">Thiết lập mẫu</span>
+                  <div className="preset-selector-label">
+                    <SlidersHorizontal size={14} className="text-blue-600" />
+                    <span>Đơn vị chọn (Loại hệ thống)</span>
                   </div>
                   <select
                     className="preset-selector-dropdown"
