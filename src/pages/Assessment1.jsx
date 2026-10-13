@@ -368,7 +368,7 @@ const Assessment1 = () => {
                 )}
                 <div className={`accordion-item ${openQuestion === q.id ? 'open' : ''} ${answers[q.id] !== undefined ? 'answered' : ''}`}>
                   <div 
-                    className="accordion-header flex items-start justify-between gap-4"
+                    className="accordion-header flex items-center justify-between gap-4"
                     onClick={() => setOpenQuestion(openQuestion === q.id ? null : q.id)}
                   >
                     <div className="flex items-start gap-3">
