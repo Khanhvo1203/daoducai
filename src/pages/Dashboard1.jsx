@@ -15,6 +15,19 @@ const Dashboard1 = () => {
   const currentUser = getCurrentUser();
   const userId = currentUser ? currentUser.username : 'guest';
 
+  // Đọc câu trả lời, minh chứng và form đang thực hiện từ localStorage
+  let draftAnswers = {};
+  let draftEvidences = {};
+  let draftFormData = null;
+  try {
+    const sAnswers = localStorage.getItem(`assessment_answers_${userId}`);
+    if (sAnswers) draftAnswers = JSON.parse(sAnswers);
+    const sEvidences = localStorage.getItem(`assessment_evidences_${userId}`);
+    if (sEvidences) draftEvidences = JSON.parse(sEvidences);
+    const sForm = localStorage.getItem(`landing_formData_${userId}`);
+    if (sForm) draftFormData = JSON.parse(sForm);
+  } catch (e) {}
+
   let initialData = location.state;
   if (!initialData && idFromUrl) {
     const all = getAllAssessments();
@@ -30,35 +43,28 @@ const Dashboard1 = () => {
     }
   }
 
-  // Nếu chưa có initialData nhưng người dùng đã đăng nhập, đọc bài đánh giá gần nhất
-  if (!initialData && currentUser) {
-    const all = getAllAssessments();
-    const userAssessments = all.filter(a => a.userId === currentUser.username);
-    if (userAssessments.length > 0) {
-      const latest = userAssessments[0];
-      initialData = {
-        selection: latest.selection,
-        formData: latest.formData,
-        answers: latest.answers,
-        evidences: latest.evidences,
-        assessmentCode: latest.id
-      };
-    }
+  // Xác định câu trả lời thực tế của người dùng:
+  // Ưu tiên 1: location.state (truyền trực tiếp từ Assessment1)
+  // Ưu tiên 2: draftAnswers từ phiên đánh giá hiện tại trong localStorage
+  // Ưu tiên 3: bài đánh giá đã lưu nếu xem lại
+  let rawAnswers = {};
+  if (initialData?.answers && Object.keys(initialData.answers).length > 0) {
+    rawAnswers = initialData.answers;
+  } else if (Object.keys(draftAnswers).length > 0) {
+    rawAnswers = draftAnswers;
+  } else if (initialData?.answers) {
+    rawAnswers = initialData.answers;
   }
 
-  // Đọc minh chứng lưu trong bộ nhớ tạm nếu có
-  let draftEvidences = {};
-  try {
-    const savedDraft = localStorage.getItem(`assessment_evidences_${userId}`);
-    if (savedDraft) draftEvidences = JSON.parse(savedDraft);
-  } catch (e) {}
+  const evidences = { 
+    ...draftEvidences, 
+    ...(initialData?.evidences || {}) 
+  };
 
   const existingCode = initialData?.assessmentCode || null;
-  const rawAnswers = initialData?.answers || {};
-  const evidences = { ...draftEvidences, ...(initialData?.evidences || {}) };
 
   // Form data with fallback matching user mockup
-  const formData = initialData?.formData || {
+  const formData = initialData?.formData || draftFormData || {
     systemName: 'Trợ lý số xử lý hồ sơ hành chính',
     domain: 'Hành chính công',
     email: 'admin@demo.vn',
@@ -76,10 +82,10 @@ const Dashboard1 = () => {
     businessProblem: 'Tối ưu hóa thời gian xử lý thủ tục hành chính, giảm tải áp lực cho cán bộ một cửa'
   };
 
-  const displayCode = existingCode || '2513';
+  const displayCode = existingCode || (Object.keys(rawAnswers).length > 0 ? 'HỒ SƠ MỚI' : '2513');
   const displayDate = new Date().toLocaleDateString('vi-VN');
 
-  // Fallback demo answers matching user mockup if no real evaluation answers exist
+  // Fallback demo answers matching user mockup CHỈ KHI hoàn toàn không có bất kỳ câu trả lời nào
   const defaultDemoAnswers = {
     // C1: 13 Có, 2 Không (C1.8 and C1.13 are 'Không')
     'C1.1': 0, 'C1.2': 0, 'C1.3': 0, 'C1.4': 0, 'C1.5': 0,
@@ -99,7 +105,8 @@ const Dashboard1 = () => {
     'C4.11': 0, 'C4.12': 1, 'C4.13': 1, 'C4.14': 1, 'C4.15': 0,
   };
 
-  const hasUserAnswers = Object.keys(rawAnswers).length >= 5;
+  // Nếu người dùng có câu trả lời (kể cả chỉ đánh giá 1-2 câu), luôn dùng câu trả lời thực tế!
+  const hasUserAnswers = Object.keys(rawAnswers).length > 0;
   const answers = hasUserAnswers ? rawAnswers : defaultDemoAnswers;
 
   const [activePrinciple, setActivePrinciple] = useState('C1');
@@ -509,13 +516,12 @@ const Dashboard1 = () => {
 
   const handleReset = () => {
     const user = getCurrentUser();
-    if (user) {
-      localStorage.removeItem(`landing_formData_${user.username}`);
-      localStorage.removeItem(`landing_step_${user.username}`);
-      localStorage.removeItem(`assessment_answers_${user.username}`);
-      localStorage.removeItem(`assessment_evidences_${user.username}`);
-      localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
-    }
+    const uKey = user ? user.username : 'guest';
+    localStorage.removeItem(`landing_formData_${uKey}`);
+    localStorage.removeItem(`landing_step_${uKey}`);
+    localStorage.removeItem(`assessment_answers_${uKey}`);
+    localStorage.removeItem(`assessment_evidences_${uKey}`);
+    localStorage.removeItem(`assessment_activeStepIdx_${uKey}`);
     navigate('/');
   };
 
@@ -768,12 +774,11 @@ const Dashboard1 = () => {
                       </td>
                     </tr>
                     {sub.questions.map((q) => {
-                      const isYes = answers[q.id] === 0;
+                      const ansVal = answers[q.id];
+                      const isYes = ansVal === 0;
+                      const isNo = ansVal === 1;
                       const userEv = evidences[q.id]?.trim();
                       const defaultEv = defaultEvidenceMap[q.id] || 'Tài liệu đầy đủ';
-                      const evText = isYes
-                        ? (userEv || defaultEv)
-                        : (userEv ? userEv : (defaultEv ? `${defaultEv} - chưa nộp` : 'Chưa có minh chứng — ghi nhận điểm thiếu hụt'));
 
                       return (
                         <tr key={q.id}>
@@ -781,18 +786,26 @@ const Dashboard1 = () => {
                           <td style={{ color: '#334155' }}>{q.text}</td>
                           <td style={{ textAlign: 'center' }}>
                             {isYes ? (
-                              <span style={{ color: '#334155', fontWeight: 500 }}>Có</span>
-                            ) : (
+                              <span style={{ color: '#334155', fontWeight: 600 }}>Có</span>
+                            ) : isNo ? (
                               <span style={{ color: '#dc2626', fontWeight: 700 }}>Không</span>
+                            ) : (
+                              <span style={{ color: '#94a3b8', fontSize: '12px', fontStyle: 'italic' }}>Chưa đánh giá</span>
                             )}
                           </td>
                           <td>
                             {isYes ? (
                               <span style={{ color: userEv ? '#0f172a' : '#64748b', fontWeight: userEv ? 600 : 400 }}>
-                                {evText}
+                                {userEv || defaultEv}
+                              </span>
+                            ) : isNo ? (
+                              <span style={{ color: '#dc2626', fontWeight: 500 }}>
+                                {userEv || `${defaultEv} - chưa nộp`}
                               </span>
                             ) : (
-                              <span style={{ color: '#dc2626', fontWeight: 500 }}>{evText}</span>
+                              <span style={{ color: '#94a3b8', fontSize: '12px', fontStyle: 'italic' }}>
+                                Chưa có thông tin
+                              </span>
                             )}
                           </td>
                         </tr>
@@ -815,18 +828,15 @@ const Dashboard1 = () => {
           </div>
           <div className="exec-khong-grid">
             {processedSubgroups.map((sub, sIdx) => {
-              const noQuestions = sub.questions.filter(q => answers[q.id] !== 0);
-              const isClean = noQuestions.length === 0;
+              const noQuestions = sub.questions.filter(q => answers[q.id] === 1);
+              const unAnsweredCount = sub.questions.filter(q => answers[q.id] === undefined).length;
+              const hasNo = noQuestions.length > 0;
               return (
-                <div key={sIdx} className={`exec-khong-col ${isClean ? 'clean' : 'warn'}`}>
+                <div key={sIdx} className={`exec-khong-col ${hasNo ? 'warn' : 'clean'}`}>
                   <div className="exec-khong-col-title">
-                    {sub.title} — {sub.score}/5 {noQuestions.length > 0 && `(${noQuestions.length} câu)`}
+                    {sub.title} — {sub.score}/5 {hasNo && `(${noQuestions.length} câu)`}
                   </div>
-                  {isClean ? (
-                    <div className="exec-khong-clean-msg">
-                      Không có câu "Không" — duy trì và rà soát định kỳ.
-                    </div>
-                  ) : (
+                  {hasNo ? (
                     <ul className="exec-khong-list">
                       {noQuestions.map((q) => (
                         <li key={q.id}>
@@ -834,6 +844,12 @@ const Dashboard1 = () => {
                         </li>
                       ))}
                     </ul>
+                  ) : (
+                    <div className="exec-khong-clean-msg">
+                      {unAnsweredCount > 0 
+                        ? `Không có câu "Không" (còn ${unAnsweredCount} câu chưa đánh giá).` 
+                        : 'Không có câu "Không" — duy trì và rà soát định kỳ.'}
+                    </div>
                   )}
                 </div>
               );
