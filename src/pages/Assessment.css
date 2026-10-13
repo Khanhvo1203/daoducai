@@ -192,10 +192,9 @@
 /* --- High-End Executive Question Accordion Cards --- */
 .accordion-item {
   background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-left: 4px solid #2563eb;
+  border: 1.5px solid #cbd5e1;
   border-radius: 12px;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
   margin-bottom: 1.15rem;
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -203,22 +202,21 @@
 }
 
 .accordion-item:hover {
-  border-color: #94a3b8;
-  border-left-color: #1d4ed8;
+  border-color: #3b82f6;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
 }
 
-/* Khi đã trả lời */
+/* Khi đã hoàn thành / Đã trả lời */
 .accordion-item.answered {
-  border-color: #cbd5e1;
-  border-left-color: #16a34a;
+  border: 1.5px solid #86efac;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 4px 12px -2px rgba(22, 163, 74, 0.08);
 }
 
 .accordion-item.answered:hover {
-  border-color: #86efac;
-  border-left-color: #15803d;
-  box-shadow: 0 10px 25px -3px rgba(22, 163, 74, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+  border-color: #34d399;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -3px rgba(22, 163, 74, 0.16), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
 }
 
 /* Header layout: Căn chỉnh chuẩn hàng đầu tiên, thoáng mắt */
@@ -235,6 +233,10 @@
 
 .accordion-header:hover {
   background-color: #f8fafc;
+}
+
+.accordion-item.answered .accordion-header:hover {
+  background-color: #f0fdf4;
 }
 
 /* Khối bên trái: Huy hiệu + Tiêu đề câu hỏi */
@@ -299,15 +301,24 @@
 
 /* Khi đang mở */
 .accordion-item.open {
-  border-color: #93c5fd;
-  border-left-color: #2563eb;
-  box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12), 0 10px 25px -3px rgba(37, 99, 235, 0.14);
   transform: translateY(-2px);
 }
 
 .accordion-item.open .accordion-header {
   background-color: #f8faff;
   border-bottom: 1px solid #e2e8f0;
+}
+
+.accordion-item.answered.open {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12), 0 10px 25px -3px rgba(16, 185, 129, 0.14);
+}
+
+.accordion-item.answered.open .accordion-header {
+  background-color: #f0fdf4;
+  border-bottom: 1px solid #dcfce7;
 }
 
 .badge {
