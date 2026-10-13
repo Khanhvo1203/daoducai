@@ -3,84 +3,17 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Share2, RotateCcw, Download, ChevronDown, ChevronUp } from 'lucide-react';
 import { getCurrentUser, getAllAssessments } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
-import { questionsDb } from '../data/questionsData';
+import { questionsDb, defaultEvidenceMap } from '../data/questionsData';
 import './Dashboard.css';
-
-const defaultEvidenceMap = {
-  // C1
-  'C1.1': 'Hồ sơ dự án',
-  'C1.2': 'Tài liệu thiết kế hệ thống',
-  'C1.3': 'Kế hoạch ứng phó sự cố',
-  'C1.4': 'Cấu hình ngưỡng + log',
-  'C1.5': 'Phân tích rủi ro ATTT',
-  'C1.6': 'Báo cáo kiểm thử',
-  'C1.7': 'Quy trình huấn luyện & nghiệm thu',
-  'C1.8': 'Báo cáo đánh giá bảo mật AI',
-  'C1.9': 'Báo cáo kiểm thử lưu trữ',
-  'C1.10': 'Biên bản kiểm thử',
-  'C1.11': 'Qui trình giám sát',
-  'C1.12': 'Ngưỡng cảnh báo + log',
-  'C1.13': 'Kế hoạch ứng phó sự cố AI',
-  'C1.14': 'Báo cáo sự cố',
-  'C1.15': 'Báo cáo đánh giá sự cố + qui trình ứng phó',
-
-  // C2
-  'C2.1': 'Quy trình Human-in-the-loop / Quyết định cuối',
-  'C2.2': 'Tài liệu đào tạo người vận hành',
-  'C2.3': 'Quy chế phân định thẩm quyền hành chính',
-  'C2.4': 'Quy trình phúc tra, khiếu nại của công dân',
-  'C2.5': 'Biên bản đánh giá hiệu lực can thiệp',
-  'C2.6': 'Thông báo nhận diện AI trên giao diện',
-  'C2.7': 'Báo cáo giải trình quyết định thuật toán',
-  'C2.8': 'Nhật ký kiểm toán hệ thống (Audit log >= 3 năm)',
-  'C2.9': 'Cổng thông tin công khai mục đích & hạn chế',
-  'C2.10': 'Thẻ mô hình / Thẻ hệ thống (Model Card)',
-  'C2.11': 'Báo cáo đánh giá tính đại diện dữ liệu',
-  'C2.12': 'Kết quả kiểm thử công bằng đa nhân khẩu học',
-  'C2.13': 'Quy trình khắc phục sai lệch dữ liệu',
-  'C2.14': 'Báo cáo đánh giá tác động quyền riêng tư (DPIA)',
-  'C2.15': 'Kênh tiếp nhận khiếu nại và chỉnh sửa',
-
-  // C3
-  'C3.1': 'Báo cáo chỉ số tác động xã hội (KPI)',
-  'C3.2': 'Báo cáo kiểm thử khả năng tiếp cận (Accessibility)',
-  'C3.3': 'Giao diện đa ngôn ngữ / tiếng dân tộc',
-  'C3.4': 'Báo cáo rà soát chuẩn mực văn hóa Việt Nam',
-  'C3.5': 'Bộ lọc & quy trình xử lý nội dung không phù hợp',
-  'C3.6': 'Kế hoạch phổ cập & giảm khoảng cách số',
-  'C3.7': 'Chính sách đào tạo chuyển đổi việc làm',
-  'C3.8': 'Biên bản tham vấn ý kiến người lao động',
-  'C3.9': 'Quy chế giám sát lao động minh bạch',
-  'C3.10': 'Kế hoạch đào tạo nhận thức AI cho cán bộ',
-  'C3.11': 'Báo cáo đo lường tiêu thụ năng lượng hạ tầng',
-  'C3.12': 'Giải pháp kỹ thuật tối ưu hóa tính toán (Green AI)',
-  'C3.13': 'Hồ sơ lựa chọn hạ tầng điện toán bền vững',
-  'C3.14': 'Báo cáo giám sát tác động môi trường định kỳ',
-  'C3.15': 'Cam kết môi trường trong chính sách AI',
-
-  // C4
-  'C4.1': 'Khung đánh giá đạo đức từ khâu thiết kế',
-  'C4.2': 'Quy chế thử nghiệm có kiểm soát (Sandbox)',
-  'C4.3': 'Hợp đồng và phụ lục phân định trách nhiệm',
-  'C4.4': 'Báo cáo chia sẻ tri thức và thực hành tốt',
-  'C4.5': 'Biên bản tham gia mạng lưới quản trị AI',
-  'C4.6': 'Quy chế phân định trách nhiệm giải trình nội bộ',
-  'C4.7': 'Kế hoạch đào tạo đạo đức AI cho cấp quản lý',
-  'C4.8': 'Báo cáo đánh giá năng lực người phê duyệt',
-  'C4.9': 'Quy trình cập nhật chính sách theo văn bản mới',
-  'C4.10': 'Cơ chế xác định trách nhiệm và bồi thường',
-  'C4.11': 'Văn bản đóng góp ý kiến tiêu chuẩn quốc gia',
-  'C4.12': 'Thỏa thuận hợp tác nghiên cứu với Viện/Trường',
-  'C4.13': 'Đóng góp tập dữ liệu mở tiếng Việt',
-  'C4.14': 'Kênh tiếp nhận phản ánh dịch vụ công',
-  'C4.15': 'Báo cáo thường niên công khai về hoạt động AI'
-};
 
 const Dashboard1 = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const idFromUrl = searchParams.get('id');
+
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
 
   let initialData = location.state;
   if (!initialData && idFromUrl) {
@@ -97,9 +30,32 @@ const Dashboard1 = () => {
     }
   }
 
+  // Nếu chưa có initialData nhưng người dùng đã đăng nhập, đọc bài đánh giá gần nhất
+  if (!initialData && currentUser) {
+    const all = getAllAssessments();
+    const userAssessments = all.filter(a => a.userId === currentUser.username);
+    if (userAssessments.length > 0) {
+      const latest = userAssessments[0];
+      initialData = {
+        selection: latest.selection,
+        formData: latest.formData,
+        answers: latest.answers,
+        evidences: latest.evidences,
+        assessmentCode: latest.id
+      };
+    }
+  }
+
+  // Đọc minh chứng lưu trong bộ nhớ tạm nếu có
+  let draftEvidences = {};
+  try {
+    const savedDraft = localStorage.getItem(`assessment_evidences_${userId}`);
+    if (savedDraft) draftEvidences = JSON.parse(savedDraft);
+  } catch (e) {}
+
   const existingCode = initialData?.assessmentCode || null;
   const rawAnswers = initialData?.answers || {};
-  const evidences = initialData?.evidences || {};
+  const evidences = { ...draftEvidences, ...(initialData?.evidences || {}) };
 
   // Form data with fallback matching user mockup
   const formData = initialData?.formData || {
@@ -813,11 +769,11 @@ const Dashboard1 = () => {
                     </tr>
                     {sub.questions.map((q) => {
                       const isYes = answers[q.id] === 0;
-                      const userEv = evidences[q.id];
+                      const userEv = evidences[q.id]?.trim();
                       const defaultEv = defaultEvidenceMap[q.id] || 'Tài liệu đầy đủ';
                       const evText = isYes
                         ? (userEv || defaultEv)
-                        : (defaultEv ? `${defaultEv} - chưa nộp` : 'Chưa có minh chứng — ghi nhận điểm thiếu hụt');
+                        : (userEv ? userEv : (defaultEv ? `${defaultEv} - chưa nộp` : 'Chưa có minh chứng — ghi nhận điểm thiếu hụt'));
 
                       return (
                         <tr key={q.id}>
@@ -832,7 +788,9 @@ const Dashboard1 = () => {
                           </td>
                           <td>
                             {isYes ? (
-                              <span style={{ color: '#64748b' }}>{evText}</span>
+                              <span style={{ color: userEv ? '#0f172a' : '#64748b', fontWeight: userEv ? 600 : 400 }}>
+                                {evText}
+                              </span>
                             ) : (
                               <span style={{ color: '#dc2626', fontWeight: 500 }}>{evText}</span>
                             )}

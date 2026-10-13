@@ -114,3 +114,74 @@ export const questionsDb = {
       { id: 'D10', text: 'Toàn bộ quá trình tự đánh giá (từ Phần A đến Phần D) có được lãnh đạo cấp cao ký xác nhận và chịu trách nhiệm về tính trung thực của kết quả không?', options: ['Có', 'Không'], required: true }
     ]
   };
+
+export const defaultEvidenceMap = {
+  // C1: Bảo đảm an toàn, độ tin cậy và không gây hại
+  'C1.1': 'Hồ sơ dự án',
+  'C1.2': 'Tài liệu thiết kế hệ thống',
+  'C1.3': 'Kế hoạch ứng phó sự cố',
+  'C1.4': 'Cấu hình ngưỡng + log',
+  'C1.5': 'Phân tích rủi ro ATTT',
+  'C1.6': 'Báo cáo kiểm thử',
+  'C1.7': 'Quy trình huấn luyện',
+  'C1.8': 'Báo cáo đánh giá bảo mật AI',
+  'C1.9': 'Báo cáo kiểm thử',
+  'C1.10': 'Biên bản kiểm thử',
+  'C1.11': 'Qui trình giám sát',
+  'C1.12': 'Ngưỡng cảnh báo + log',
+  'C1.13': 'Kế hoạch ứng phó sự cố AI',
+  'C1.14': 'Báo cáo sự cố',
+  'C1.15': 'Báo cáo đánh giá sự cố + qui trình ứng phó',
+
+  // C2: Tôn trọng con người, công bằng và minh bạch
+  'C2.1': 'Quy trình Human-in-the-loop / Quyết định cuối',
+  'C2.2': 'Tài liệu đào tạo người vận hành',
+  'C2.3': 'Quy chế phân định thẩm quyền hành chính',
+  'C2.4': 'Quy trình phúc tra, khiếu nại của công dân',
+  'C2.5': 'Biên bản đánh giá hiệu lực can thiệp',
+  'C2.6': 'Thông báo nhận diện AI trên giao diện',
+  'C2.7': 'Báo cáo giải trình quyết định thuật toán',
+  'C2.8': 'Nhật ký kiểm toán hệ thống (Audit log >= 3 năm)',
+  'C2.9': 'Cổng thông tin công khai mục đích & hạn chế',
+  'C2.10': 'Thẻ mô hình / Thẻ hệ thống (Model Card)',
+  'C2.11': 'Báo cáo đánh giá tính đại diện dữ liệu',
+  'C2.12': 'Kết quả kiểm thử công bằng đa nhân khẩu học',
+  'C2.13': 'Quy trình khắc phục sai lệch dữ liệu',
+  'C2.14': 'Báo cáo đánh giá tác động quyền riêng tư (DPIA)',
+  'C2.15': 'Kênh tiếp nhận khiếu nại và chỉnh sửa',
+
+  // C3: Hạnh phúc, thịnh vượng và phát triển bền vững
+  'C3.1': 'Báo cáo chỉ số tác động xã hội (KPI)',
+  'C3.2': 'Báo cáo kiểm thử khả năng tiếp cận (Accessibility)',
+  'C3.3': 'Giao diện đa ngôn ngữ / tiếng dân tộc',
+  'C3.4': 'Báo cáo rà soát chuẩn mực văn hóa Việt Nam',
+  'C3.5': 'Bộ lọc & quy trình xử lý nội dung không phù hợp',
+  'C3.6': 'Kế hoạch phổ cập & giảm khoảng cách số',
+  'C3.7': 'Chính sách đào tạo chuyển đổi việc làm',
+  'C3.8': 'Biên bản tham vấn ý kiến người lao động',
+  'C3.9': 'Quy chế giám sát lao động minh bạch',
+  'C3.10': 'Kế hoạch đào tạo nhận thức AI cho cán bộ',
+  'C3.11': 'Báo cáo đo lường tiêu thụ năng lượng hạ tầng',
+  'C3.12': 'Giải pháp kỹ thuật tối ưu hóa tính toán (Green AI)',
+  'C3.13': 'Hồ sơ lựa chọn hạ tầng điện toán bền vững',
+  'C3.14': 'Báo cáo giám sát tác động môi trường định kỳ',
+  'C3.15': 'Cam kết môi trường trong chính sách AI',
+
+  // C4: Khuyến khích đổi mới sáng tạo có trách nhiệm
+  'C4.1': 'Khung đánh giá đạo đức từ khâu thiết kế',
+  'C4.2': 'Quy chế thử nghiệm có kiểm soát (Sandbox)',
+  'C4.3': 'Hợp đồng và phụ lục phân định trách nhiệm',
+  'C4.4': 'Báo cáo chia sẻ tri thức và thực hành tốt',
+  'C4.5': 'Biên bản tham gia mạng lưới quản trị AI',
+  'C4.6': 'Quy chế phân định trách nhiệm giải trình nội bộ',
+  'C4.7': 'Kế hoạch đào tạo đạo đức AI cho cấp quản lý',
+  'C4.8': 'Báo cáo đánh giá năng lực người phê duyệt',
+  'C4.9': 'Quy trình cập nhật chính sách theo văn bản mới',
+  'C4.10': 'Cơ chế xác định trách nhiệm và bồi thường',
+  'C4.11': 'Văn bản đóng góp ý kiến tiêu chuẩn quốc gia',
+  'C4.12': 'Thỏa thuận hợp tác nghiên cứu với Viện/Trường',
+  'C4.13': 'Đóng góp tập dữ liệu mở tiếng Việt',
+  'C4.14': 'Kênh tiếp nhận phản ánh dịch vụ công',
+  'C4.15': 'Báo cáo thường niên công khai về hoạt động AI'
+};
+

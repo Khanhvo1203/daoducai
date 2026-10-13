@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, Cpu } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
+import { defaultEvidenceMap } from '../data/questionsData';
 import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
 
@@ -214,12 +215,12 @@ const Assessment1 = () => {
       const user = getCurrentUser();
       let code = null;
       if (user) {
-        code = saveAssessment(user.username, { formData, selection, answers, dashboardRoute: '/dashboard1' });
+        code = saveAssessment(user.username, { formData, selection, answers, evidences, dashboardRoute: '/dashboard1' });
         localStorage.removeItem(`assessment_answers_${user.username}`);
         localStorage.removeItem(`assessment_evidences_${user.username}`);
         localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
       }
-      navigate('/dashboard1', { state: { selection, formData, answers, assessmentCode: code } });
+      navigate('/dashboard1', { state: { selection, formData, answers, evidences, assessmentCode: code } });
     }
   };
 
@@ -439,22 +440,44 @@ const Assessment1 = () => {
                       </div>
                       {answers[q.id] !== undefined && q.options[answers[q.id]] === 'Có' && (
                         <div className="evidence-upload">
-                          <label className="evidence-label">
-                            <span>Minh chứng cụ thể (nếu có)</span>
-                            <span className="evidence-tag">Tùy chọn</span>
-                          </label>
+                          <div className="evidence-label flex justify-between items-center mb-1">
+                            <span className="font-semibold text-xs text-main">Minh chứng cụ thể</span>
+                            {defaultEvidenceMap[q.id] && !evidences[q.id] && (
+                              <button
+                                type="button"
+                                className="text-xs text-primary hover:underline bg-transparent border-none p-0 cursor-pointer"
+                                onClick={() => setEvidences({ ...evidences, [q.id]: defaultEvidenceMap[q.id] })}
+                              >
+                                + Gợi ý: {defaultEvidenceMap[q.id]}
+                              </button>
+                            )}
+                          </div>
                           <textarea 
                             className="evidence-textarea mb-3" 
                             rows="2" 
-                            placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." 
+                            placeholder={defaultEvidenceMap[q.id] ? `Nhập minh chứng (Gợi ý: ${defaultEvidenceMap[q.id]})...` : "Nhập đường dẫn tài liệu hoặc mô tả minh chứng..."}
                             value={evidences[q.id] || ''}
                             onChange={(e) => setEvidences({...evidences, [q.id]: e.target.value})}
                           ></textarea>
                           <div className="flex items-center gap-3">
-                            <button type="button" className="evidence-upload-btn">
+                            <input 
+                              type="file"
+                              id={`evidence-file-${q.id}`}
+                              style={{ display: 'none' }}
+                              onChange={(e) => {
+                                if (e.target.files && e.target.files[0]) {
+                                  setEvidences({ ...evidences, [q.id]: e.target.files[0].name });
+                                }
+                              }}
+                            />
+                            <label 
+                              htmlFor={`evidence-file-${q.id}`} 
+                              className="evidence-upload-btn cursor-pointer inline-flex items-center gap-2"
+                              style={{ cursor: 'pointer' }}
+                            >
                               <Upload size={14} />
-                              <span>Tải lên tài liệu (.pdf, .docx, .xlsx)</span>
-                            </button>
+                              <span>{evidences[q.id]?.match(/\.(pdf|docx|xlsx|doc|png|jpg)$/i) ? `Đã đính kèm: ${evidences[q.id]}` : 'Tải lên tài liệu (.pdf, .docx, .xlsx)'}</span>
+                            </label>
                           </div>
                         </div>
                       )}
