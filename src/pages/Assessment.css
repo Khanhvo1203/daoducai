@@ -425,13 +425,13 @@
   font-weight: 600;
 }
 
-/* --- Highlight Preview for Question Accordion Boxes --- */
+/* --- High-End Professional Highlight Preview for Question Cards --- */
 .accordion-item.highlight-preview {
-  background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
-  border: 1.5px solid #93c5fd;
-  border-left: 6px solid #2563eb;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #2563eb;
   border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
   margin-bottom: 1.15rem;
   transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -439,43 +439,112 @@
 }
 
 .accordion-item.highlight-preview:hover {
-  border-color: #3b82f6;
+  border-color: #94a3b8;
   border-left-color: #1d4ed8;
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.18), 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.1), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
 }
 
+/* Khi đã trả lời */
+.accordion-item.highlight-preview.answered {
+  border-color: #cbd5e1;
+  border-left-color: #16a34a;
+}
+
+.accordion-item.highlight-preview.answered:hover {
+  border-color: #86efac;
+  border-left-color: #15803d;
+  box-shadow: 0 10px 25px -3px rgba(22, 163, 74, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+}
+
+/* Header layout: Căn chỉnh chuẩn hàng đầu tiên, thoáng mắt */
 .accordion-item.highlight-preview .accordion-header {
-  padding: 1.3rem 1.6rem;
-  background-color: transparent;
+  padding: 1.25rem 1.6rem;
+  background-color: #ffffff;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between;
+  gap: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
 }
 
+.accordion-item.highlight-preview .accordion-header:hover {
+  background-color: #f8fafc;
+}
+
+/* Khối bên trái: Huy hiệu + Tiêu đề câu hỏi */
+.accordion-item.highlight-preview .accordion-header > div:first-child {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.95rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Huy hiệu mã câu hỏi: bo góc tinh tế, font số chuẩn */
 .accordion-item.highlight-preview .q-num {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-  font-weight: 800;
+  min-width: 46px;
+  height: 27px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace, sans-serif;
 }
 
+.accordion-item.highlight-preview .q-num.bg-success {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+}
+
+.accordion-item.highlight-preview .q-num.theme-bg {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+}
+
+/* Form chữ câu hỏi chuyên nghiệp */
 .accordion-item.highlight-preview .q-text {
-  color: #0f172a;
-  font-weight: 700;
-  font-size: 1.05rem;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.6;
+  letter-spacing: -0.012em;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Khối bên phải: Trạng thái + Mũi tên */
+.accordion-item.highlight-preview .accordion-header > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* Khi đang mở */
 .accordion-item.highlight-preview.open {
-  border-color: #3b82f6;
-  border-left-color: #1d4ed8;
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
-  transform: translateY(-2px);
+  border-color: #93c5fd;
+  border-left-color: #2563eb;
+  box-shadow: 0 10px 25px -3px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
 .accordion-item.highlight-preview.open .accordion-header {
-  background: #eff6ff;
-  border-bottom: 1px solid #dbeafe;
+  background-color: #f8faff;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .accordion-item.highlight-preview.open .accordion-body {
   background-color: #ffffff;
-  padding: 1.5rem 1.6rem;
+  padding: 1.5rem 1.75rem;
 }
