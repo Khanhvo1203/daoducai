@@ -912,9 +912,6 @@ const Dashboard1 = () => {
                 <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
                   {currP.recommendations.full.statusDesc}
                 </p>
-                <div className="exec-recom-box-decision">
-                  {currP.recommendations.full.decision}
-                </div>
                 <ul className="exec-recom-bullets">
                   {currP.recommendations.full.bullets.map((b, i) => (
                     <li key={i}>{b}</li>
@@ -945,9 +942,6 @@ const Dashboard1 = () => {
                 <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
                   {currP.recommendations.partial.statusDesc}
                 </p>
-                <div className="exec-recom-box-decision">
-                  {currP.recommendations.partial.decision}
-                </div>
                 <ul className="exec-recom-bullets">
                   {currP.recommendations.partial.bullets.map((b, i) => (
                     <li key={i}>{b}</li>
@@ -978,9 +972,6 @@ const Dashboard1 = () => {
                 <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
                   {currP.recommendations.non.statusDesc}
                 </p>
-                <div className="exec-recom-box-decision">
-                  {currP.recommendations.non.decision}
-                </div>
                 <ul className="exec-recom-bullets">
                   {currP.recommendations.non.bullets.map((b, i) => (
                     <li key={i}>{b}</li>
