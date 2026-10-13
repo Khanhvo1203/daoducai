@@ -62,7 +62,7 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
               >
                 <div className="macro-step-circle">
                   {isCompleted ? (
-                    <Check size={15} strokeWidth={2.8} />
+                    <Check size={28} strokeWidth={3} />
                   ) : (
                     <span>{phase.num}</span>
                   )}
@@ -73,10 +73,13 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
                 </div>
               </div>
 
-              {/* Connecting Arrow between steps */}
+              {/* Connecting Arrow Bar between steps */}
               {idx < phases.length - 1 && (
                 <div className={`macro-step-connector ${isCompleted ? 'passed' : ''}`}>
-                  <ArrowRight size={18} strokeWidth={2} />
+                  <div className="macro-connector-line"></div>
+                  <div className="macro-connector-arrow">
+                    <ArrowRight size={20} strokeWidth={2.8} />
+                  </div>
                 </div>
               )}
             </React.Fragment>
