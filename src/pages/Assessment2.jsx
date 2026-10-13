@@ -519,7 +519,7 @@ const Assessment2 = () => {
                 {q.groupTitle && (
                   <h3 className="group-section-title">{q.groupTitle}</h3>
                 )}
-                <div className={`accordion-item ${openQuestion === q.id ? 'open' : ''} ${answers[q.id] !== undefined ? 'answered' : ''}`}>
+                <div className={`accordion-item ${openQuestion === q.id ? 'open' : ''} ${answers[q.id] !== undefined ? 'answered' : ''} ${(q.id === 'C1.2' || q.id === 'C1.3') ? 'highlight-preview' : ''}`}>
                   <div 
                     className="accordion-header flex items-center justify-between gap-4"
                     onClick={() => setOpenQuestion(openQuestion === q.id ? null : q.id)}
