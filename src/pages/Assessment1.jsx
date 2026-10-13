@@ -408,25 +408,27 @@ const Assessment1 = () => {
                               onChange={() => handleSelect(q.id, oIdx)}
                             />
                             <span className="radio-custom"></span>
-                            {opt}
+                            <span className="radio-text">{opt}</span>
                           </label>
                         ))}
                       </div>
                       {answers[q.id] !== undefined && q.options[answers[q.id]] === 'Có' && (
-                        <div className="evidence-upload mt-4 pt-4 border-t">
-                          <label className="text-sm font-semibold mb-2 block">Minh chứng cụ thể (nếu có)</label>
+                        <div className="evidence-upload">
+                          <label className="evidence-label">
+                            <span>Minh chứng cụ thể (nếu có)</span>
+                            <span className="evidence-tag">Tùy chọn</span>
+                          </label>
                           <textarea 
-                            className="form-control mb-3" 
+                            className="evidence-textarea mb-3" 
                             rows="2" 
                             placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." 
-                            style={{width: '100%'}}
                             value={evidences[q.id] || ''}
                             onChange={(e) => setEvidences({...evidences, [q.id]: e.target.value})}
                           ></textarea>
-                          <div className="flex items-center gap-3 mt-2">
-                            <button type="button" className="btn flex items-center gap-2 cursor-pointer" style={{ padding: '6px 14px', fontSize: '13px', borderRadius: '6px', border: '1px dashed var(--primary)', color: 'var(--primary)', backgroundColor: 'transparent' }}>
+                          <div className="flex items-center gap-3">
+                            <button type="button" className="evidence-upload-btn">
                               <Upload size={14} />
-                              <span className="font-semibold">Tải lên tài liệu (.pdf, .docx, .xlsx)</span>
+                              <span>Tải lên tài liệu (.pdf, .docx, .xlsx)</span>
                             </button>
                           </div>
                         </div>
