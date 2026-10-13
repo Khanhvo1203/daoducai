@@ -9,12 +9,20 @@ import './Assessment.css';
 const Assessment1 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
+
+  let localDraftForm = null;
+  try {
+    const saved = localStorage.getItem(`landing_formData_${userId}`);
+    if (saved) localDraftForm = JSON.parse(saved);
+  } catch (e) {}
   
   const selection = location.state?.selection || { partB: true, partC: true };
-  const formData = location.state?.formData || {
-    systemName: 'Hệ thống AI Demo',
-    domain: 'Hành chính công',
-    email: 'admin@demo.vn'
+  const formData = location.state?.formData || localDraftForm || {
+    systemName: '',
+    domain: '',
+    email: currentUser?.username || ''
   };
 
   // Define steps dynamically with Themes and Icons
@@ -34,9 +42,6 @@ const Assessment1 = () => {
   }
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
-
-  const currentUser = getCurrentUser();
-  const userId = currentUser ? currentUser.username : 'guest';
 
   const [activeStepIdx, setActiveStepIdx] = useState(() => {
     const saved = localStorage.getItem(`assessment_activeStepIdx_${userId}`);

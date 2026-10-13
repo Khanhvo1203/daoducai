@@ -63,51 +63,33 @@ const Dashboard1 = () => {
 
   const existingCode = initialData?.assessmentCode || null;
 
-  // Form data with fallback matching user mockup
-  const formData = initialData?.formData || draftFormData || {
-    systemName: 'Trợ lý số xử lý hồ sơ hành chính',
-    domain: 'Hành chính công',
-    email: 'admin@demo.vn',
-    fullName: 'Nguyễn Văn A',
-    role: 'Trưởng phòng Chuyển đổi số',
-    agencyName: 'UBND Thành phố / Sở Thông tin và Truyền thông',
-    internalCode: 'TL-HC-2026',
-    version: '1.2.0',
+  // Form data fallback khi chưa khai báo
+  const fallbackFormData = {
+    systemName: '',
+    domain: '',
+    email: currentUser?.username || '',
+    fullName: currentUser?.name || '',
+    role: '',
+    agencyName: currentUser?.agency || '',
+    internalCode: '',
+    version: '1.0.0',
     orgRole: 'Triển khai (Deployer)',
-    legalBasis: 'Quyết định 1290/QĐ-BTTTT & Luật 134/2025/QH15',
-    riskLevel: 'Trung bình',
-    riskLevelBasis: 'Phục vụ tư vấn thủ tục hành chính công không tự động ra quyết định thu hồi',
-    isInHighRiskList: 'Không',
-    purpose: 'Hỗ trợ giải đáp và tra cứu hồ sơ thủ tục hành chính công cho công chức và người dân',
-    businessProblem: 'Tối ưu hóa thời gian xử lý thủ tục hành chính, giảm tải áp lực cho cán bộ một cửa'
+    legalBasis: '',
+    riskLevel: 'Chưa xác định',
+    riskLevelBasis: '',
+    isInHighRiskList: 'Chưa xác định',
+    purpose: '',
+    businessProblem: ''
   };
 
-  const displayCode = existingCode || (Object.keys(rawAnswers).length > 0 ? 'HỒ SƠ MỚI' : '2513');
+  const formData = initialData?.formData || draftFormData || fallbackFormData;
+
+  // Luôn dùng câu trả lời thực tế của người dùng, KHÔNG BAO GIỜ dùng file mẫu nếu người dùng chưa trả lời!
+  const answers = rawAnswers;
+  const totalAnsweredCount = Object.keys(answers).length;
+
+  const displayCode = existingCode || (totalAnsweredCount > 0 ? 'HỒ SƠ MỚI' : 'CHƯA LƯU');
   const displayDate = new Date().toLocaleDateString('vi-VN');
-
-  // Fallback demo answers matching user mockup CHỈ KHI hoàn toàn không có bất kỳ câu trả lời nào
-  const defaultDemoAnswers = {
-    // C1: 13 Có, 2 Không (C1.8 and C1.13 are 'Không')
-    'C1.1': 0, 'C1.2': 0, 'C1.3': 0, 'C1.4': 0, 'C1.5': 0,
-    'C1.6': 0, 'C1.7': 0, 'C1.8': 1, 'C1.9': 0, 'C1.10': 0,
-    'C1.11': 0, 'C1.12': 0, 'C1.13': 1, 'C1.14': 0, 'C1.15': 0,
-    // C2: 11 Có, 4 Không
-    'C2.1': 0, 'C2.2': 0, 'C2.3': 1, 'C2.4': 0, 'C2.5': 0,
-    'C2.6': 0, 'C2.7': 0, 'C2.8': 1, 'C2.9': 0, 'C2.10': 0,
-    'C2.11': 0, 'C2.12': 1, 'C2.13': 0, 'C2.14': 0, 'C2.15': 1,
-    // C3: 9 Có, 6 Không
-    'C3.1': 0, 'C3.2': 0, 'C3.3': 1, 'C3.4': 0, 'C3.5': 0,
-    'C3.6': 1, 'C3.7': 1, 'C3.8': 0, 'C3.9': 1, 'C3.10': 0,
-    'C3.11': 0, 'C3.12': 1, 'C3.13': 1, 'C3.14': 0, 'C3.15': 0,
-    // C4: 6 Có, 9 Không
-    'C4.1': 0, 'C4.2': 1, 'C4.3': 0, 'C4.4': 1, 'C4.5': 1,
-    'C4.6': 0, 'C4.7': 1, 'C4.8': 0, 'C4.9': 1, 'C4.10': 1,
-    'C4.11': 0, 'C4.12': 1, 'C4.13': 1, 'C4.14': 1, 'C4.15': 0,
-  };
-
-  // Nếu người dùng có câu trả lời (kể cả chỉ đánh giá 1-2 câu), luôn dùng câu trả lời thực tế!
-  const hasUserAnswers = Object.keys(rawAnswers).length > 0;
-  const answers = hasUserAnswers ? rawAnswers : defaultDemoAnswers;
 
   const [activePrinciple, setActivePrinciple] = useState('C1');
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
@@ -123,15 +105,39 @@ const Dashboard1 = () => {
     return score;
   };
 
+  const getAnsweredCount = (prefix) => {
+    let count = 0;
+    for (let i = 1; i <= 15; i++) {
+      if (answers[`${prefix}.${i}`] !== undefined) {
+        count++;
+      }
+    }
+    return count;
+  };
+
   const scoreC1 = getScore('C1');
   const scoreC2 = getScore('C2');
   const scoreC3 = getScore('C3');
   const scoreC4 = getScore('C4');
+
+  const answeredC1 = getAnsweredCount('C1');
+  const answeredC2 = getAnsweredCount('C2');
+  const answeredC3 = getAnsweredCount('C3');
+  const answeredC4 = getAnsweredCount('C4');
+
   const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
-  const convertedScore = Math.round((totalCScore / 60) * 100);
+  const convertedScore = totalAnsweredCount > 0 ? Math.round((totalCScore / 60) * 100) : 0;
 
   // Overall compliance evaluation
-  const getOverallComplianceLevel = (totalScore, s1, s2, s3, s4) => {
+  const getOverallComplianceLevel = (totalScore, s1, s2, s3, s4, totalAns) => {
+    if (totalAns === 0) {
+      return { 
+        label: 'Chưa đánh giá', 
+        colorHex: '#64748b',
+        desc: 'Hệ thống chưa ghi nhận câu trả lời nào từ bạn. Vui lòng thực hiện đánh giá các tiêu chí theo 4 nguyên tắc để xem kết quả tuân thủ.' 
+      };
+    }
+
     if (s1 <= 5 || s2 <= 5 || s3 <= 5 || s4 <= 5) {
       return { 
         label: 'Không tuân thủ', 
@@ -155,10 +161,14 @@ const Dashboard1 = () => {
     };
   };
 
-  const overall = getOverallComplianceLevel(totalCScore, scoreC1, scoreC2, scoreC3, scoreC4);
+  const overall = getOverallComplianceLevel(totalCScore, scoreC1, scoreC2, scoreC3, scoreC4, totalAnsweredCount);
 
-  // Dynamic summary description matching screenshot
+  // Dynamic summary description
   const getSummaryDescription = () => {
+    if (totalAnsweredCount === 0) {
+      return 'Chưa có câu trả lời nào được ghi nhận (0/60 câu). Vui lòng hoàn thành đánh giá tại Bước 2 để nhận báo cáo tuân thủ chi tiết.';
+    }
+
     if (totalCScore >= 44 && scoreC1 >= 11 && scoreC2 >= 11 && scoreC3 >= 11 && scoreC4 >= 11) {
       return `${totalCScore}/60 câu trả lời "Có". Cả 04 nguyên tắc đều đạt mức Tuân thủ đầy đủ (≥ 11 câu). Hệ thống đáp ứng xuất sắc các tiêu chuẩn đạo đức AI.`;
     }
@@ -183,7 +193,17 @@ const Dashboard1 = () => {
   };
 
   // Helper for status tag
-  const getPrincipleStatusInfo = (score) => {
+  const getPrincipleStatusInfo = (score, ansCount) => {
+    if (ansCount === 0) {
+      return {
+        label: 'Chưa đánh giá',
+        short: 'chưa đánh giá',
+        badgeClass: 'exec-chip',
+        colorHex: '#64748b',
+        priority: 'Chưa xác định',
+        priorityClass: 'exec-chip'
+      };
+    }
     if (score >= 11) {
       return {
         label: 'Tuân thủ đầy đủ',
@@ -223,7 +243,8 @@ const Dashboard1 = () => {
       shortName: 'NT1 · An toàn, độ tin cậy & không...',
       tabLabel: 'NT1',
       score: scoreC1,
-      ...getPrincipleStatusInfo(scoreC1),
+      answeredCount: answeredC1,
+      ...getPrincipleStatusInfo(scoreC1, answeredC1),
       subgroups: [
         {
           title: 'Thiết kế an toàn',
@@ -287,7 +308,8 @@ const Dashboard1 = () => {
       shortName: 'NT2 · Kiểm soát của con người',
       tabLabel: 'NT2',
       score: scoreC2,
-      ...getPrincipleStatusInfo(scoreC2),
+      answeredCount: answeredC2,
+      ...getPrincipleStatusInfo(scoreC2, answeredC2),
       subgroups: [
         {
           title: 'Kiểm soát của con người',
@@ -351,7 +373,8 @@ const Dashboard1 = () => {
       shortName: 'NT3 · Lợi ích xã hội & bao trùm kỹ...',
       tabLabel: 'NT3',
       score: scoreC3,
-      ...getPrincipleStatusInfo(scoreC3),
+      answeredCount: answeredC3,
+      ...getPrincipleStatusInfo(scoreC3, answeredC3),
       subgroups: [
         {
           title: 'Lợi ích xã hội và bao trùm kỹ thuật số',
@@ -415,7 +438,8 @@ const Dashboard1 = () => {
       shortName: 'NT4 · Đổi mới có trách nhiệm',
       tabLabel: 'NT4',
       score: scoreC4,
-      ...getPrincipleStatusInfo(scoreC4),
+      answeredCount: answeredC4,
+      ...getPrincipleStatusInfo(scoreC4, answeredC4),
       subgroups: [
         {
           title: 'Đổi mới có trách nhiệm',
@@ -540,6 +564,7 @@ const Dashboard1 = () => {
         .divider { background-color: #f8fafc; font-weight: bold; }
         .yes { color: #334155; font-weight: bold; }
         .no { color: #dc2626; font-weight: bold; }
+        .muted { color: #94a3b8; font-style: italic; }
       </style>
       </head>
       <body>
@@ -573,12 +598,18 @@ const Dashboard1 = () => {
             ${['C1', 'C2', 'C3', 'C4'].map(pref => {
               const list = questionsDb[`part${pref}`] || [];
               return list.map(q => {
-                const isYes = answers[q.id] === 0;
+                const ansVal = answers[q.id];
+                const isYes = ansVal === 0;
+                const isNo = ansVal === 1;
                 const ev = isYes 
                   ? (evidences[q.id] || defaultEvidenceMap[q.id] || 'Đã kiểm tra') 
-                  : (defaultEvidenceMap[q.id] ? defaultEvidenceMap[q.id] + ' - chưa nộp' : 'Chưa nộp');
+                  : isNo 
+                    ? (defaultEvidenceMap[q.id] ? defaultEvidenceMap[q.id] + ' - chưa nộp' : 'Chưa nộp')
+                    : 'Chưa có thông tin';
+                const ansText = isYes ? 'Có' : isNo ? 'Không' : 'Chưa đánh giá';
+                const ansClass = isYes ? 'yes' : isNo ? 'no' : 'muted';
                 const qText = typeof q.text === 'string' ? q.text : q.id;
-                return `<tr><td>${q.id}</td><td>${qText}</td><td style="text-align: center;" class="${isYes ? 'yes' : 'no'}">${isYes ? 'Có' : 'Không'}</td><td>${ev}</td></tr>`;
+                return `<tr><td>${q.id}</td><td>${qText}</td><td style="text-align: center;" class="${ansClass}">${ansText}</td><td>${ev}</td></tr>`;
               }).join('');
             }).join('')}
           </tbody>
@@ -625,7 +656,7 @@ const Dashboard1 = () => {
         <div className="exec-header">
           <h1 className="exec-title">KẾT QUẢ ĐÁNH GIÁ MỨC ĐỘ TUÂN THỦ ĐẠO ĐỨC AI</h1>
           <div className="exec-subtitle">
-            Báo cáo chi tiết theo từng nguyên tắc · Ngày đánh giá: {displayDate} · Hệ thống: {formData.systemName || 'Trợ lý số xử lý hồ sơ hành chính'} · MÃ HỒ SƠ #{displayCode} {!existingCode && '· SỐ LIỆU MINH HỌA'}
+            Báo cáo chi tiết theo từng nguyên tắc · Ngày đánh giá: {displayDate} · Hệ thống: {formData.systemName || '(Chưa đặt tên hệ thống)'} · MÃ HỒ SƠ #{displayCode}
           </div>
           <div className="exec-actions-bar">
             <button type="button" className="exec-action-btn" onClick={handleShare}>
@@ -860,15 +891,21 @@ const Dashboard1 = () => {
         {/* Card 4: KHUYẾN NGHỊ THEO 03 MỨC TUÂN THỦ */}
         <div className="exec-recom-card">
           <div className="exec-col-title" style={{ fontSize: '13px', marginBottom: '4px' }}>
-            KHUYẾN NGHỊ THEO 03 MỨC TUÂN THỦ — {currP.numText} (mức đang áp dụng được tô đậm)
+            KHUYẾN NGHỊ THEO 03 MỨC TUÂN THỦ — {currP.numText} {currP.answeredCount > 0 ? '(mức đang áp dụng được tô đậm)' : '(khung tham khảo)'}
           </div>
           <div className="text-sm text-muted mb-4">
             Căn cứ Hướng dẫn của Bộ TT&TT ban hành kèm Quyết định số 1290/QĐ-BTTTT ngày 11/6/2024. Cột tương ứng với điểm số hiện tại được đánh dấu.
           </div>
+
+          {currP.answeredCount === 0 && (
+            <div style={{ backgroundColor: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '6px', padding: '10px 14px', marginBottom: '14px', fontSize: '13px', color: '#64748b' }}>
+              ℹ️ <i>Bạn chưa trả lời câu hỏi nào thuộc {currP.numText}. Các mức khuyến nghị dưới đây được hiển thị để bạn tham khảo khung tiêu chuẩn của Bộ TT&TT khi hoàn thành đánh giá.</i>
+            </div>
+          )}
           
           <div className="exec-recom-grid">
             {/* Level 1: Tuân thủ đầy đủ (11–15) */}
-            <div className={`exec-recom-col ${currP.score >= 11 ? 'highlight-cyan' : ''}`}>
+            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score >= 11 ? 'highlight-cyan' : ''}`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
@@ -878,7 +915,7 @@ const Dashboard1 = () => {
                     {currP.recommendations.full.rangeText}
                   </span>
                 </div>
-                {currP.score >= 11 && (
+                {currP.answeredCount > 0 && currP.score >= 11 && (
                   <span className="exec-recom-badge-current" style={{ backgroundColor: '#0284c7' }}>
                     ● Mức hiện tại: {currP.score}/15
                   </span>
@@ -898,7 +935,7 @@ const Dashboard1 = () => {
             </div>
 
             {/* Level 2: Tuân thủ một phần (6–10) */}
-            <div className={`exec-recom-col ${currP.score >= 6 && currP.score <= 10 ? 'highlight-amber' : ''}`}>
+            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score >= 6 && currP.score <= 10 ? 'highlight-amber' : ''}`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
@@ -908,7 +945,7 @@ const Dashboard1 = () => {
                     {currP.recommendations.partial.rangeText}
                   </span>
                 </div>
-                {currP.score >= 6 && currP.score <= 10 && (
+                {currP.answeredCount > 0 && currP.score >= 6 && currP.score <= 10 && (
                   <span className="exec-recom-badge-current" style={{ backgroundColor: '#d97706' }}>
                     ● Mức hiện tại: {currP.score}/15
                   </span>
@@ -928,7 +965,7 @@ const Dashboard1 = () => {
             </div>
 
             {/* Level 3: Không tuân thủ (0–5) */}
-            <div className={`exec-recom-col ${currP.score <= 5 ? 'highlight-red' : ''}`}>
+            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score <= 5 ? 'highlight-red' : ''}`}>
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
@@ -938,7 +975,7 @@ const Dashboard1 = () => {
                     {currP.recommendations.non.rangeText}
                   </span>
                 </div>
-                {currP.score <= 5 && (
+                {currP.answeredCount > 0 && currP.score <= 5 && (
                   <span className="exec-recom-badge-current" style={{ backgroundColor: '#dc2626' }}>
                     ● Mức hiện tại: {currP.score}/15
                   </span>
