@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal } from 'lucide-react';
+import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal, Cpu } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
@@ -23,16 +23,16 @@ const Assessment2 = () => {
   allSteps.push({ id: 'partA3', name: 'Sàng lọc rủi ro ban đầu', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A11-A15 để phân loại nhóm rủi ro của hệ thống theo quy định.' });
   
   if (selection.partB) {
-    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'blue', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
+    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'indigo', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
   }
   if (selection.partC) {
-    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
-    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
-    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
-    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
+    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
+    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
+    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
+    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
   }
   
-  allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
+  allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'amber', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
 
   const currentUser = getCurrentUser();
   const userId = currentUser ? currentUser.username : 'guest';
@@ -331,33 +331,53 @@ const Assessment2 = () => {
 
       <div className="split-layout">
         <aside className="sidebar">
-          <div className="card mb-6 shadow-sm border border-gray-100">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ position: 'relative', width: '84px', height: '84px', flexShrink: 0 }}>
-                <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }} viewBox="0 0 52 52">
-                  <circle strokeWidth="5" stroke="#f1f5f9" fill="transparent" r="23" cx="26" cy="26" />
-                  <circle strokeWidth="5" strokeDasharray={`${(totalProgressPercent * 2 * Math.PI * 23) / 100} ${2 * Math.PI * 23}`} strokeDashoffset="0" strokeLinecap="round" stroke="var(--primary)" fill="transparent" r="23" cx="26" cy="26" style={{ transition: 'stroke-dashoffset 0.5s ease' }} />
+          <div className="sidebar-progress-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div className="sidebar-progress-ring">
+                <svg width="68" height="68" viewBox="0 0 68 68">
+                  <defs>
+                    <linearGradient id="sidebarProgressGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#3b82f6" />
+                      <stop offset="100%" stopColor="#1d4ed8" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="34" cy="34" r="27" stroke="#e0e7ff" strokeWidth="5.5" fill="none" />
+                  <circle cx="34" cy="34" r="27" stroke="url(#sidebarProgressGrad2)" strokeWidth="5.5" fill="none" 
+                    strokeDasharray={2 * Math.PI * 27}
+                    strokeDashoffset={2 * Math.PI * 27 * (1 - (totalAnsweredAll / (totalQuestions || 1)))}
+                    strokeLinecap="round"
+                    transform="rotate(-90 34 34)"
+                    style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+                  />
                 </svg>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px', fontWeight: 'bold', color: 'var(--text-main)' }}>
-                  {totalAnsweredAll}/{totalQuestions}
+                <div className="sidebar-progress-ring-center">
+                  <span className="sidebar-progress-fraction">{totalAnsweredAll}/{totalQuestions}</span>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ fontSize: '11px', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>ĐÃ TRẢ LỜI</div>
-                <div style={{ fontSize: '15px', fontWeight: 'bold', color: 'var(--text-main)' }}>{totalAnsweredAll}/{totalQuestions} câu</div>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>còn {totalQuestions - totalAnsweredAll} câu chưa trả lời</div>
+              <div className="sidebar-progress-info">
+                <span className="sidebar-progress-badge">TIẾN ĐỘ THỰC HIỆN</span>
+                <div className="sidebar-progress-count">
+                  {totalAnsweredAll} <span className="sidebar-progress-total">/ {totalQuestions} câu</span>
+                </div>
+                <div className="sidebar-progress-sub">
+                  <span className="sidebar-progress-dot"></span>
+                  <span>Còn {totalQuestions - totalAnsweredAll} câu chưa hoàn thành</span>
+                </div>
               </div>
             </div>
           </div>
-          <div className="card">
-            <div className="stepper-groups">
+
+          <div className="sidebar-stepper-card">
+            <div className="sidebar-stepper-header">
               <div className="sidebar-stepper-title">THÔNG TIN SƠ BỘ</div>
+              <span className="sidebar-stepper-chip">{allSteps.length} bước</span>
+            </div>
+            <div className="stepper-groups">
               {Object.entries(groupedSteps).map(([groupName, stepsInGroup], gIdx) => {
-                 const groupTheme = stepsInGroup[0].theme;
-                 const GroupIcon = stepsInGroup[0].icon;
-                 const isGroupActive = stepsInGroup.some(s => s.globalIdx === activeStepIdx);
-                 
-                 return (
+                const groupTheme = stepsInGroup[0].theme;
+                const isGroupActive = stepsInGroup.some(s => s.globalIdx === activeStepIdx);
+                
+                return (
                   <div key={gIdx} className={`sidebar-group theme-${groupTheme} ${isGroupActive ? 'group-active' : ''}`}>
                     <div className="group-header">
                       <div className="group-title-text">{groupName}</div>
@@ -374,20 +394,25 @@ const Assessment2 = () => {
                       ))}
                     </div>
                   </div>
-                 );
-               })}
-             </div>
-           </div>
+                );
+              })}
+            </div>
+          </div>
 
-           <div className="card mb-4 bg-muted-light">
-            <h4 className="system-info-title">THÔNG TIN HỆ THỐNG</h4>
+          <div className="sidebar-system-card">
+            <h4 className="system-info-title">
+              <Cpu size={14} className="text-primary" />
+              <span>THÔNG TIN HỆ THỐNG</span>
+            </h4>
             <div className="info-group mb-2">
               <div className="text-muted text-xs">Tên hệ thống</div>
               <div className="system-info-val">{formData.systemName}</div>
             </div>
             <div className="info-group">
               <div className="text-muted text-xs">Lĩnh vực</div>
-              <div className="system-info-val">{formData.domain}</div>
+              <div className="mt-1">
+                <span className="system-tag-pill">{formData.domain}</span>
+              </div>
             </div>
           </div>
         </aside>
