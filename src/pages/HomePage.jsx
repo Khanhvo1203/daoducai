@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home,
-  Users,
   FileText,
   CheckSquare,
   BarChart2,
@@ -32,7 +31,6 @@ const HomePage = () => {
 
   // Tất cả menu mở mặc định theo đúng mẫu thiết kế
   const [expandedMenus, setExpandedMenus] = useState({
-    admin: true,
     systemInfo: true,
     ethicsAssessment: true,
     weightAssessment: true,
@@ -72,30 +70,15 @@ const HomePage = () => {
     { label: 'Bám sát Thông tư 05', icon: ShieldCheck }
   ];
 
-  // 6 phân hệ chức năng chính
+  // 5 phân hệ chức năng chính (đã bỏ Quản trị hệ thống và đánh số lại)
   const featureCards = [
     {
       num: 1,
-      badgeColor: '#1d68e1',
-      iconBg: '#e8f1fc',
-      iconColor: '#1d68e1',
-      icon: Users,
-      title: '1. Quản trị hệ thống',
-      desc: 'Quản lý người dùng, đơn vị, phân quyền và cấu hình hệ thống',
-      bullets: [
-        'Quản lý thông tin người dùng',
-        'Phân quyền và vai trò',
-        'Nhật ký hoạt động'
-      ],
-      link: '/admin'
-    },
-    {
-      num: 2,
       badgeColor: '#059669',
       iconBg: '#e6f7f2',
       iconColor: '#059669',
       icon: FileText,
-      title: '2. Thông tin hệ thống AI',
+      title: '1. Thông tin hệ thống AI',
       desc: 'Khai báo, cập nhật thông tin, phân loại mức độ rủi ro của hệ thống AI',
       bullets: [
         'Khai báo hệ thống AI',
@@ -105,12 +88,12 @@ const HomePage = () => {
       link: '/ho-so-dang-ky'
     },
     {
-      num: 3,
+      num: 2,
       badgeColor: '#7c3aed',
       iconBg: '#f3e8ff',
       iconColor: '#7c3aed',
       icon: CheckSquare,
-      title: '3. Đánh giá đạo đức',
+      title: '2. Đánh giá đạo đức',
       desc: 'Tự đánh giá theo 4 nguyên tắc đạo đức, điều kiện quản trị và giám sát sau triển khai',
       bullets: [
         'Điều kiện quản trị (cắt ngang)',
@@ -120,12 +103,12 @@ const HomePage = () => {
       link: '/assessment1'
     },
     {
-      num: 4,
+      num: 3,
       badgeColor: '#ea580c',
       iconBg: '#fef3c7',
       iconColor: '#ea580c',
       icon: BarChart2,
-      title: '4. Đánh giá theo trọng số',
+      title: '3. Đánh giá theo trọng số',
       desc: 'Thực hiện đánh trọng số và xem kết quả tuân thủ kèm khuyến nghị',
       bullets: [
         'Thực hiện đánh trọng số',
@@ -135,12 +118,12 @@ const HomePage = () => {
       link: '/assessment2'
     },
     {
-      num: 5,
+      num: 4,
       badgeColor: '#e11d48',
       iconBg: '#ffe4e6',
       iconColor: '#e11d48',
       icon: FileCheck,
-      title: '5. Báo cáo tự đánh giá',
+      title: '4. Báo cáo tự đánh giá',
       desc: 'Xuất báo cáo chi tiết và tổng hợp phục vụ lưu trữ, báo cáo',
       bullets: [
         'Báo cáo chi tiết tự đánh giá',
@@ -150,12 +133,12 @@ const HomePage = () => {
       link: '/dashboard1'
     },
     {
-      num: 6,
+      num: 5,
       badgeColor: '#475569',
       iconBg: '#f1f5f9',
       iconColor: '#475569',
       icon: BookOpen,
-      title: '6. Trợ giúp',
+      title: '5. Trợ giúp',
       desc: 'Tài liệu hướng dẫn, công cụ tham khảo và hỗ trợ trong quá trình đánh giá',
       bullets: [
         'Hướng dẫn sử dụng',
@@ -187,30 +170,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          {/* 1. Quản trị hệ thống */}
-          <div className="sidebar-group">
-            <div
-              className={`sidebar-menu-item parent ${expandedMenus.admin ? 'expanded' : ''}`}
-              onClick={() => toggleMenu('admin')}
-            >
-              <div className="menu-item-content">
-                <Users size={16} className="menu-icon" />
-                <span>1. Quản trị hệ thống</span>
-              </div>
-              <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.admin ? '' : 'chevron-rotated'}`} />
-            </div>
-            {expandedMenus.admin && (
-              <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/admin')}>Quản lý người dùng</div>
-                <div className="submenu-item" onClick={() => navigate('/admin')}>Quản lý đơn vị</div>
-                <div className="submenu-item" onClick={() => navigate('/admin')}>Phân quyền</div>
-                <div className="submenu-item" onClick={() => navigate('/admin')}>Nhật ký hoạt động</div>
-                <div className="submenu-item" onClick={() => navigate('/admin')}>Cấu hình hệ thống</div>
-              </div>
-            )}
-          </div>
-
-          {/* 2. Thông tin hệ thống AI */}
+          {/* 1. Thông tin hệ thống AI */}
           <div className="sidebar-group">
             <div
               className={`sidebar-menu-item parent ${expandedMenus.systemInfo ? 'expanded' : ''}`}
@@ -218,7 +178,7 @@ const HomePage = () => {
             >
               <div className="menu-item-content">
                 <FileText size={16} className="menu-icon" />
-                <span>2. Thông tin hệ thống AI</span>
+                <span>1. Thông tin hệ thống AI</span>
               </div>
               <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.systemInfo ? '' : 'chevron-rotated'}`} />
             </div>
@@ -232,7 +192,7 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* 3. Đánh giá đạo đức */}
+          {/* 2. Đánh giá đạo đức */}
           <div className="sidebar-group">
             <div
               className={`sidebar-menu-item parent ${expandedMenus.ethicsAssessment ? 'expanded' : ''}`}
@@ -240,7 +200,7 @@ const HomePage = () => {
             >
               <div className="menu-item-content">
                 <CheckSquare size={16} className="menu-icon" />
-                <span>3. Đánh giá đạo đức</span>
+                <span>2. Đánh giá đạo đức</span>
               </div>
               <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.ethicsAssessment ? '' : 'chevron-rotated'}`} />
             </div>
@@ -253,7 +213,7 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* 4. Đánh giá theo trọng số */}
+          {/* 3. Đánh giá theo trọng số */}
           <div className="sidebar-group">
             <div
               className={`sidebar-menu-item parent ${expandedMenus.weightAssessment ? 'expanded' : ''}`}
@@ -261,7 +221,7 @@ const HomePage = () => {
             >
               <div className="menu-item-content">
                 <BarChart2 size={16} className="menu-icon" />
-                <span>4. Đánh giá theo trọng số</span>
+                <span>3. Đánh giá theo trọng số</span>
               </div>
               <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.weightAssessment ? '' : 'chevron-rotated'}`} />
             </div>
@@ -274,7 +234,7 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* 5. Báo cáo tự đánh giá */}
+          {/* 4. Báo cáo tự đánh giá */}
           <div className="sidebar-group">
             <div
               className={`sidebar-menu-item parent ${expandedMenus.reports ? 'expanded' : ''}`}
@@ -282,7 +242,7 @@ const HomePage = () => {
             >
               <div className="menu-item-content">
                 <FileCheck size={16} className="menu-icon" />
-                <span>5. Báo cáo tự đánh giá</span>
+                <span>4. Báo cáo tự đánh giá</span>
               </div>
               <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.reports ? '' : 'chevron-rotated'}`} />
             </div>
@@ -295,7 +255,7 @@ const HomePage = () => {
             )}
           </div>
 
-          {/* 6. Trợ giúp */}
+          {/* 5. Trợ giúp */}
           <div className="sidebar-group">
             <div
               className={`sidebar-menu-item parent ${expandedMenus.help ? 'expanded' : ''}`}
@@ -303,7 +263,7 @@ const HomePage = () => {
             >
               <div className="menu-item-content">
                 <HelpCircle size={16} className="menu-icon" />
-                <span>6. Trợ giúp</span>
+                <span>5. Trợ giúp</span>
               </div>
               <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.help ? '' : 'chevron-rotated'}`} />
             </div>
