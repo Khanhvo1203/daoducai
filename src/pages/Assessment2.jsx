@@ -23,16 +23,16 @@ const Assessment2 = () => {
   allSteps.push({ id: 'partA3', name: 'Sàng lọc rủi ro ban đầu', group: 'Phần A: Xác định phạm vi', theme: 'blue', icon: Target, desc: 'Đánh giá từ A11-A15 để phân loại nhóm rủi ro của hệ thống theo quy định.' });
   
   if (selection.partB) {
-    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'indigo', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
+    allSteps.push({ id: 'partB', name: '9 Điều kiện quản trị', group: 'Phần B: Cơ chế quản trị', theme: 'blue', icon: Shield, desc: 'Kiểm tra 9 điều kiện bắt buộc về tính pháp lý, dữ liệu và quy trình quản trị rủi ro.' });
   }
   if (selection.partC) {
-    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
-    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
-    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
-    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', group: 'Phần C: Nguyên tắc đạo đức', theme: 'teal', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
+    allSteps.push({ id: 'partC1', name: 'Nguyên tắc 1: Bảo đảm an toàn, độ tin cậy và không gây hại', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính an toàn, tin cậy và khả năng kiểm soát của hệ thống AI.' });
+    allSteps.push({ id: 'partC2', name: 'Nguyên tắc 2: Tôn trọng quyền con người, công bằng, minh bạch', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Đánh giá tính công bằng, không phân biệt đối xử và bảo vệ quyền riêng tư.' });
+    allSteps.push({ id: 'partC3', name: 'Nguyên tắc 3: Hạnh phúc, thịnh vượng, phát triển bền vững', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Thúc đẩy hạnh phúc, phát triển bền vững và lợi ích xã hội.' });
+    allSteps.push({ id: 'partC4', name: 'Nguyên tắc 4: Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', group: 'Phần C: Nguyên tắc đạo đức', theme: 'blue', icon: Scale, desc: 'Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội.' });
   }
   
-  allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'amber', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
+  allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
 
   const currentUser = getCurrentUser();
   const userId = currentUser ? currentUser.username : 'guest';
