@@ -351,16 +351,16 @@ const Assessment2 = () => {
           </div>
           <div className="card">
             <div className="stepper-groups">
-              <div className="text-base font-bold text-main mb-4">THÔNG TIN SƠ BỘ</div>
+              <div className="sidebar-stepper-title">THÔNG TIN SƠ BỘ</div>
               {Object.entries(groupedSteps).map(([groupName, stepsInGroup], gIdx) => {
-                const groupTheme = stepsInGroup[0].theme;
-                const GroupIcon = stepsInGroup[0].icon;
-                const isGroupActive = stepsInGroup.some(s => s.globalIdx === activeStepIdx);
-                
-                return (
-                  <div key={gIdx} className={`sidebar-group theme-${groupTheme} ${isGroupActive ? 'group-active' : ''} mb-6`}>
-                    <div className="group-header mb-3">
-                      <div className="text-sm font-extrabold uppercase tracking-widest group-title-text">{groupName}</div>
+                 const groupTheme = stepsInGroup[0].theme;
+                 const GroupIcon = stepsInGroup[0].icon;
+                 const isGroupActive = stepsInGroup.some(s => s.globalIdx === activeStepIdx);
+                 
+                 return (
+                  <div key={gIdx} className={`sidebar-group theme-${groupTheme} ${isGroupActive ? 'group-active' : ''}`}>
+                    <div className="group-header">
+                      <div className="group-title-text">{groupName}</div>
                     </div>
                     
                     <div className="group-steps">
@@ -369,25 +369,25 @@ const Assessment2 = () => {
                              className={`step ${step.globalIdx === activeStepIdx ? 'active' : ''} ${step.globalIdx < activeStepIdx ? 'completed-step' : ''}`}
                              onClick={() => setActiveStepIdx(step.globalIdx)}>
                           <div className="step-num">{step.globalIdx + 1}</div>
-                          <div className="step-name text-sm">{step.name}</div>
+                          <div className="step-name">{step.name}</div>
                         </div>
                       ))}
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                 );
+               })}
+             </div>
+           </div>
 
-          <div className="card mb-4 bg-muted-light">
-            <h4 className="text-xs font-bold text-muted mb-3 uppercase tracking-wide">THÔNG TIN HỆ THỐNG</h4>
+           <div className="card mb-4 bg-muted-light">
+            <h4 className="system-info-title">THÔNG TIN HỆ THỐNG</h4>
             <div className="info-group mb-2">
               <div className="text-muted text-xs">Tên hệ thống</div>
-              <div className="font-semibold text-sm">{formData.systemName}</div>
+              <div className="system-info-val">{formData.systemName}</div>
             </div>
             <div className="info-group">
               <div className="text-muted text-xs">Lĩnh vực</div>
-              <div className="font-semibold text-sm">{formData.domain}</div>
+              <div className="system-info-val">{formData.domain}</div>
             </div>
           </div>
         </aside>
