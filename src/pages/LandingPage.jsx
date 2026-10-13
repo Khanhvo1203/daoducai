@@ -230,9 +230,6 @@ const LandingPage = () => {
               {step === 3 && 'Mô tả hệ thống AI'}
               {step === 4 && 'Chọn nội dung đánh giá'}
             </h1>
-            <p className="portal-page-subtitle">
-              Bước 1/3: Xác định hệ thống và sàng lọc rủi ro (gồm bước 1 + 2)
-            </p>
           </div>
 
           {/* Macro Stepper (3 Phases Header) */}
