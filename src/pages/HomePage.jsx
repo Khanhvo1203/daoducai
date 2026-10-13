@@ -19,8 +19,7 @@ import {
   Building2,
   ShieldCheck,
   Check,
-  Download,
-  BrainCircuit
+  Download
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -153,10 +152,16 @@ const HomePage = () => {
     <div className="home-dashboard-layout">
       {/* ===== LEFT SIDEBAR ===== */}
       <aside className="home-sidebar">
-        {/* Brand: Logo Trí tuệ nhân tạo Brain Circuit */}
-        <div className="sidebar-brand">
+        {/* Brand: Logo & Tên Bộ Khoa học và Công nghệ */}
+        <div className="sidebar-brand" onClick={() => navigate('/')} title="Bộ Khoa học và Công nghệ">
           <div className="brand-logo-container">
-            <BrainCircuit size={28} className="brand-brain-icon" strokeWidth={1.8} />
+            <div className="brand-logo-badge">
+              <img src="/logo-most.png" alt="Logo Bộ Khoa học và Công nghệ" className="brand-most-logo" />
+            </div>
+            <div className="brand-text-block">
+              <span className="brand-ministry-title">BỘ KHOA HỌC</span>
+              <span className="brand-ministry-subtitle">VÀ CÔNG NGHỆ</span>
+            </div>
           </div>
         </div>
 
