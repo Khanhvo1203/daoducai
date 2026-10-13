@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle } from 'lucide-react';
+import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
@@ -427,9 +427,20 @@ const Assessment2 = () => {
                     <div>Hệ thống: <span className="font-semibold text-primary">{formData.systemName}</span></div>
                   </div>
                 </div>
-                <div className="w-64">
-                  <div className="text-sm font-bold mb-1">Đơn vị chọn (Loại hệ thống)</div>
-                  <select className="form-control text-sm font-semibold" value={preset} onChange={handlePresetChange}>
+                <div className="preset-selector-container">
+                  <div className="preset-selector-header">
+                    <div className="preset-selector-label">
+                      <SlidersHorizontal size={14} className="text-blue-600" />
+                      <span>Đơn vị chọn (Loại hệ thống)</span>
+                    </div>
+                    <span className="preset-selector-badge">Thiết lập mẫu</span>
+                  </div>
+                  <select
+                    className="preset-selector-dropdown"
+                    value={preset}
+                    onChange={handlePresetChange}
+                    title="Chọn loại hệ thống để tự động điền bộ trọng số mẫu hoặc tùy chỉnh"
+                  >
                     <option value="chia_deu">Chia đều (25/25/25/25)</option>
                     <option value="yt_hcc">YT/HCC - Y tế & hành chính công (40/30/20/10)</option>
                     <option value="tc_ht">TC-HT - Tài chính, hạ tầng (35/30/15/20)</option>
