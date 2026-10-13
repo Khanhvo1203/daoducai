@@ -440,11 +440,13 @@ const HomePage = () => {
                   >
                     {/* Top: Badge + Tiêu đề + Mô tả */}
                     <div className="card-top-row">
-                      <div
-                        className="card-num-circle-sm"
-                        style={{ backgroundColor: card.badgeColor }}
-                      >
-                        {card.num}
+                      <div className="card-left-col">
+                        <div
+                          className="card-num-circle-sm"
+                          style={{ backgroundColor: card.badgeColor }}
+                        >
+                          {card.num}
+                        </div>
                       </div>
                       <div className="card-heading-box">
                         <h4 className="card-title-sm">{card.title}</h4>
@@ -454,11 +456,13 @@ const HomePage = () => {
 
                     {/* Body: Icon + Bullets + Arrow */}
                     <div className="card-body-row">
-                      <div
-                        className="card-icon-box-sm"
-                        style={{ backgroundColor: card.iconBg, color: card.iconColor }}
-                      >
-                        <IconComponent size={24} strokeWidth={2.3} />
+                      <div className="card-left-col">
+                        <div
+                          className="card-icon-box-sm"
+                          style={{ backgroundColor: card.iconBg, color: card.iconColor }}
+                        >
+                          <IconComponent size={24} strokeWidth={2.3} />
+                        </div>
                       </div>
 
                       <ul className="card-bullets-list-sm">
