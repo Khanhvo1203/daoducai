@@ -519,12 +519,12 @@ const Assessment2 = () => {
                 {q.groupTitle && (
                   <h3 className="group-section-title">{q.groupTitle}</h3>
                 )}
-                <div className={`accordion-item ${openQuestion === q.id ? 'open' : ''} ${answers[q.id] !== undefined ? 'answered' : ''} ${(q.id === 'C1.2' || q.id === 'C1.3') ? 'highlight-preview' : ''}`}>
+                <div className={`accordion-item ${openQuestion === q.id ? 'open' : ''} ${answers[q.id] !== undefined ? 'answered' : ''}`}>
                   <div 
-                    className="accordion-header flex items-center justify-between gap-4"
+                    className="accordion-header flex items-start justify-between gap-4"
                     onClick={() => setOpenQuestion(openQuestion === q.id ? null : q.id)}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-start gap-3">
                       <div className={`q-num ${answers[q.id] !== undefined ? 'bg-success' : 'theme-bg'}`}>{q.id}</div>
                       <h4 className="q-text">{q.text}</h4>
                     </div>
