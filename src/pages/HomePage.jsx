@@ -458,7 +458,7 @@ const HomePage = () => {
                         className="card-icon-box-sm"
                         style={{ backgroundColor: card.iconBg, color: card.iconColor }}
                       >
-                        <IconComponent size={24} strokeWidth={2.2} />
+                        <IconComponent size={20} strokeWidth={2.2} />
                       </div>
 
                       <ul className="card-bullets-list-sm">
@@ -471,7 +471,7 @@ const HomePage = () => {
                       </ul>
 
                       <div className="card-arrow-sm">
-                        <ArrowRight size={17} strokeWidth={2.5} />
+                        <ArrowRight size={14} strokeWidth={2.5} />
                       </div>
                     </div>
                   </div>
