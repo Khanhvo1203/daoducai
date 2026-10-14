@@ -115,9 +115,9 @@ const HomePage = () => {
       title: '2. Đánh giá đạo đức',
       desc: 'Tự đánh giá theo 4 nguyên tắc đạo đức, điều kiện quản trị và giám sát sau triển khai',
       bullets: [
-        'Điều kiện quản trị (cắt ngang)',
+        'Điều kiện quản trị',
         'Đánh giá theo 4 nguyên tắc',
-        'Giám sát sau triển khai (cắt ngang)'
+        'Giám sát sau triển khai'
       ],
       link: '/assessment1'
     },
