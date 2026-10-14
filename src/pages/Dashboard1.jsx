@@ -937,9 +937,6 @@ const Dashboard1 = () => {
                   ))}
                 </ul>
               </div>
-              <div className="exec-recom-footer">
-                {currP.recommendations.full.footer}
-              </div>
             </div>
 
             {/* Level 2: Tuân thủ một phần (6–10) */}
@@ -967,9 +964,6 @@ const Dashboard1 = () => {
                   ))}
                 </ul>
               </div>
-              <div className="exec-recom-footer">
-                {currP.recommendations.partial.footer}
-              </div>
             </div>
 
             {/* Level 3: Không tuân thủ (0–5) */}
@@ -996,9 +990,6 @@ const Dashboard1 = () => {
                     <li key={i}>{b}</li>
                   ))}
                 </ul>
-              </div>
-              <div className="exec-recom-footer">
-                {currP.recommendations.non.footer}
               </div>
             </div>
           </div>
