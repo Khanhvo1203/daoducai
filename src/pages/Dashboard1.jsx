@@ -6,6 +6,46 @@ import MacroStepper from '../components/MacroStepper';
 import { questionsDb, defaultEvidenceMap } from '../data/questionsData';
 import './Dashboard.css';
 
+const fullEvidenceMap = {
+  ...defaultEvidenceMap,
+  'A1': 'Tài liệu định danh & mô tả chức năng hệ thống',
+  'A2': 'Quyết định phân công vai trò (Phát triển/Triển khai)',
+  'A3': 'Hồ sơ kiến trúc & phân loại công nghệ AI',
+  'A4': 'Tài liệu quản lý vòng đời hệ thống AI',
+  'A5': 'Danh mục thành phần AI từ bên thứ ba',
+  'A6': 'Đặc tả kỹ thuật dữ liệu I/O & biên giới dữ liệu',
+  'A7': 'Quy trình nghiệp vụ hành chính / cấp phép',
+  'A8': 'Báo cáo đánh giá tác động nhóm yếu thế',
+  'A9': 'Hồ sơ phân loại dữ liệu cá nhân nhạy cảm',
+  'A10': 'Quyết định phê duyệt phạm vi triển khai',
+  'A11': 'Biên bản đối soát Danh mục rủi ro cao (QĐ 33/2026/QĐ-TTg)',
+  'A12': 'Hồ sơ đánh giá sự phù hợp theo Điều 13 Luật 134/2025',
+  'A13': 'Báo cáo phân tích an toàn, trật tự & tài sản',
+  'A14': 'Kế hoạch khắc phục tác động tiêu cực đến người dân',
+  'A15': 'Báo cáo đánh giá tác động bảo vệ dữ liệu cá nhân (DPIA)',
+
+  'B1': 'Văn bản phân công Lãnh đạo cấp cao phụ trách AI',
+  'B2': 'Quyết định thành lập Tổ công tác / cán bộ chuyên trách AI',
+  'B3': 'Danh mục tổng thể hệ thống AI của cơ quan',
+  'B4': 'Văn bản quy định giới hạn sử dụng (cấm làm)',
+  'B5': 'Biên bản phân loại rủi ro có sự tham gia của Pháp chế',
+  'B6': 'Quy trình giám sát của con người (Human-in-the-loop)',
+  'B7': 'Kênh công khai tiếp nhận sự cố & quy trình khiếu nại',
+  'B8': 'Hồ sơ dữ liệu hệ thống & đánh giá quyền riêng tư',
+  'B9': 'Quy trình thẩm định nhà cung cấp & phụ lục hợp đồng AI',
+
+  'D1': 'Văn bản Kế hoạch giảm thiểu rủi ro đã phê duyệt',
+  'D2': 'Bảng ma trận ưu tiên hóa biện pháp rủi ro',
+  'D3': 'Quyết định phân bổ ngân sách & nhân sự chuyên trách',
+  'D4': 'Hệ thống log, KPI & ngưỡng cảnh báo vận hành',
+  'D5': 'Quy trình báo cáo kết quả giám sát định kỳ',
+  'D6': 'Kế hoạch công tác đánh giá lại định kỳ',
+  'D7': 'Quy trình cập nhật tự đánh giá khi có biến động',
+  'D8': 'Hệ thống lưu trữ hồ sơ tự đánh giá an toàn (>= 3 năm)',
+  'D9': 'Cơ chế & báo cáo chia sẻ bài học kinh nghiệm',
+  'D10': 'Biên bản xác nhận kết quả tự đánh giá của Lãnh đạo'
+};
+
 const Dashboard1 = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -126,6 +166,45 @@ const Dashboard1 = () => {
   const answeredC3 = getAnsweredCount('C3');
   const answeredC4 = getAnsweredCount('C4');
 
+  // Part A score & answered (15 questions: A1..A15)
+  let scoreA = 0;
+  let answeredA = 0;
+  for (let i = 1; i <= 15; i++) {
+    const qId = `A${i}`;
+    if (answers[qId] !== undefined) {
+      answeredA++;
+      if (answers[qId] === 0 || (qId === 'A10' && answers[qId] !== undefined)) {
+        scoreA++;
+      }
+    }
+  }
+
+  // Part B score & answered (9 questions: B1..B9)
+  let scoreB = 0;
+  let answeredB = 0;
+  for (let i = 1; i <= 9; i++) {
+    const qId = `B${i}`;
+    if (answers[qId] !== undefined) {
+      answeredB++;
+      if (answers[qId] === 0) {
+        scoreB++;
+      }
+    }
+  }
+
+  // Part D score & answered (10 questions: D1..D10)
+  let scoreD = 0;
+  let answeredD = 0;
+  for (let i = 1; i <= 10; i++) {
+    const qId = `D${i}`;
+    if (answers[qId] !== undefined) {
+      answeredD++;
+      if (answers[qId] === 0) {
+        scoreD++;
+      }
+    }
+  }
+
   const totalCScore = scoreC1 + scoreC2 + scoreC3 + scoreC4;
   const convertedScore = totalAnsweredCount > 0 ? Math.round((totalCScore / 60) * 100) : 0;
 
@@ -194,7 +273,7 @@ const Dashboard1 = () => {
   };
 
   // Helper for status tag
-  const getPrincipleStatusInfo = (score, ansCount) => {
+  const getPrincipleStatusInfo = (score, ansCount, maxScore = 15) => {
     if (ansCount === 0) {
       return {
         label: 'Chưa đánh giá',
@@ -205,7 +284,8 @@ const Dashboard1 = () => {
         priorityClass: 'exec-chip'
       };
     }
-    if (score >= 11) {
+    const percent = Math.round((score / maxScore) * 100);
+    if (percent >= 70) {
       return {
         label: 'Tuân thủ đầy đủ',
         short: 'đầy đủ',
@@ -215,7 +295,7 @@ const Dashboard1 = () => {
         priorityClass: 'exec-chip'
       };
     }
-    if (score >= 6) {
+    if (percent >= 40) {
       return {
         label: 'Tuân thủ một phần',
         short: 'một phần',
@@ -235,17 +315,141 @@ const Dashboard1 = () => {
     };
   };
 
-  // Principles definition and metadata
+  // Principles & Parts definition and metadata
   const principlesData = {
+    'A': {
+      code: 'A',
+      numText: 'PHẦN A',
+      title: 'PHẦN A · XÁC ĐỊNH PHẠM VI VÀ SÀNG LỌC RỦI RO BAN ĐẦU',
+      shortName: 'Phần A · Xác định phạm vi',
+      tabLabel: 'Phần A',
+      shortBadge: 'Phần A',
+      maxScore: 15,
+      score: scoreA,
+      answeredCount: answeredA,
+      ...getPrincipleStatusInfo(scoreA, answeredA, 15),
+      subgroups: [
+        {
+          title: 'Thông tin hệ thống',
+          range: 'A1–A5',
+          qIds: ['A1', 'A2', 'A3', 'A4', 'A5']
+        },
+        {
+          title: 'Phạm vi & Nhóm đối tượng',
+          range: 'A6–A10',
+          qIds: ['A6', 'A7', 'A8', 'A9', 'A10']
+        },
+        {
+          title: 'Sàng lọc rủi ro ban đầu',
+          range: 'A11–A15',
+          qIds: ['A11', 'A12', 'A13', 'A14', 'A15']
+        }
+      ],
+      recommendations: {
+        full: {
+          title: 'Phạm vi & Rủi ro đã xác định đầy đủ',
+          rangeText: '11–15 câu "Có"',
+          statusDesc: 'Hệ thống AI đã được định danh rõ ràng về chức năng, phạm vi đối tượng, công nghệ cốt lõi và sàng lọc rủi ro theo Luật 134/2025/QH15 và QĐ 33/2026/QĐ-TTg.',
+          bullets: [
+            'Duy trì hồ sơ cập nhật khi nâng cấp phiên bản mô hình AI.',
+            'Định kỳ rà soát Danh mục rủi ro cao nếu hệ thống mở rộng phạm vi ra toàn quốc.',
+            'Lưu trữ tài liệu định danh phục vụ thanh tra, kiểm toán công nghệ.'
+          ]
+        },
+        partial: {
+          title: 'Cần bổ sung làm rõ phạm vi & rủi ro',
+          rangeText: '6–10 câu "Có"',
+          statusDesc: 'Cơ quan đã có thông tin cơ bản nhưng còn thiếu sót về sàng lọc rủi ro, phân loại dữ liệu nhạy cảm hoặc đánh giá tác động nhóm yếu thế.',
+          bullets: [
+            'Hoàn thiện hồ sơ đầu vào/đầu ra và biên giới dữ liệu nhạy cảm (A6, A9).',
+            'Làm rõ phương án đối với các quyết định hành chính có AI tham gia (A7, A8).',
+            'Thực hiện đánh giá sự phù hợp theo Điều 13 nếu thuộc danh mục rủi ro cao (A11, A12).'
+          ]
+        },
+        non: {
+          title: 'Chưa xác định đầy đủ phạm vi hệ thống',
+          rangeText: '0–5 câu "Có"',
+          statusDesc: 'Hệ thống chưa được định danh đầy đủ, chưa xác định rõ rủi ro gây hại hoặc chưa có căn cứ pháp lý để vận hành.',
+          bullets: [
+            'Khẩn trương lập tài liệu mô tả kiến trúc và vòng đời hệ thống AI (A1-A5).',
+            'Rà soát ngay các nguy cơ gây thiệt hại về vật chất, dữ liệu và quyền riêng tư (A13-A15).',
+            'Tạm hoãn triển khai rộng rãi cho đến khi hoàn thành hồ sơ sàng lọc rủi ro ban đầu.'
+          ]
+        }
+      }
+    },
+    'B': {
+      code: 'B',
+      numText: 'PHẦN B',
+      title: 'PHẦN B · CƠ CHẾ QUẢN TRỊ RỦI RO (9 ĐIỀU KIỆN CỐT LÕI)',
+      shortName: 'Phần B · Cơ chế quản trị',
+      tabLabel: 'Phần B',
+      shortBadge: 'Phần B',
+      maxScore: 9,
+      score: scoreB,
+      answeredCount: answeredB,
+      ...getPrincipleStatusInfo(scoreB, answeredB, 9),
+      subgroups: [
+        {
+          title: 'Trách nhiệm lãnh đạo & Danh mục AI',
+          range: 'B1–B3',
+          qIds: ['B1', 'B2', 'B3']
+        },
+        {
+          title: 'Giới hạn sử dụng & Giám sát con người',
+          range: 'B4–B6',
+          qIds: ['B4', 'B5', 'B6']
+        },
+        {
+          title: 'Đầu mối khiếu nại, Dữ liệu & Nhà cung cấp',
+          range: 'B7–B9',
+          qIds: ['B7', 'B8', 'B9']
+        }
+      ],
+      recommendations: {
+        full: {
+          title: 'Cơ chế quản trị vững chắc',
+          rangeText: '7–9 câu "Có"',
+          statusDesc: 'Tổ chức đã thiết lập đầy đủ khung quản trị rủi ro AI từ cấp lãnh đạo, quy chế vận hành đến hợp đồng nhà cung cấp.',
+          bullets: [
+            'Duy trì cơ chế họp giao ban định kỳ của Tổ chuyên trách AI.',
+            'Rà soát cập nhật danh mục hệ thống và đánh giá nhà cung cấp hàng năm.',
+            'Đảm bảo quy trình tiếp nhận khiếu nại của người dân hoạt động thông suốt.'
+          ]
+        },
+        partial: {
+          title: 'Cơ chế quản trị cần kiện toàn',
+          rangeText: '4–6 câu "Có"',
+          statusDesc: 'Tổ chức đã bước đầu có đầu mối nhưng còn thiếu văn bản quy định giới hạn, cơ chế giám sát người duyệt hoặc hồ sơ dữ liệu.',
+          bullets: [
+            'Ban hành văn bản chính thức quy định rõ các giới hạn mà AI không được làm (B4).',
+            'Kiện toàn quy trình giám sát của con người và lưu vết quyết định (B6).',
+            'Bổ sung các điều khoản ràng buộc trách nhiệm trong hợp đồng với nhà cung cấp AI (B9).'
+          ]
+        },
+        non: {
+          title: 'Thiếu cơ chế quản trị bắt buộc',
+          rangeText: '0–3 câu "Có"',
+          statusDesc: 'Hệ thống vận hành nhưng chưa có phân công trách nhiệm pháp lý rõ ràng, tiềm ẩn rủi ro nghiêm trọng khi xảy ra sự cố.',
+          bullets: [
+            'Phân công ngay Lãnh đạo cấp cao và Tổ công tác chuyên trách chịu trách nhiệm về AI (B1, B2).',
+            'Lập danh mục toàn bộ hệ thống AI đang sử dụng tại cơ quan (B3).',
+            'Thiết lập đường dây nóng/kênh công khai tiếp nhận phản ánh sự cố từ người dân (B7).'
+          ]
+        }
+      }
+    },
     'C1': {
       code: 'C1',
       numText: 'NGUYÊN TẮC 01',
       title: 'C1 · BẢO ĐẢM AN TOÀN, ĐỘ TIN CẬY VÀ KHÔNG GÂY HẠI',
       shortName: 'NT1 · An toàn, độ tin cậy & không...',
       tabLabel: 'NT1',
+      shortBadge: 'NT1',
+      maxScore: 15,
       score: scoreC1,
       answeredCount: answeredC1,
-      ...getPrincipleStatusInfo(scoreC1, answeredC1),
+      ...getPrincipleStatusInfo(scoreC1, answeredC1, 15),
       subgroups: [
         {
           title: 'Thiết kế an toàn',
@@ -308,9 +512,11 @@ const Dashboard1 = () => {
       title: 'C2 · TÔN TRỌNG CON NGƯỜI, CÔNG BẰNG VÀ MINH BẠCH',
       shortName: 'NT2 · Kiểm soát của con người',
       tabLabel: 'NT2',
+      shortBadge: 'NT2',
+      maxScore: 15,
       score: scoreC2,
       answeredCount: answeredC2,
-      ...getPrincipleStatusInfo(scoreC2, answeredC2),
+      ...getPrincipleStatusInfo(scoreC2, answeredC2, 15),
       subgroups: [
         {
           title: 'Kiểm soát của con người',
@@ -373,9 +579,11 @@ const Dashboard1 = () => {
       title: 'C3 · HẠNH PHÚC, THỊNH VƯỢNG VÀ PHÁT TRIỂN BỀN VỮNG',
       shortName: 'NT3 · Lợi ích xã hội & bao trùm kỹ...',
       tabLabel: 'NT3',
+      shortBadge: 'NT3',
+      maxScore: 15,
       score: scoreC3,
       answeredCount: answeredC3,
-      ...getPrincipleStatusInfo(scoreC3, answeredC3),
+      ...getPrincipleStatusInfo(scoreC3, answeredC3, 15),
       subgroups: [
         {
           title: 'Lợi ích xã hội và bao trùm kỹ thuật số',
@@ -438,9 +646,11 @@ const Dashboard1 = () => {
       title: 'C4 · KHUYẾN KHÍCH ĐỔI MỚI SÁNG TẠO CÓ TRÁCH NHIỆM',
       shortName: 'NT4 · Đổi mới có trách nhiệm',
       tabLabel: 'NT4',
+      shortBadge: 'NT4',
+      maxScore: 15,
       score: scoreC4,
       answeredCount: answeredC4,
-      ...getPrincipleStatusInfo(scoreC4, answeredC4),
+      ...getPrincipleStatusInfo(scoreC4, answeredC4, 15),
       subgroups: [
         {
           title: 'Đổi mới có trách nhiệm',
@@ -496,27 +706,91 @@ const Dashboard1 = () => {
           footer: 'Chủ trì: Ban Giám đốc & Cơ quan chủ quản · Hạn: Khẩn cấp'
         }
       }
+    },
+    'D': {
+      code: 'D',
+      numText: 'PHẦN D',
+      title: 'PHẦN D · KẾ HOẠCH HÀNH ĐỘNG VÀ GIÁM SÁT SAU TRIỂN KHAI',
+      shortName: 'Phần D · Giám sát sau triển khai',
+      tabLabel: 'Phần D',
+      shortBadge: 'Phần D',
+      maxScore: 10,
+      score: scoreD,
+      answeredCount: answeredD,
+      ...getPrincipleStatusInfo(scoreD, answeredD, 10),
+      subgroups: [
+        {
+          title: 'Kế hoạch triển khai & Giám sát liên tục',
+          range: 'D1–D5',
+          qIds: ['D1', 'D2', 'D3', 'D4', 'D5']
+        },
+        {
+          title: 'Quản lý sự cố, Cập nhật mô hình & Dừng khẩn cấp',
+          range: 'D6–D10',
+          qIds: ['D6', 'D7', 'D8', 'D9', 'D10']
+        }
+      ],
+      recommendations: {
+        full: {
+          title: 'Kế hoạch giám sát hoàn thiện',
+          rangeText: '7–10 câu "Có"',
+          statusDesc: 'Đơn vị đã xây dựng đầy đủ kế hoạch hành động khắc phục điểm yếu, phân công đầu mối và thiết lập cơ chế giám sát vận hành liên tục sau triển khai.',
+          bullets: [
+            'Duy trì theo dõi chỉ số độ chính xác và độ suy giảm hiệu năng mô hình (Model Drift) định kỳ hàng quý.',
+            'Cập nhật định kỳ kế hoạch ứng phó sự cố và quy trình chuyển giao quyền can thiệp cho con người.',
+            'Lưu trữ hồ sơ nhật ký vận hành phục vụ công tác thanh tra, hậu kiểm công nghệ.'
+          ]
+        },
+        partial: {
+          title: 'Kế hoạch giám sát cần hoàn thiện',
+          rangeText: '4–6 câu "Có"',
+          statusDesc: 'Đã có định hướng giám sát nhưng còn thiếu cơ chế cảnh báo sớm, quy trình dừng khẩn cấp hoặc phân định thời hạn khắc phục sự cố.',
+          bullets: [
+            'Bổ sung quy trình kích hoạt cơ chế dừng hệ thống AI trong tình huống khẩn cấp (D7).',
+            'Xác định rõ lộ trình, kinh phí và thời hạn khắc phục các tiêu chí chưa đạt (D1, D3).',
+            'Thiết lập chỉ số KPI cụ thể để đánh giá sự hài lòng và phản hồi của người dân (D5).'
+          ]
+        },
+        non: {
+          title: 'Thiếu kế hoạch hành động & giám sát',
+          rangeText: '0–3 câu "Có"',
+          statusDesc: 'Hệ thống vận hành trong môi trường thực tế nhưng thiếu hoàn toàn cơ chế theo dõi rủi ro phát sinh và không có phương án ứng phó sự cố.',
+          bullets: [
+            'Khẩn trương ban hành Kế hoạch hành động chi tiết khắc phục các điểm "Không tuân thủ" (D1, D2).',
+            'Thiết lập ngay kênh liên lạc nóng với nhà cung cấp công nghệ để hỗ trợ kỹ thuật 24/7 (D6).',
+            'Tạm dừng nhân rộng quy mô hệ thống cho đến khi hoàn thành quy chế giám sát sau triển khai.'
+          ]
+        }
+      }
     }
   };
 
-  const currP = principlesData[activePrinciple] || principlesData['C1'];
+  const currP = principlesData[activePrinciple] || principlesData['A'] || principlesData['C1'];
 
   // Calculate subgroup scores and question items
-  const questionsListForPrinciple = questionsDb[`part${currP.code}`] || [];
+  const questionsListForPrinciple = currP.code === 'A'
+    ? [...(questionsDb.partA1 || []), ...(questionsDb.partA2 || []), ...(questionsDb.partA3 || [])]
+    : (questionsDb[`part${currP.code}`] || []);
 
   const processedSubgroups = currP.subgroups.map(sub => {
     const subQuestions = questionsListForPrinciple.filter(q => sub.qIds.includes(q.id));
+    const maxCount = sub.qIds.length || 5;
     let subScore = 0;
     subQuestions.forEach(q => {
-      if (answers[q.id] === 0) subScore++;
+      if (q.id === 'A10') {
+        if (answers['A10'] !== undefined) subScore++;
+      } else if (answers[q.id] === 0) {
+        subScore++;
+      }
     });
 
+    const percent = Math.round((subScore / maxCount) * 100);
     let statusText = 'Đầy đủ';
     let statusColor = '#059669';
-    if (subScore < 5 && subScore >= 3) {
+    if (percent < 70 && percent >= 40) {
       statusText = 'Cần cải thiện';
       statusColor = '#d97706';
-    } else if (subScore < 3) {
+    } else if (percent < 40) {
       statusText = 'Chưa đạt';
       statusColor = '#dc2626';
     }
@@ -524,6 +798,7 @@ const Dashboard1 = () => {
     return {
       ...sub,
       score: subScore,
+      maxCount,
       statusText,
       statusColor,
       questions: subQuestions
@@ -550,6 +825,24 @@ const Dashboard1 = () => {
   };
 
   const handleExportDocx = () => {
+    const getCleanQuestionText = (q) => {
+      if (typeof q.text === 'string') return q.text;
+      if (q.id === 'A11') return 'Hệ thống có thuộc Danh mục AI rủi ro cao theo Điều 13 Luật 134/2025/QH15 và Quyết định 33/2026/QĐ-TTg ban hành vào ngày 30/06/2026 hay không?';
+      if (q.id === 'A12') return 'Nếu thuộc Danh mục AI rủi ro cao theo Điều 13 Luật 134/2025/QH15 và Quyết định 33/2026/QĐ-TTg ban hành, đã thực hiện đánh giá sự phù hợp theo Điều 13 chưa?';
+      if (q.id === 'C2.10') return 'Tổ chức có tài liệu kỹ thuật/ thẻ mô hình/ thẻ hệ thống đủ chi tiết để cơ quan kiểm toán/thanh tra có thể hiểu và xem xét hoạt động của hệ thống không?';
+      return q.id;
+    };
+
+    const allSectionsForExport = [
+      { code: 'A', title: 'PHẦN A · XÁC ĐỊNH PHẠM VI VÀ SÀNG LỌC RỦI RO BAN ĐẦU', score: scoreA, maxScore: 15, list: [...(questionsDb.partA1 || []), ...(questionsDb.partA2 || []), ...(questionsDb.partA3 || [])] },
+      { code: 'B', title: 'PHẦN B · CƠ CHẾ QUẢN TRỊ RỦI RO (9 ĐIỀU KIỆN CỐT LÕI)', score: scoreB, maxScore: 9, list: questionsDb.partB || [] },
+      { code: 'C1', title: 'NGUYÊN TẮC 01 · BẢO ĐẢM AN TOÀN, ĐỘ TIN CẬY VÀ KHÔNG GÂY HẠI', score: scoreC1, maxScore: 15, list: questionsDb.partC1 || [] },
+      { code: 'C2', title: 'NGUYÊN TẮC 02 · TÔN TRỌNG CON NGƯỜI, CÔNG BẰNG VÀ MINH BẠCH', score: scoreC2, maxScore: 15, list: questionsDb.partC2 || [] },
+      { code: 'C3', title: 'NGUYÊN TẮC 03 · HẠNH PHÚC, THỊNH VƯỢNG VÀ PHÁT TRIỂN BỀN VỮNG', score: scoreC3, maxScore: 15, list: questionsDb.partC3 || [] },
+      { code: 'C4', title: 'NGUYÊN TẮC 04 · KHUYẾN KHÍCH ĐỔI MỚI SÁNG TẠO CÓ TRÁCH NHIỆM', score: scoreC4, maxScore: 15, list: questionsDb.partC4 || [] },
+      { code: 'D', title: 'PHẦN D · KẾ HOẠCH HÀNH ĐỘNG VÀ GIÁM SÁT SAU TRIỂN KHAI', score: scoreD, maxScore: 10, list: questionsDb.partD || [] }
+    ];
+
     const content = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset='utf-8'><title>Báo cáo kết quả đánh giá đạo đức AI</title>
@@ -561,8 +854,8 @@ const Dashboard1 = () => {
         table { border-collapse: collapse; width: 100%; margin-top: 10pt; margin-bottom: 15pt; }
         th, td { border: 1px solid #cbd5e1; padding: 6pt 8pt; text-align: left; font-size: 9.5pt; }
         th { background-color: #f1f5f9; font-weight: bold; color: #334155; }
-        .divider { background-color: #f8fafc; font-weight: bold; }
-        .yes { color: #334155; font-weight: bold; }
+        .divider { background-color: #e2e8f0; font-weight: bold; color: #0f172a; }
+        .yes { color: #15803d; font-weight: bold; }
         .no { color: #dc2626; font-weight: bold; }
         .muted { color: #94a3b8; font-style: italic; }
       </style>
@@ -570,47 +863,75 @@ const Dashboard1 = () => {
       <body>
         <h1>KẾT QUẢ ĐÁNH GIÁ MỨC ĐỘ TUÂN THỦ ĐẠO ĐỨC AI</h1>
         <div class="meta">
-          Báo cáo chi tiết theo từng nguyên tắc · Ngày đánh giá: ${displayDate} · Hệ thống: ${formData.systemName || '-'} · MÃ HỒ SƠ #${displayCode}
+          Báo cáo chi tiết theo từng phần & nguyên tắc · Ngày đánh giá: ${displayDate} · Hệ thống: ${formData.systemName || '-'} · MÃ HỒ SƠ #${displayCode}
         </div>
         
         <h2>I. TỔNG QUAN KẾT QUẢ</h2>
-        <p><b>Điểm tổng thể quy đổi:</b> ${convertedScore} / 100 quy đổi (${totalCScore}/60 câu trả lời "Có")</p>
-        <p><b>Mức độ tuân thủ:</b> ${overall.label}</p>
-        <p><b>Điểm từng nguyên tắc:</b></p>
+        <p><b>Điểm tổng thể quy đổi (Phần C):</b> ${convertedScore} / 100 quy đổi (${totalCScore}/60 câu đạt)</p>
+        <p><b>Mức độ tuân thủ chung:</b> ${overall.label}</p>
+        <p><b>Điểm từng phần đánh giá:</b></p>
         <ul>
+          <li>Phần A (Xác định phạm vi & Rủi ro ban đầu): ${scoreA}/15 câu đạt</li>
+          <li>Phần B (Cơ chế quản trị rủi ro): ${scoreB}/9 điều kiện đạt</li>
           <li>NT1 (Bảo đảm an toàn, độ tin cậy và không gây hại): ${scoreC1}/15</li>
           <li>NT2 (Tôn trọng con người, công bằng và minh bạch): ${scoreC2}/15</li>
           <li>NT3 (Hạnh phúc, thịnh vượng và phát triển bền vững): ${scoreC3}/15</li>
           <li>NT4 (Khuyến khích đổi mới sáng tạo có trách nhiệm): ${scoreC4}/15</li>
+          <li>Phần D (Kế hoạch hành động & Giám sát sau triển khai): ${scoreD}/10 câu đạt</li>
         </ul>
 
-        <h2>II. BẢNG CHI TIẾT TỪNG TIÊU CHÍ (60 CÂU HỎI TỰ ĐÁNH GIÁ)</h2>
+        <h2>II. BẢNG CHI TIẾT TỪNG TIÊU CHÍ (94 CÂU HỎI TỰ ĐÁNH GIÁ TỪ PHẦN A ĐẾN PHẦN D)</h2>
         <table>
           <thead>
             <tr>
               <th style="width: 50pt;">MÃ</th>
               <th>CÂU HỎI TỰ ĐÁNH GIÁ</th>
-              <th style="width: 60pt; text-align: center;">TRẢ LỜI</th>
+              <th style="width: 70pt; text-align: center;">TRẢ LỜI</th>
               <th style="width: 180pt;">MINH CHỨNG</th>
             </tr>
           </thead>
           <tbody>
-            ${['C1', 'C2', 'C3', 'C4'].map(pref => {
-              const list = questionsDb[`part${pref}`] || [];
-              return list.map(q => {
+            ${allSectionsForExport.map(sec => {
+              const rows = sec.list.map(q => {
                 const ansVal = answers[q.id];
-                const isYes = ansVal === 0;
-                const isNo = ansVal === 1;
+                let isYes = false;
+                let isNo = false;
+                let ansText = 'Chưa đánh giá';
+                let ansClass = 'muted';
+
+                if (q.id === 'A10') {
+                  if (ansVal !== undefined) {
+                    isYes = true;
+                    const a10Opts = ['Cục bộ', 'Toàn quốc', 'Cả hai'];
+                    ansText = a10Opts[ansVal] || (typeof ansVal === 'string' ? ansVal : 'Đã chọn');
+                    ansClass = 'yes';
+                  }
+                } else {
+                  if (ansVal === 0) {
+                    isYes = true;
+                    ansText = 'Có';
+                    ansClass = 'yes';
+                  } else if (ansVal === 1) {
+                    isNo = true;
+                    ansText = 'Không';
+                    ansClass = 'no';
+                  }
+                }
+
                 const ev = isYes 
-                  ? (evidences[q.id] || defaultEvidenceMap[q.id] || 'Đã kiểm tra') 
+                  ? (evidences[q.id] || fullEvidenceMap[q.id] || 'Đã kiểm tra') 
                   : isNo 
-                    ? (defaultEvidenceMap[q.id] ? defaultEvidenceMap[q.id] + ' - chưa nộp' : 'Chưa nộp')
+                    ? (fullEvidenceMap[q.id] ? fullEvidenceMap[q.id] + ' - chưa nộp' : 'Chưa nộp')
                     : 'Chưa có thông tin';
-                const ansText = isYes ? 'Có' : isNo ? 'Không' : 'Chưa đánh giá';
-                const ansClass = isYes ? 'yes' : isNo ? 'no' : 'muted';
-                const qText = typeof q.text === 'string' ? q.text : q.id;
-                return `<tr><td>${q.id}</td><td>${qText}</td><td style="text-align: center;" class="${ansClass}">${ansText}</td><td>${ev}</td></tr>`;
+
+                const qText = getCleanQuestionText(q);
+                return `<tr><td><b>${q.id}</b></td><td>${qText}</td><td style="text-align: center;" class="${ansClass}">${ansText}</td><td>${ev}</td></tr>`;
               }).join('');
+
+              return `
+                <tr class="divider"><td colspan="4">${sec.title} — ${sec.score}/${sec.maxScore} câu đạt</td></tr>
+                ${rows}
+              `;
             }).join('')}
           </tbody>
         </table>
@@ -636,10 +957,13 @@ const Dashboard1 = () => {
   };
 
   const principlesList = [
+    principlesData['A'],
+    principlesData['B'],
     principlesData['C1'],
     principlesData['C2'],
     principlesData['C3'],
-    principlesData['C4']
+    principlesData['C4'],
+    principlesData['D']
   ];
 
   return (
@@ -694,37 +1018,41 @@ const Dashboard1 = () => {
               </div>
             </div>
 
-            {/* Right Column: Điểm theo từng nguyên tắc */}
+            {/* Right Column: Điểm theo các phần đánh giá */}
             <div>
-              <div className="exec-col-title">ĐIỂM THEO TỪNG NGUYÊN TẮC (thang 0–15)</div>
-              {principlesList.map((p) => (
-                <div className="exec-bar-row" key={p.code}>
-                  <div className="exec-bar-label" title={p.shortName}>
-                    {p.shortName}
+              <div className="exec-col-title">ĐIỂM THEO CÁC PHẦN ĐÁNH GIÁ</div>
+              {principlesList.map((p) => {
+                const maxS = p.maxScore || 15;
+                const pct = Math.round((p.score / maxS) * 100);
+                return (
+                  <div className="exec-bar-row" key={p.code}>
+                    <div className="exec-bar-label" title={p.shortName}>
+                      {p.shortName}
+                    </div>
+                    <div className="exec-bar-track-wrap">
+                      <div 
+                        className="exec-bar-fill" 
+                        style={{ width: `${pct}%` }}
+                      />
+                      {/* Ngưỡng một phần: 40% */}
+                      <div className="exec-bar-threshold-line" style={{ left: '40%' }} title="Ngưỡng một phần (40%)" />
+                      {/* Ngưỡng đầy đủ: 70% */}
+                      <div className="exec-bar-threshold-line" style={{ left: '70%' }} title="Ngưỡng đầy đủ (70%)" />
+                    </div>
+                    <div className="exec-bar-score">{p.score}/{maxS}</div>
                   </div>
-                  <div className="exec-bar-track-wrap">
-                    <div 
-                      className="exec-bar-fill" 
-                      style={{ width: `${(p.score / 15) * 100}%` }}
-                    />
-                    {/* Ngưỡng một phần: 6 (40%) */}
-                    <div className="exec-bar-threshold-line" style={{ left: '40%' }} />
-                    {/* Ngưỡng đầy đủ: 11 (73.33%) */}
-                    <div className="exec-bar-threshold-line" style={{ left: '73.33%' }} />
-                  </div>
-                  <div className="exec-bar-score">{p.score}/15</div>
-                </div>
-              ))}
+                );
+              })}
 
               <div className="exec-bar-legend">
                 <span className="exec-legend-item">
-                  <span className="exec-legend-box" style={{ backgroundColor: '#3b82f6' }} /> Trả lời "Có"
+                  <span className="exec-legend-box" style={{ backgroundColor: '#3b82f6' }} /> Đạt yêu cầu ("Có")
                 </span>
                 <span className="exec-legend-item">
-                  <span className="exec-legend-box" style={{ backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1' }} /> Trả lời "Không"
+                  <span className="exec-legend-box" style={{ backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1' }} /> Chưa đạt ("Không")
                 </span>
                 <span className="exec-legend-item">
-                  <span style={{ fontWeight: 'bold', color: '#94a3b8' }}>|</span> Ngưỡng đầy đủ 11 · một phần 6
+                  <span style={{ fontWeight: 'bold', color: '#94a3b8' }}>|</span> Ngưỡng đầy đủ (70%) · một phần (40%)
                 </span>
               </div>
             </div>
@@ -750,7 +1078,7 @@ const Dashboard1 = () => {
                   setActivePrinciple(p.code);
                 }}
               >
-                <span>{p.tabLabel} · {p.score}/15</span>
+                <span>{p.tabLabel} · {p.score}/{p.maxScore || 15}</span>
                 {isActive ? (
                   <span className="exec-tab-badge-active">{p.short}</span>
                 ) : (
@@ -771,7 +1099,7 @@ const Dashboard1 = () => {
             </div>
             <div className="exec-phead-score-wrap">
               <div className="exec-phead-score-num" style={{ color: currP.colorHex }}>
-                {currP.score}/15 câu "Có"
+                {currP.score}/{currP.maxScore || 15} câu đạt yêu cầu
               </div>
               <div className="exec-phead-badges">
                 <span className={`exec-chip ${currP.badgeClass}`}>{currP.label}</span>
@@ -780,12 +1108,12 @@ const Dashboard1 = () => {
             </div>
           </div>
 
-          {/* 3 Subgroup Metric Boxes */}
+          {/* Subgroup Metric Boxes */}
           <div className="exec-subgroups-grid">
             {processedSubgroups.map((sub, idx) => (
               <div key={idx} className="exec-subgroup-box">
                 <div className="exec-subgroup-title">{sub.title} ({sub.range})</div>
-                <div className="exec-subgroup-score">{sub.score}/5</div>
+                <div className="exec-subgroup-score">{sub.score}/{sub.maxCount}</div>
                 <div className="exec-subgroup-status" style={{ color: sub.statusColor }}>
                   {sub.statusText}
                 </div>
@@ -800,7 +1128,7 @@ const Dashboard1 = () => {
                 <tr>
                   <th style={{ width: '60px' }}>MÃ</th>
                   <th>CÂU HỎI TỰ ĐÁNH GIÁ</th>
-                  <th style={{ width: '80px', textAlign: 'center' }}>TRẢ LỜI</th>
+                  <th style={{ width: '90px', textAlign: 'center' }}>TRẢ LỜI</th>
                   <th style={{ width: '280px' }}>MINH CHỨNG</th>
                 </tr>
               </thead>
@@ -809,28 +1137,51 @@ const Dashboard1 = () => {
                   <React.Fragment key={sIdx}>
                     <tr className="divider-row">
                       <td colSpan={4}>
-                        {sub.title} · {sub.range} — {sub.score}/5 câu "Có"
+                        {sub.title} · {sub.range} — {sub.score}/{sub.maxCount} câu đạt
                       </td>
                     </tr>
                     {sub.questions.map((q) => {
                       const ansVal = answers[q.id];
-                      const isYes = ansVal === 0;
-                      const isNo = ansVal === 1;
+                      const isA10 = q.id === 'A10';
+                      let isYes = false;
+                      let isNo = false;
+                      let ansText = 'Chưa đánh giá';
+                      let ansColor = '#94a3b8';
+                      let ansFontWeight = 400;
+
+                      if (isA10) {
+                        if (ansVal !== undefined) {
+                          isYes = true;
+                          const a10Options = ['Cục bộ', 'Toàn quốc', 'Cả hai'];
+                          ansText = a10Options[ansVal] || (typeof ansVal === 'string' ? ansVal : 'Đã chọn');
+                          ansColor = '#334155';
+                          ansFontWeight = 600;
+                        }
+                      } else {
+                        if (ansVal === 0) {
+                          isYes = true;
+                          ansText = 'Có';
+                          ansColor = '#334155';
+                          ansFontWeight = 600;
+                        } else if (ansVal === 1) {
+                          isNo = true;
+                          ansText = 'Không';
+                          ansColor = '#dc2626';
+                          ansFontWeight = 700;
+                        }
+                      }
+
                       const userEv = evidences[q.id]?.trim();
-                      const defaultEv = defaultEvidenceMap[q.id] || 'Tài liệu đầy đủ';
+                      const defaultEv = fullEvidenceMap[q.id] || defaultEvidenceMap[q.id] || 'Tài liệu đầy đủ';
 
                       return (
                         <tr key={q.id}>
                           <td style={{ fontWeight: 600, color: '#1e293b' }}>{q.id}</td>
                           <td style={{ color: '#334155' }}>{q.text}</td>
                           <td style={{ textAlign: 'center' }}>
-                            {isYes ? (
-                              <span style={{ color: '#334155', fontWeight: 600 }}>Có</span>
-                            ) : isNo ? (
-                              <span style={{ color: '#dc2626', fontWeight: 700 }}>Không</span>
-                            ) : (
-                              <span style={{ color: '#94a3b8', fontSize: '12px', fontStyle: 'italic' }}>Chưa đánh giá</span>
-                            )}
+                            <span style={{ color: ansColor, fontWeight: ansFontWeight }}>
+                              {ansText}
+                            </span>
                           </td>
                           <td>
                             {isYes ? (
@@ -867,13 +1218,13 @@ const Dashboard1 = () => {
           </div>
           <div className="exec-khong-grid">
             {processedSubgroups.map((sub, sIdx) => {
-              const noQuestions = sub.questions.filter(q => answers[q.id] === 1);
+              const noQuestions = sub.questions.filter(q => q.id !== 'A10' && answers[q.id] === 1);
               const unAnsweredCount = sub.questions.filter(q => answers[q.id] === undefined).length;
               const hasNo = noQuestions.length > 0;
               return (
                 <div key={sIdx} className={`exec-khong-col ${hasNo ? 'warn' : 'clean'}`}>
                   <div className="exec-khong-col-title">
-                    {sub.title} — {sub.score}/5 {hasNo && `(${noQuestions.length} câu)`}
+                    {sub.title} — {sub.score}/{sub.maxCount} {hasNo && `(${noQuestions.length} câu)`}
                   </div>
                   {hasNo ? (
                     <ul className="exec-khong-list">
@@ -911,88 +1262,98 @@ const Dashboard1 = () => {
             </div>
           )}
           
-          <div className="exec-recom-grid">
-            {/* Level 1: Tuân thủ đầy đủ (11–15) */}
-            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score >= 11 ? 'highlight-cyan' : ''}`}>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
-                    {currP.recommendations.full.title}
-                  </h4>
-                  <span className="text-xs text-muted">
-                    {currP.recommendations.full.rangeText}
-                  </span>
-                </div>
-                {currP.answeredCount > 0 && currP.score >= 11 && (
-                  <span className="exec-recom-badge-current" style={{ backgroundColor: '#0284c7' }}>
-                    ● Mức hiện tại: {currP.score}/15
-                  </span>
-                )}
-                <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
-                  {currP.recommendations.full.statusDesc}
-                </p>
-                <ul className="exec-recom-bullets">
-                  {currP.recommendations.full.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+          {(() => {
+            const maxS = currP.maxScore || 15;
+            const pct = (currP.score / maxS) * 100;
+            const isFull = currP.answeredCount > 0 && pct >= 70;
+            const isPartial = currP.answeredCount > 0 && pct >= 40 && pct < 70;
+            const isNon = currP.answeredCount > 0 && pct < 40;
 
-            {/* Level 2: Tuân thủ một phần (6–10) */}
-            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score >= 6 && currP.score <= 10 ? 'highlight-amber' : ''}`}>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
-                    {currP.recommendations.partial.title}
-                  </h4>
-                  <span className="text-xs text-muted">
-                    {currP.recommendations.partial.rangeText}
-                  </span>
+            return (
+              <div className="exec-recom-grid">
+                {/* Level 1: Tuân thủ đầy đủ */}
+                <div className={`exec-recom-col ${isFull ? 'highlight-cyan' : ''}`}>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
+                        {currP.recommendations.full.title}
+                      </h4>
+                      <span className="text-xs text-muted">
+                        {currP.recommendations.full.rangeText}
+                      </span>
+                    </div>
+                    {isFull && (
+                      <span className="exec-recom-badge-current" style={{ backgroundColor: '#0284c7' }}>
+                        ● Mức hiện tại: {currP.score}/{maxS}
+                      </span>
+                    )}
+                    <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
+                      {currP.recommendations.full.statusDesc}
+                    </p>
+                    <ul className="exec-recom-bullets">
+                      {currP.recommendations.full.bullets.map((b, i) => (
+                        <li key={i}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                {currP.answeredCount > 0 && currP.score >= 6 && currP.score <= 10 && (
-                  <span className="exec-recom-badge-current" style={{ backgroundColor: '#d97706' }}>
-                    ● Mức hiện tại: {currP.score}/15
-                  </span>
-                )}
-                <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
-                  {currP.recommendations.partial.statusDesc}
-                </p>
-                <ul className="exec-recom-bullets">
-                  {currP.recommendations.partial.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
 
-            {/* Level 3: Không tuân thủ (0–5) */}
-            <div className={`exec-recom-col ${currP.answeredCount > 0 && currP.score <= 5 ? 'highlight-red' : ''}`}>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
-                    {currP.recommendations.non.title}
-                  </h4>
-                  <span className="text-xs text-muted">
-                    {currP.recommendations.non.rangeText}
-                  </span>
+                {/* Level 2: Tuân thủ một phần */}
+                <div className={`exec-recom-col ${isPartial ? 'highlight-amber' : ''}`}>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
+                        {currP.recommendations.partial.title}
+                      </h4>
+                      <span className="text-xs text-muted">
+                        {currP.recommendations.partial.rangeText}
+                      </span>
+                    </div>
+                    {isPartial && (
+                      <span className="exec-recom-badge-current" style={{ backgroundColor: '#d97706' }}>
+                        ● Mức hiện tại: {currP.score}/{maxS}
+                      </span>
+                    )}
+                    <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
+                      {currP.recommendations.partial.statusDesc}
+                    </p>
+                    <ul className="exec-recom-bullets">
+                      {currP.recommendations.partial.bullets.map((b, i) => (
+                        <li key={i}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                {currP.answeredCount > 0 && currP.score <= 5 && (
-                  <span className="exec-recom-badge-current" style={{ backgroundColor: '#dc2626' }}>
-                    ● Mức hiện tại: {currP.score}/15
-                  </span>
-                )}
-                <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
-                  {currP.recommendations.non.statusDesc}
-                </p>
-                <ul className="exec-recom-bullets">
-                  {currP.recommendations.non.bullets.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
+
+                {/* Level 3: Không tuân thủ */}
+                <div className={`exec-recom-col ${isNon ? 'highlight-red' : ''}`}>
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <h4 className="font-bold text-main mb-0" style={{ fontSize: '15px' }}>
+                        {currP.recommendations.non.title}
+                      </h4>
+                      <span className="text-xs text-muted">
+                        {currP.recommendations.non.rangeText}
+                      </span>
+                    </div>
+                    {isNon && (
+                      <span className="exec-recom-badge-current" style={{ backgroundColor: '#dc2626' }}>
+                        ● Mức hiện tại: {currP.score}/{maxS}
+                      </span>
+                    )}
+                    <p className="text-xs text-muted mb-3" style={{ lineHeight: 1.5 }}>
+                      {currP.recommendations.non.statusDesc}
+                    </p>
+                    <ul className="exec-recom-bullets">
+                      {currP.recommendations.non.bullets.map((b, i) => (
+                        <li key={i}>{b}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
 
         {/* PRESERVED SECTION: CHI TIẾT HỒ SƠ KHAI BÁO */}

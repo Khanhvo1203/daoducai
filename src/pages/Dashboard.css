@@ -343,14 +343,20 @@
 /* Principle Selector Tabs */
 .exec-tabs-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
   margin-bottom: 20px;
+}
+
+@media (max-width: 1200px) {
+  .exec-tabs-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
   .exec-tabs-row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -358,10 +364,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
+  gap: 6px;
+  padding: 8px 6px;
   border-radius: 8px;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
@@ -370,6 +376,7 @@
   background-color: #ffffff;
   color: #334155;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .exec-tab-btn:hover {
