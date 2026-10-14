@@ -348,11 +348,6 @@
   margin-bottom: 20px;
 }
 
-.exec-tab-btn-d {
-  grid-column: 1 / -1;
-  padding: 9px 14px;
-}
-
 @media (max-width: 1200px) {
   .exec-tabs-row {
     grid-template-columns: repeat(3, 1fr);
