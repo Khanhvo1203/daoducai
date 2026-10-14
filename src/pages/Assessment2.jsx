@@ -8,12 +8,20 @@ import './Assessment.css';
 const Assessment2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const currentUser = getCurrentUser();
+  const userId = currentUser ? currentUser.username : 'guest';
+
+  let localDraftForm = null;
+  try {
+    const saved = localStorage.getItem(`landing_formData_${userId}`);
+    if (saved) localDraftForm = JSON.parse(saved);
+  } catch (e) {}
   
   const selection = location.state?.selection || { partB: true, partC: true };
-  const formData = location.state?.formData || {
+  const formData = location.state?.formData || localDraftForm || {
     systemName: 'Hệ thống AI Demo',
     domain: 'Hành chính công',
-    email: 'admin@demo.vn'
+    email: currentUser?.username || 'admin@demo.vn'
   };
 
   // Define steps dynamically with Themes and Icons
@@ -34,13 +42,28 @@ const Assessment2 = () => {
   
   allSteps.push({ id: 'partD', name: 'Kế hoạch & Giám sát', group: 'Phần D: Giám sát rủi ro', theme: 'blue', icon: CheckCircle, desc: 'Xây dựng kế hoạch giảm thiểu rủi ro, phân bổ nguồn lực và thiết lập cơ chế giám sát sau triển khai.' });
 
-  const currentUser = getCurrentUser();
-  const userId = currentUser ? currentUser.username : 'guest';
+  const searchParams = new URLSearchParams(location.search);
+  const stepFromUrl = searchParams.get('step');
 
   const [activeStepIdx, setActiveStepIdx] = useState(() => {
+    if (stepFromUrl) {
+      const parsed = parseInt(stepFromUrl, 10) - 1;
+      if (!isNaN(parsed) && parsed >= 0 && parsed < allSteps.length) {
+        return parsed;
+      }
+    }
     const saved = localStorage.getItem(`assessment_activeStepIdx_${userId}`);
     return saved ? parseInt(saved, 10) : 0;
   });
+
+  useEffect(() => {
+    if (stepFromUrl) {
+      const parsed = parseInt(stepFromUrl, 10) - 1;
+      if (!isNaN(parsed) && parsed >= 0 && parsed < allSteps.length && parsed !== activeStepIdx) {
+        setActiveStepIdx(parsed);
+      }
+    }
+  }, [stepFromUrl, allSteps.length]);
 
   const activeStep = allSteps[activeStepIdx];
 
@@ -385,12 +408,19 @@ const Assessment2 = () => {
                     
                     <div className="group-steps">
                       {stepsInGroup.map((step) => (
-                        <div key={step.id} 
-                             className={`step ${step.globalIdx === activeStepIdx ? 'active' : ''} ${step.globalIdx < activeStepIdx ? 'completed-step' : ''}`}
-                             onClick={() => setActiveStepIdx(step.globalIdx)}>
+                        <Link 
+                          key={step.id} 
+                          to={`/assessment2?step=${step.globalIdx + 1}`}
+                          className={`step ${step.globalIdx === activeStepIdx ? 'active' : ''} ${step.globalIdx < activeStepIdx ? 'completed-step' : ''}`}
+                          style={{ textDecoration: 'none' }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveStepIdx(step.globalIdx);
+                          }}
+                        >
                           <div className="step-num">{step.globalIdx + 1}</div>
                           <div className="step-name">{step.name}</div>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -619,15 +649,33 @@ const Assessment2 = () => {
             </div>
 
             <div className="bottom-bar flex justify-between items-center mt-8 pt-6 border-t">
-              <button className="btn btn-secondary text-muted border-none bg-transparent font-bold" onClick={handleBack}>
+              <Link 
+                to={activeStepIdx > 0 ? `/assessment2?step=${activeStepIdx}` : '/ho-so-dang-ky'}
+                className="btn btn-secondary text-muted border-none bg-transparent font-bold flex items-center gap-1"
+                style={{ textDecoration: 'none' }}
+                onClick={(e) => {
+                  if (activeStepIdx > 0) {
+                    e.preventDefault();
+                    handleBack();
+                  }
+                }}
+              >
                 <ArrowLeft size={18} /> QUAY LẠI
-              </button>
+              </Link>
               <div className="text-muted text-sm flex items-center gap-2 hidden-mobile">
                 <span>Đã lưu tự động</span>
               </div>
-              <button className="btn theme-bg text-white font-bold hover-opacity" onClick={handleSaveAndContinue} style={{padding: '0.8rem 2rem', fontSize: '1.1rem'}}>
+              <Link
+                to={activeStepIdx < allSteps.length - 1 ? `/assessment2?step=${activeStepIdx + 2}` : '/dashboard2'}
+                className="btn theme-bg text-white font-bold hover-opacity"
+                style={{ padding: '0.8rem 2rem', fontSize: '1.1rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSaveAndContinue();
+                }}
+              >
                 {activeStepIdx < allSteps.length - 1 ? 'TIẾP TỤC BƯỚC SAU' : 'HOÀN TẤT & XEM KẾT QUẢ'}
-              </button>
+              </Link>
             </div>
           </div>
         </section>

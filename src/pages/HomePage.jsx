@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Home,
   FileText,
@@ -173,7 +173,7 @@ const HomePage = () => {
       {/* ===== LEFT SIDEBAR ===== */}
       <aside className="home-sidebar">
         {/* Brand: Logo & Tên Bộ Khoa học và Công nghệ */}
-        <div className="sidebar-brand" onClick={() => navigate('/')} title="Bộ Khoa học và Công nghệ">
+        <Link to="/" className="sidebar-brand" title="Bộ Khoa học và Công nghệ">
           <div className="brand-logo-container">
             <div className="brand-logo-badge">
               <img src="/logo-most.png" alt="Logo Bộ Khoa học và Công nghệ" className="brand-most-logo" />
@@ -183,17 +183,17 @@ const HomePage = () => {
               <span className="brand-ministry-subtitle">VÀ CÔNG NGHỆ</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Navigation Menu */}
         <nav className="sidebar-menu">
           {/* Trang chủ */}
-          <div className="sidebar-menu-item active" onClick={() => navigate('/')}>
+          <Link to="/" className="sidebar-menu-item active">
             <div className="menu-item-content">
               <Home size={16} className="menu-icon" />
               <span>Trang chủ</span>
             </div>
-          </div>
+          </Link>
 
           {/* 1. Thông tin hệ thống AI */}
           <div className="sidebar-group">
@@ -209,10 +209,10 @@ const HomePage = () => {
             </div>
             {expandedMenus.systemInfo && (
               <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/history')}>Danh sách hệ thống AI</div>
-                <div className="submenu-item highlighted" onClick={() => navigate('/ho-so-dang-ky')}>Khai báo hệ thống AI</div>
-                <div className="submenu-item" onClick={() => navigate('/ho-so-dang-ky')}>Cập nhật thông tin</div>
-                <div className="submenu-item" onClick={() => navigate('/ho-so-dang-ky')}>Phân loại mức độ rủi ro</div>
+                <Link to="/history" className="submenu-item">Danh sách hệ thống AI</Link>
+                <Link to="/ho-so-dang-ky" className="submenu-item highlighted">Khai báo hệ thống AI</Link>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Cập nhật thông tin</Link>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Phân loại mức độ rủi ro</Link>
               </div>
             )}
           </div>
@@ -231,9 +231,9 @@ const HomePage = () => {
             </div>
             {expandedMenus.ethicsAssessment && (
               <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/assessment1')}>Điều kiện quản trị (A/B)</div>
-                <div className="submenu-item" onClick={() => navigate('/assessment1')}>Đánh giá theo 4 nguyên tắc</div>
-                <div className="submenu-item" onClick={() => navigate('/assessment1')}>Giám sát sau triển khai</div>
+                <Link to="/assessment1" className="submenu-item">Điều kiện quản trị (A/B)</Link>
+                <Link to="/assessment1" className="submenu-item">Đánh giá theo 4 nguyên tắc</Link>
+                <Link to="/assessment1" className="submenu-item">Giám sát sau triển khai</Link>
               </div>
             )}
           </div>
@@ -252,9 +252,9 @@ const HomePage = () => {
             </div>
             {expandedMenus.weightAssessment && (
               <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/assessment2')}>Thực hiện đánh trọng số</div>
-                <div className="submenu-item" onClick={() => navigate('/dashboard2')}>Kết quả tuân thủ trọng số</div>
-                <div className="submenu-item" onClick={() => navigate('/dashboard2')}>Khuyến nghị cải thiện</div>
+                <Link to="/assessment2" className="submenu-item">Thực hiện đánh trọng số</Link>
+                <Link to="/dashboard2" className="submenu-item">Kết quả tuân thủ trọng số</Link>
+                <Link to="/dashboard2" className="submenu-item">Khuyến nghị cải thiện</Link>
               </div>
             )}
           </div>
@@ -273,9 +273,9 @@ const HomePage = () => {
             </div>
             {expandedMenus.reports && (
               <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/dashboard1')}>Báo cáo chi tiết</div>
-                <div className="submenu-item" onClick={() => navigate('/dashboard1')}>Báo cáo kết quả tổng hợp</div>
-                <div className="submenu-item" onClick={() => navigate('/dashboard1')}>Xuất báo cáo</div>
+                <Link to="/dashboard1" className="submenu-item">Báo cáo chi tiết</Link>
+                <Link to="/dashboard1" className="submenu-item">Báo cáo kết quả tổng hợp</Link>
+                <Link to="/dashboard1" className="submenu-item">Xuất báo cáo</Link>
               </div>
             )}
           </div>
@@ -294,18 +294,18 @@ const HomePage = () => {
             </div>
             {expandedMenus.help && (
               <div className="sidebar-submenu">
-                <div className="submenu-item" onClick={() => navigate('/ho-so-dang-ky')}>Hướng dẫn sử dụng</div>
-                <div className="submenu-item" onClick={() => window.open('https://unesdoc.unesco.org', '_blank')}>Tài liệu tham khảo</div>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Hướng dẫn sử dụng</Link>
+                <a href="https://unesdoc.unesco.org" target="_blank" rel="noopener noreferrer" className="submenu-item">Tài liệu tham khảo</a>
                 <div
                   className="submenu-item"
                   onClick={handleDownloadUnesco}
                   title="Nhấp để tải về file Excel biểu mẫu đánh giá của UNESCO"
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
                 >
                   <span>Công cụ quốc tế (UNESCO, ...)</span>
                   <Download size={12} style={{ opacity: 0.7, flexShrink: 0 }} />
                 </div>
-                <div className="submenu-item" onClick={() => navigate('/ho-so-dang-ky')}>Câu hỏi thường gặp (FAQ)</div>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Câu hỏi thường gặp (FAQ)</Link>
               </div>
             )}
           </div>
@@ -358,30 +358,29 @@ const HomePage = () => {
 
                   {showUserDropdown && (
                     <div className="user-menu-dropdown" onClick={(e) => e.stopPropagation()}>
-                      <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/profile'); }}>
+                      <Link to="/profile" className="dropdown-item" onClick={() => setShowUserDropdown(false)}>
                         <User size={14} /> Thông tin tài khoản
-                      </div>
-                      <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/history'); }}>
+                      </Link>
+                      <Link to="/history" className="dropdown-item" onClick={() => setShowUserDropdown(false)}>
                         <Layers size={14} /> Lịch sử đánh giá
-                      </div>
+                      </Link>
                       <div className="dropdown-divider"></div>
-                      <div className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>
+                      <Link to="/login" className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>
                         <LogOut size={14} /> Đăng xuất
-                      </div>
+                      </Link>
                     </div>
                   )}
                 </div>
               </>
             ) : (
-              <button 
-                type="button"
+              <Link 
+                to="/login"
                 className="topbar-login-btn"
-                onClick={() => navigate('/login')}
                 title="Đăng nhập tài khoản"
               >
                 <LogIn size={16} strokeWidth={2.4} />
                 <span>ĐĂNG NHẬP</span>
-              </button>
+              </Link>
             )}
           </div>
         </header>
@@ -390,9 +389,9 @@ const HomePage = () => {
         <div className="home-body-viewport">
 
           {/* ===== 1. HERO BANNER ===== */}
-          <div
+          <Link
+            to="/ho-so-dang-ky"
             className="home-hero-banner"
-            onClick={() => navigate('/ho-so-dang-ky')}
             title="Nhấp để bắt đầu đánh giá"
           >
             {/* Overlay gradient trái */}
@@ -407,13 +406,9 @@ const HomePage = () => {
               <p className="home-banner-subtext">
                 Hỗ trợ tổ chức đánh giá mức độ tuân thủ Khung đạo đức trí tuệ nhân tạo quốc gia theo Thông tư 05/2026/TT-BKHCN
               </p>
-              <button
-                type="button"
-                className="home-banner-cta-btn"
-                onClick={(e) => { e.stopPropagation(); navigate('/ho-so-dang-ky'); }}
-              >
+              <span className="home-banner-cta-btn">
                 BẮT ĐẦU ĐÁNH GIÁ <ArrowRight size={15} strokeWidth={2.5} />
-              </button>
+              </span>
             </div>
 
             {/* Panel phải: 4 tính năng */}
@@ -431,7 +426,7 @@ const HomePage = () => {
                 );
               })}
             </div>
-          </div>
+          </Link>
 
           {/* ===== 2. CÁC PHÂN HỆ CHỨC NĂNG CHÍNH ===== */}
           <section className="feature-section-viewport">
@@ -441,10 +436,10 @@ const HomePage = () => {
               {featureCards.map((card) => {
                 const IconComponent = card.icon;
                 return (
-                  <div
+                  <Link
                     key={card.num}
+                    to={card.link}
                     className="feature-card-compact"
-                    onClick={() => navigate(card.link)}
                   >
                     {/* Top: Badge + Tiêu đề + Mô tả */}
                     <div className="card-top-row">
@@ -486,7 +481,7 @@ const HomePage = () => {
                         <ArrowRight size={15} strokeWidth={2.5} />
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>

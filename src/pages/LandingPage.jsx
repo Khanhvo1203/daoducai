@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   ArrowRight, 
   ArrowLeft,
@@ -14,10 +14,18 @@ import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const stepFromUrl = searchParams.get('step');
+
   const currentUser = getCurrentUser();
   const userId = currentUser ? currentUser.username : 'guest';
   
   const [step, setStep] = useState(() => {
+    if (stepFromUrl) {
+      const s = parseInt(stepFromUrl, 10);
+      if (s >= 1 && s <= 3) return s;
+    }
     const saved = localStorage.getItem(`landing_step_${userId}`);
     const s = saved ? parseInt(saved, 10) : 1;
     return s > 3 ? 3 : (s < 1 ? 1 : s);
@@ -222,17 +230,18 @@ const LandingPage = () => {
               const isActive = step === tab.num;
               const isCompleted = step > tab.num;
               return (
-                <button
+                <Link
                   key={tab.num}
-                  type="button"
+                  to={`/ho-so-dang-ky?step=${tab.num}`}
                   className={`sub-tab-btn ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     setStep(tab.num);
                   }}
                 >
                   {isCompleted && <Check size={13} strokeWidth={3} />}
                   {tab.title}
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -241,21 +250,21 @@ const LandingPage = () => {
           {step === 2 && (
             <div className="portal-quick-anchors">
               <span className="portal-quick-label">Mục khai báo:</span>
-              <button type="button" onClick={() => scrollToSection('sec-info')} className="portal-anchor-chip">
+              <a href="#sec-info" onClick={(e) => { e.preventDefault(); scrollToSection('sec-info'); }} className="portal-anchor-chip">
                 I. Thông tin AI (6)
-              </button>
-              <button type="button" onClick={() => scrollToSection('sec-risk')} className="portal-anchor-chip">
+              </a>
+              <a href="#sec-risk" onClick={(e) => { e.preventDefault(); scrollToSection('sec-risk'); }} className="portal-anchor-chip">
                 2. Mức độ Rủi ro (4)
-              </button>
-              <button type="button" onClick={() => scrollToSection('sec-purpose')} className="portal-anchor-chip">
+              </a>
+              <a href="#sec-purpose" onClick={(e) => { e.preventDefault(); scrollToSection('sec-purpose'); }} className="portal-anchor-chip">
                 II.1. Mục đích & Giới hạn (9)
-              </button>
-              <button type="button" onClick={() => scrollToSection('sec-tech')} className="portal-anchor-chip">
+              </a>
+              <a href="#sec-tech" onClick={(e) => { e.preventDefault(); scrollToSection('sec-tech'); }} className="portal-anchor-chip">
                 II.2. Công nghệ & Dữ liệu (9)
-              </button>
-              <button type="button" onClick={() => scrollToSection('sec-governance')} className="portal-anchor-chip">
+              </a>
+              <a href="#sec-governance" onClick={(e) => { e.preventDefault(); scrollToSection('sec-governance'); }} className="portal-anchor-chip">
                 II.3. Quản trị & Vận hành (4)
-              </button>
+              </a>
             </div>
           )}
 
@@ -1329,9 +1338,14 @@ const LandingPage = () => {
               {/* Bottom Actions Bar */}
               <div className="portal-actions-bar">
                 <div className="flex gap-2">
-                  <button type="button" onClick={handlePrevStep} className="btn btn-secondary flex items-center gap-1.5">
+                  <Link 
+                    to="/ho-so-dang-ky?step=1" 
+                    onClick={(e) => { e.preventDefault(); handlePrevStep(); }} 
+                    className="btn btn-secondary flex items-center gap-1.5"
+                    style={{ textDecoration: 'none' }}
+                  >
                     <ArrowLeft size={16} /> Quay lại
-                  </button>
+                  </Link>
                   <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
                     <Save size={16} /> Lưu tạm
                   </button>
@@ -1380,13 +1394,23 @@ const LandingPage = () => {
                       <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số (Thang điểm 100)</option>
                     </select>
                     <div className="flex justify-end">
-                      <button 
-                        type="button"
+                      <Link 
+                        to={selectedAssessment === 1 ? "/assessment1" : "/assessment2"}
+                        state={{ 
+                          selection: assessmentSelection,
+                          formData: formData
+                        }}
                         className="btn btn-primary flex items-center gap-1.5"
-                        onClick={handleStartAssessment}
+                        style={{ textDecoration: 'none' }}
+                        onClick={(e) => {
+                          if (!assessmentSelection.partB && !assessmentSelection.partC) {
+                            e.preventDefault();
+                            alert("Vui lòng chọn ít nhất 1 bài đánh giá!");
+                          }
+                        }}
                       >
                         Bắt đầu đánh giá <ArrowRight size={16} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -1395,20 +1419,35 @@ const LandingPage = () => {
               {/* Bottom Actions Bar */}
               <div className="portal-actions-bar">
                 <div className="flex gap-2">
-                  <button type="button" onClick={handlePrevStep} className="btn btn-secondary flex items-center gap-1.5">
+                  <Link 
+                    to="/ho-so-dang-ky?step=2" 
+                    onClick={(e) => { e.preventDefault(); handlePrevStep(); }} 
+                    className="btn btn-secondary flex items-center gap-1.5"
+                    style={{ textDecoration: 'none' }}
+                  >
                     <ArrowLeft size={16} /> Quay lại
-                  </button>
+                  </Link>
                   <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
                     <Save size={16} /> Lưu tạm
                   </button>
                 </div>
-                <button 
-                  type="button" 
-                  onClick={handleStartAssessment} 
+                <Link 
+                  to={selectedAssessment === 1 ? "/assessment1" : "/assessment2"} 
+                  state={{ 
+                    selection: assessmentSelection,
+                    formData: formData
+                  }}
                   className="btn btn-primary flex items-center gap-2"
+                  style={{ textDecoration: 'none' }}
+                  onClick={(e) => {
+                    if (!assessmentSelection.partB && !assessmentSelection.partC) {
+                      e.preventDefault();
+                      alert("Vui lòng chọn ít nhất 1 bài đánh giá!");
+                    }
+                  }}
                 >
                   Bắt đầu đánh giá <ArrowRight size={16} />
-                </button>
+                </Link>
               </div>
             </div>
           )}

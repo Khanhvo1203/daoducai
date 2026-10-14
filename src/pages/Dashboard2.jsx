@@ -288,19 +288,23 @@ const Dashboard2 = () => {
                 <button className="btn btn-secondary text-sm border-primary text-primary">
                   <Share2 size={16}/> Chia sẻ kết quả
                 </button>
-                <button className="btn btn-secondary text-sm border-primary text-primary" onClick={() => {
-                  const user = getCurrentUser();
-                  if (user) {
-                    localStorage.removeItem(`landing_formData_${user.username}`);
-                    localStorage.removeItem(`landing_step_${user.username}`);
-                    localStorage.removeItem(`assessment_answers_${user.username}`);
-                    localStorage.removeItem(`assessment_evidences_${user.username}`);
-                    localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
-                  }
-                  navigate('/');
-                }}>
+                <Link 
+                  to="/ho-so-dang-ky"
+                  className="btn btn-secondary text-sm border-primary text-primary" 
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => {
+                    const user = getCurrentUser();
+                    if (user) {
+                      localStorage.removeItem(`landing_formData_${user.username}`);
+                      localStorage.removeItem(`landing_step_${user.username}`);
+                      localStorage.removeItem(`assessment_answers_${user.username}`);
+                      localStorage.removeItem(`assessment_evidences_${user.username}`);
+                      localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
+                    }
+                  }}
+                >
                   <RotateCcw size={16}/> Đánh giá lại
-                </button>
+                </Link>
               </div>
             </div>
           </div>

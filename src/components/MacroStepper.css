@@ -41,6 +41,8 @@
   position: relative;
   z-index: 2;
   transition: all 0.25s ease;
+  text-decoration: none;
+  color: inherit;
 }
 
 .macro-step-item.clickable {

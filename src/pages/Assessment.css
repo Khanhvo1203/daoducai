@@ -286,6 +286,8 @@
   border: 1px solid #f1f5f9;
   background-color: #ffffff;
   user-select: none;
+  text-decoration: none;
+  color: inherit;
 }
 
 .step:hover {

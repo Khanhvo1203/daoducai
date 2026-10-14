@@ -91,7 +91,8 @@ const Dashboard1 = () => {
   const displayCode = existingCode || (totalAnsweredCount > 0 ? 'HỒ SƠ MỚI' : 'CHƯA LƯU');
   const displayDate = new Date().toLocaleDateString('vi-VN');
 
-  const [activePrinciple, setActivePrinciple] = useState('C1');
+  const principleFromUrl = searchParams.get('principle');
+  const [activePrinciple, setActivePrinciple] = useState(principleFromUrl || 'C1');
   const [isProfileExpanded, setIsProfileExpanded] = useState(false);
 
   // Calculate scores
@@ -546,7 +547,6 @@ const Dashboard1 = () => {
     localStorage.removeItem(`assessment_answers_${uKey}`);
     localStorage.removeItem(`assessment_evidences_${uKey}`);
     localStorage.removeItem(`assessment_activeStepIdx_${uKey}`);
-    navigate('/');
   };
 
   const handleExportDocx = () => {
@@ -662,9 +662,9 @@ const Dashboard1 = () => {
             <button type="button" className="exec-action-btn" onClick={handleShare}>
               <Share2 size={15} /> Chia sẻ kết quả
             </button>
-            <button type="button" className="exec-action-btn" onClick={handleReset}>
+            <Link to="/ho-so-dang-ky" className="exec-action-btn" onClick={handleReset}>
               <RotateCcw size={15} /> Đánh giá lại
-            </button>
+            </Link>
             <button type="button" className="exec-action-btn" onClick={handleExportDocx}>
               <Download size={15} /> Xuất báo cáo (.docx)
             </button>
@@ -735,12 +735,20 @@ const Dashboard1 = () => {
         <div className="exec-tabs-row">
           {principlesList.map((p) => {
             const isActive = activePrinciple === p.code;
+            const tabUrl = `${location.pathname}?${(() => {
+              const sp = new URLSearchParams(location.search);
+              sp.set('principle', p.code);
+              return sp.toString();
+            })()}`;
             return (
-              <button
+              <Link
                 key={p.code}
-                type="button"
+                to={tabUrl}
                 className={`exec-tab-btn ${isActive ? 'active' : ''}`}
-                onClick={() => setActivePrinciple(p.code)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setActivePrinciple(p.code);
+                }}
               >
                 <span>{p.tabLabel} · {p.score}/15</span>
                 {isActive ? (
@@ -748,7 +756,7 @@ const Dashboard1 = () => {
                 ) : (
                   <span className={`exec-tab-badge ${p.badgeClass}`}>{p.short}</span>
                 )}
-              </button>
+              </Link>
             );
           })}
         </div>

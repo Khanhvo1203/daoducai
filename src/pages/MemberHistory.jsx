@@ -60,7 +60,7 @@ const MemberHistory = () => {
             ) : (
               <>
                 <p className="text-muted mb-4">Bạn chưa thực hiện bài đánh giá nào.</p>
-                <Link to="/" className="btn btn-primary">Thực hiện đánh giá mới</Link>
+                <Link to="/ho-so-dang-ky" className="btn btn-primary" style={{ textDecoration: 'none' }}>Thực hiện đánh giá mới</Link>
               </>
             )}
           </div>
@@ -81,12 +81,14 @@ const MemberHistory = () => {
                 <FileText size={14} /> Lĩnh vực: {a.formData?.domain}
               </p>
               
-              <button 
-                onClick={() => navigate(a.dashboardRoute || '/dashboard1', { state: { selection: a.selection, formData: a.formData, answers: a.answers, evidences: a.evidences, assessmentCode: a.id }})}
+              <Link 
+                to={`${a.dashboardRoute || '/dashboard1'}?id=${a.id}`}
+                state={{ selection: a.selection, formData: a.formData, answers: a.answers, evidences: a.evidences, assessmentCode: a.id }}
                 className="btn w-full btn-secondary text-primary border-primary flex justify-center items-center gap-2"
+                style={{ textDecoration: 'none' }}
               >
                 Xem lại kết quả <ArrowRight size={16} />
-              </button>
+              </Link>
             </div>
           ))
         )}

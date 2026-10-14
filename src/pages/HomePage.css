@@ -872,3 +872,15 @@ body.dark-theme .user-menu-dropdown .dropdown-item:hover {
   color: #fff;
   transform: translateX(2px);
 }
+
+/* Link Resets for Native Anchors */
+.sidebar-brand,
+.sidebar-menu-item,
+.submenu-item,
+.home-hero-banner,
+.feature-card-compact,
+.topbar-login-btn,
+.dropdown-item {
+  text-decoration: none;
+  color: inherit;
+}

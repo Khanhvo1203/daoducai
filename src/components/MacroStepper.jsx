@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './MacroStepper.css';
 
 /**
@@ -17,28 +17,21 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
       num: 1,
       titleLine1: 'Thông tin hệ thống',
       titleLine2: 'và sàng lọc rủi ro',
-      path: '/'
+      path: '/ho-so-dang-ky'
     },
     {
       num: 2,
       titleLine1: 'Kiểm tra điều kiện quản trị',
       titleLine2: 'và đánh giá theo 4 nguyên tắc',
-      path: null // dynamic based on assessment method
+      path: '/assessment1'
     },
     {
       num: 3,
       titleLine1: 'Đề xuất biện pháp',
       titleLine2: 'và theo dõi',
-      path: null
+      path: '/dashboard1'
     }
   ];
-
-  const handleStepClick = (phase) => {
-    if (!interactive) return;
-    if (phase.num === 1 && currentPhase > 1) {
-      navigate('/');
-    }
-  };
 
   return (
     <div className={`macro-stepper-container ${className}`}>
@@ -52,12 +45,19 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
           if (isActive) statusClass = 'active';
           if (isCompleted) statusClass = 'completed';
 
+          const isClickable = interactive && isCompleted;
+
           return (
             <React.Fragment key={phase.num}>
               {/* Step Node */}
-              <div 
-                className={`macro-step-item ${statusClass} ${interactive && isCompleted ? 'clickable' : ''}`}
-                onClick={() => handleStepClick(phase)}
+              <Link 
+                to={phase.path}
+                className={`macro-step-item ${statusClass} ${isClickable ? 'clickable' : ''}`}
+                onClick={(e) => {
+                  if (!isClickable) {
+                    e.preventDefault();
+                  }
+                }}
                 title={isCompleted && interactive ? `Quay lại: ${phase.titleLine1} ${phase.titleLine2}` : undefined}
               >
                 <div className="macro-step-circle">
@@ -71,7 +71,7 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
                   <span className="macro-line-1">{phase.titleLine1}</span>
                   <span className="macro-line-2">{phase.titleLine2}</span>
                 </div>
-              </div>
+              </Link>
 
               {/* Connecting Arrow Bar between steps */}
               {idx < phases.length - 1 && (

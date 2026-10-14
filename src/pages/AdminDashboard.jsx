@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { getCurrentUser, logout, getAllUsers, createUser, deleteUser, getAllAssessments, updateUser } from '../utils/auth';
 import { Users, FileText, Trash2, Plus, LogOut, Search, Edit } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('users'); // 'users' or 'assessments'
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'users'); // 'users' or 'assessments'
   const [users, setUsers] = useState([]);
   const [assessments, setAssessments] = useState([]);
   const [showAddUser, setShowAddUser] = useState(false);
@@ -110,24 +112,34 @@ const AdminDashboard = () => {
           <h2 className="text-2xl font-extrabold text-main mb-1">Backend Quản trị</h2>
           <p className="text-muted text-sm">Quản lý tài khoản thành viên và hồ sơ đánh giá</p>
         </div>
-        <button onClick={handleLogout} className="btn btn-secondary text-danger border-danger">
+        <Link to="/admin/login" onClick={handleLogout} className="btn btn-secondary text-danger border-danger" style={{ textDecoration: 'none' }}>
           <LogOut size={16} /> Đăng xuất
-        </button>
+        </Link>
       </div>
 
       <div className="flex gap-4 mb-6 border-b">
-        <button 
+        <Link 
+          to="/admin?tab=users"
           className={`pb-3 px-4 font-bold flex items-center gap-2 ${activeTab === 'users' ? 'border-b-2 border-primary text-primary' : 'text-muted'}`}
-          onClick={() => setActiveTab('users')}
+          style={{ textDecoration: 'none' }}
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveTab('users');
+          }}
         >
           <Users size={18} /> Quản lý Thành viên
-        </button>
-        <button 
+        </Link>
+        <Link 
+          to="/admin?tab=assessments"
           className={`pb-3 px-4 font-bold flex items-center gap-2 ${activeTab === 'assessments' ? 'border-b-2 border-primary text-primary' : 'text-muted'}`}
-          onClick={() => setActiveTab('assessments')}
+          style={{ textDecoration: 'none' }}
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveTab('assessments');
+          }}
         >
           <FileText size={18} /> Hồ sơ Đã đánh giá
-        </button>
+        </Link>
       </div>
 
       {activeTab === 'users' && (

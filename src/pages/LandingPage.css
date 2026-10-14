@@ -83,6 +83,7 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  text-decoration: none;
 }
 
 .sub-tab-btn:hover {
@@ -191,6 +192,7 @@
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
+  text-decoration: none;
 }
 
 .portal-anchor-chip:hover {

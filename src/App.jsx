@@ -111,12 +111,14 @@ const Navigation = () => {
                       <div className="dropdown-divider"></div>
                     </>
                   )}
-                  <div 
-                    onClick={() => { logout(); window.location.href = user.role === 'ADMIN' ? '/admin/login' : '/login'; }}
+                  <Link 
+                    to={user.role === 'ADMIN' ? '/admin/login' : '/login'}
+                    onClick={() => { logout(); setShowDropdown(false); }}
                     className="dropdown-item danger"
+                    style={{ textDecoration: 'none' }}
                   >
                     <LogOut size={15} /> <span>Đăng xuất</span>
-                  </div>
+                  </Link>
                 </div>
               )}
             </div>
