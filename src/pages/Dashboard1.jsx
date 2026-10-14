@@ -1072,13 +1072,13 @@ const Dashboard1 = () => {
               <Link
                 key={p.code}
                 to={tabUrl}
-                className={`exec-tab-btn ${isActive ? 'active' : ''}`}
+                className={`exec-tab-btn ${p.code === 'D' ? 'exec-tab-btn-d' : ''} ${isActive ? 'active' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   setActivePrinciple(p.code);
                 }}
               >
-                <span>{p.tabLabel} · {p.score}/{p.maxScore || 15}</span>
+                <span>{p.code === 'D' ? 'Phần D · Giám sát sau triển khai' : p.tabLabel} · {p.score}/{p.maxScore || 15}</span>
                 {isActive ? (
                   <span className="exec-tab-badge-active">{p.short}</span>
                 ) : (
