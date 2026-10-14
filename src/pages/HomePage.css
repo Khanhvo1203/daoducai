@@ -276,6 +276,124 @@
   gap: 1rem;
 }
 
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  background: #f1f5f9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.theme-toggle-btn:hover {
+  background: #e2e8f0;
+  color: #1b68e8;
+  transform: rotate(15deg);
+}
+
+/* Themed Login Button */
+.topbar-login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.15rem;
+  background: #1b68e8;
+  color: #ffffff;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(27, 104, 232, 0.3);
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.topbar-login-btn:hover {
+  background: #1555c5;
+  box-shadow: 0 4px 12px rgba(27, 104, 232, 0.45);
+  transform: translateY(-1px);
+}
+
+.topbar-login-btn:active {
+  transform: translateY(0);
+}
+
+/* Dark Theme Adjustments for Topbar */
+body.dark-theme .home-topbar {
+  background: #1e293b;
+  border-bottom-color: #334155;
+}
+
+body.dark-theme .portal-main-heading {
+  color: #f8fafc;
+}
+
+body.dark-theme .beta-tag {
+  background: #1e3a8a;
+  color: #93c5fd;
+  border-color: #3b82f6;
+}
+
+body.dark-theme .home-main-container {
+  background: #0f172a;
+}
+
+body.dark-theme .theme-toggle-btn {
+  background: #334155;
+  color: #fbbf24;
+  border-color: #475569;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background: #475569;
+  color: #fef08a;
+}
+
+body.dark-theme .notification-bell-btn {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+body.dark-theme .notification-bell-btn:hover {
+  background: #475569;
+  color: #ffffff;
+}
+
+body.dark-theme .user-profile-anchor:hover {
+  background: #334155;
+}
+
+body.dark-theme .user-fullname {
+  color: #f8fafc;
+}
+
+body.dark-theme .user-org-name {
+  color: #94a3b8;
+}
+
+body.dark-theme .user-menu-dropdown {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+body.dark-theme .user-menu-dropdown .dropdown-item {
+  color: #cbd5e1;
+}
+
+body.dark-theme .user-menu-dropdown .dropdown-item:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
 .notification-bell-btn {
   position: relative;
   width: 32px;

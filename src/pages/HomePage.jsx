@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Home,
@@ -19,7 +19,10 @@ import {
   Building2,
   ShieldCheck,
   Check,
-  Download
+  Download,
+  LogIn,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -38,6 +41,23 @@ const HomePage = () => {
   });
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('portal_theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('portal_theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('portal_theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(prev => !prev);
+  };
 
   const toggleMenu = (menuKey) => {
     setExpandedMenus(prev => ({
@@ -302,44 +322,67 @@ const HomePage = () => {
           </div>
 
           <div className="topbar-right">
-            <div className="notification-bell-btn" title="Thông báo hệ thống">
-              <Bell size={18} />
-              <span className="notification-badge">1</span>
+            {/* Nút chuyển đổi Theme (Sáng / Tối) */}
+            <div 
+              className="theme-toggle-btn"
+              onClick={toggleTheme}
+              title={isDarkMode ? "Chuyển sang giao diện Sáng" : "Chuyển sang giao diện Tối"}
+            >
+              {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
             </div>
 
-            <div className="user-profile-anchor" onClick={() => setShowUserDropdown(!showUserDropdown)}>
-              <div className="user-avatar-circle">
-                <User size={18} />
-              </div>
-              <div className="user-meta-info">
-                <div className="user-fullname">
-                  {currentUser?.role === 'ADMIN'
-                    ? (currentUser.name || 'Quản trị viên')
-                    : (currentUser ? (currentUser.name || currentUser.username) : 'Nguyễn Văn A')}
+            {currentUser ? (
+              <>
+                <div className="notification-bell-btn" title="Thông báo hệ thống">
+                  <Bell size={18} />
+                  <span className="notification-badge">1</span>
                 </div>
-                <div className="user-org-name">
-                  {currentUser?.role === 'ADMIN'
-                    ? 'Cơ quan/Đơn vị'
-                    : (currentUser ? (currentUser.agency || 'Cơ quan/Đơn vị') : 'Cơ quan/Đơn vị')}
-                  <ChevronDown size={12} style={{ marginLeft: 3, verticalAlign: 'middle' }} />
-                </div>
-              </div>
 
-              {showUserDropdown && (
-                <div className="user-menu-dropdown" onClick={(e) => e.stopPropagation()}>
-                  <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/profile'); }}>
-                    <User size={14} /> Thông tin tài khoản
+                <div className="user-profile-anchor" onClick={() => setShowUserDropdown(!showUserDropdown)}>
+                  <div className="user-avatar-circle">
+                    <User size={18} />
                   </div>
-                  <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/history'); }}>
-                    <Layers size={14} /> Lịch sử đánh giá
+                  <div className="user-meta-info">
+                    <div className="user-fullname">
+                      {currentUser.role === 'ADMIN'
+                        ? (currentUser.name || 'Quản trị viên')
+                        : (currentUser.name || currentUser.username)}
+                    </div>
+                    <div className="user-org-name">
+                      {currentUser.role === 'ADMIN'
+                        ? 'Cơ quan/Đơn vị'
+                        : (currentUser.agency || 'Cơ quan/Đơn vị')}
+                      <ChevronDown size={12} style={{ marginLeft: 3, verticalAlign: 'middle' }} />
+                    </div>
                   </div>
-                  <div className="dropdown-divider"></div>
-                  <div className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>
-                    <LogOut size={14} /> Đăng xuất
-                  </div>
+
+                  {showUserDropdown && (
+                    <div className="user-menu-dropdown" onClick={(e) => e.stopPropagation()}>
+                      <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/profile'); }}>
+                        <User size={14} /> Thông tin tài khoản
+                      </div>
+                      <div className="dropdown-item" onClick={() => { setShowUserDropdown(false); navigate('/history'); }}>
+                        <Layers size={14} /> Lịch sử đánh giá
+                      </div>
+                      <div className="dropdown-divider"></div>
+                      <div className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>
+                        <LogOut size={14} /> Đăng xuất
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            ) : (
+              <button 
+                type="button"
+                className="topbar-login-btn"
+                onClick={() => navigate('/login')}
+                title="Đăng nhập tài khoản"
+              >
+                <LogIn size={16} strokeWidth={2.4} />
+                <span>ĐĂNG NHẬP</span>
+              </button>
+            )}
           </div>
         </header>
 
