@@ -8,7 +8,7 @@ import {
   Settings,
   Scale
 } from 'lucide-react';
-import { getCurrentUser } from '../utils/auth';
+import { getCurrentUser, getAssessmentById, updateAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
 import './LandingPage.css';
 
@@ -17,15 +17,31 @@ const LandingPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const stepFromUrl = searchParams.get('step');
+  const editId = searchParams.get('editId') || location.state?.editId;
 
   const currentUser = getCurrentUser();
   const userId = currentUser ? currentUser.username : 'guest';
+
+  // Load existing dossier if in edit mode
+  const [editingAssessment, setEditingAssessment] = useState(() => {
+    if (!editId) return null;
+    if (editId === 'DRAFT-ACTIVE') {
+      try {
+        const s = localStorage.getItem(`landing_formData_${userId}`);
+        return s ? { id: 'DRAFT-ACTIVE', isDraft: true, status: 'DRAFT', formData: JSON.parse(s) } : null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return getAssessmentById(editId);
+  });
   
   const [step, setStep] = useState(() => {
     if (stepFromUrl) {
       const s = parseInt(stepFromUrl, 10);
       if (s >= 1 && s <= 3) return s;
     }
+    if (editId) return 2; // Khai báo & Mô tả hệ thống AI là trọng tâm khi sửa hồ sơ
     const saved = localStorage.getItem(`landing_step_${userId}`);
     const s = saved ? parseInt(saved, 10) : 1;
     return s > 3 ? 3 : (s < 1 ? 1 : s);
@@ -33,6 +49,64 @@ const LandingPage = () => {
   // 1 = Hồ sơ đại diện, 2 = Khai báo & Mô tả hệ thống AI (gộp 2 + 3), 3 = Chọn bài đánh giá
 
   const [formData, setFormData] = useState(() => {
+    if (editingAssessment?.formData) {
+      return {
+        fullName: currentUser?.name || '',
+        role: '',
+        email: currentUser?.username || '',
+        systemName: '',
+        internalCode: '',
+        version: '',
+        updatedDate: '',
+        agencyName: currentUser?.agency || currentUser?.name || '',
+        legalBasis: '',
+        orgRole: 'Nhà phát triển',
+        otherOrgRole: '',
+        riskLevel: 'Trung bình',
+        riskLevelBasis: '',
+        isInHighRiskList: 'Không',
+        highRiskCategoryDesc: '',
+        highRiskDetail: '',
+        complianceAssessment: 'Chưa thực hiện',
+        complianceAssessmentDetail: '',
+        purpose: '',
+        businessProblem: '',
+        domain: 'Hành chính',
+        otherDomain: '',
+        directUser: 'Cán bộ chuyên môn',
+        otherDirectUser: '',
+        decisionTarget: 'Công dân',
+        otherDecisionTarget: '',
+        vulnerableGroup: '',
+        userCount: '',
+        deployScope: 'Toàn quốc',
+        otherDeployScope: '',
+        potentialImpact: '',
+        aiTechType: 'Học máy truyền thống',
+        otherAiTechType: '',
+        developType: 'Tự phát triển',
+        provider: '',
+        thirdPartyComponent: '',
+        inputType: 'Văn bản',
+        otherInputType: '',
+        inputSource: 'Người dùng nhập',
+        otherInputSource: '',
+        hasPersonalData: 'Không',
+        personalDataDesc: '',
+        outputType: 'Dự đoán',
+        otherOutputType: '',
+        automationLevel: 'Gợi ý cho người dùng',
+        otherAutomationLevel: '',
+        managementUnit: '',
+        leaderName: '',
+        leaderRole: '',
+        leaderEmail: '',
+        leaderPhone: '',
+        technicalContact: '',
+        supportChannel: '',
+        ...editingAssessment.formData
+      };
+    }
     const saved = localStorage.getItem(`landing_formData_${userId}`);
     if (saved) {
       try {
@@ -162,6 +236,12 @@ const LandingPage = () => {
   const handleSaveDraft = () => {
     localStorage.setItem(`landing_step_${userId}`, step);
     localStorage.setItem(`landing_formData_${userId}`, JSON.stringify(formData));
+    if (editId && editId !== 'DRAFT-ACTIVE') {
+      updateAssessment(editId, { 
+        formData, 
+        selection: assessmentSelection 
+      });
+    }
     setSaveToast(true);
     setTimeout(() => setSaveToast(false), 2500);
   };
@@ -172,21 +252,16 @@ const LandingPage = () => {
       return;
     }
     
-    if (selectedAssessment === 1) {
-      navigate('/assessment1', { 
-        state: { 
-          selection: assessmentSelection,
-          formData: formData
-        } 
-      });
-    } else {
-      navigate('/assessment2', { 
-        state: { 
-          selection: assessmentSelection,
-          formData: formData
-        } 
-      });
-    }
+    const targetRoute = selectedAssessment === 1 ? '/assessment1' : '/assessment2';
+    navigate(targetRoute, { 
+      state: { 
+        assessmentCode: editId && editId !== 'DRAFT-ACTIVE' ? editId : undefined,
+        selection: assessmentSelection,
+        formData: formData,
+        answers: editingAssessment?.answers || {},
+        evidences: editingAssessment?.evidences || {}
+      } 
+    });
   };
 
   const subTabs = [
@@ -201,7 +276,88 @@ const LandingPage = () => {
         
         {saveToast && (
           <div className="portal-toast">
-            ✓ Đã lưu tạm thông tin hồ sơ thành công!
+            ✓ {editId ? `Đã lưu cập nhật thông tin hồ sơ #${editId} thành công!` : 'Đã lưu tạm thông tin hồ sơ thành công!'}
+          </div>
+        )}
+
+        {editId && (
+          <div style={{
+            background: 'linear-gradient(135deg, #0c3a78 0%, #1e40af 100%)',
+            color: '#ffffff',
+            borderRadius: '12px',
+            padding: '1.1rem 1.6rem',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            boxShadow: '0 4px 14px rgba(12, 58, 120, 0.25)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '8px',
+                background: 'rgba(255, 255, 255, 0.15)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '18px',
+                flexShrink: 0
+              }}>
+                ✏️
+              </div>
+              <div>
+                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#93c5fd', fontWeight: 800 }}>
+                  CHẾ ĐỘ CHỈNH SỬA THÔNG TIN KHAI BÁO HỒ SƠ
+                </div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 800, marginTop: '2px' }}>
+                  {formData.systemName || `Hồ sơ #${editId}`}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#e2e8f0', marginTop: '3px' }}>
+                  Mã hồ sơ: <strong>#{editId}</strong> · Trạng thái: <strong>{editingAssessment?.status === 'DRAFT' || editingAssessment?.isDraft ? 'Hồ sơ lưu bản nháp (Chưa đánh giá)' : 'Hồ sơ đã đánh giá'}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <Link 
+                to="/danh-sach-ho-so" 
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  color: '#ffffff',
+                  padding: '0.55rem 1rem',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  border: '1px solid rgba(255, 255, 255, 0.3)'
+                }}
+              >
+                ← Quay lại danh sách hồ sơ
+              </Link>
+              <button
+                type="button"
+                onClick={handleSaveDraft}
+                style={{
+                  background: '#059669',
+                  color: '#ffffff',
+                  padding: '0.55rem 1.15rem',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.3)'
+                }}
+              >
+                <Save size={15} /> Lưu cập nhật
+              </button>
+            </div>
           </div>
         )}
 
@@ -340,9 +496,16 @@ const LandingPage = () => {
 
               {/* Bottom Actions Bar */}
               <div className="portal-actions-bar">
-                <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
-                  <Save size={16} /> Lưu tạm
-                </button>
+                <div className="flex gap-2">
+                  <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
+                    <Save size={16} /> {editId ? 'Lưu cập nhật' : 'Lưu tạm'}
+                  </button>
+                  {editId && (
+                    <Link to="/danh-sach-ho-so" className="btn btn-secondary flex items-center gap-1.5" style={{ textDecoration: 'none' }}>
+                      ← Danh sách hồ sơ
+                    </Link>
+                  )}
+                </div>
                 <button type="submit" className="btn btn-primary flex items-center gap-2">
                   Tiếp theo <ArrowRight size={16} />
                 </button>
@@ -1347,8 +1510,13 @@ const LandingPage = () => {
                     <ArrowLeft size={16} /> Quay lại
                   </Link>
                   <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
-                    <Save size={16} /> Lưu tạm
+                    <Save size={16} /> {editId ? 'Lưu cập nhật' : 'Lưu tạm'}
                   </button>
+                  {editId && (
+                    <Link to="/danh-sach-ho-so" className="btn btn-secondary flex items-center gap-1.5" style={{ textDecoration: 'none' }}>
+                      ← Danh sách hồ sơ
+                    </Link>
+                  )}
                 </div>
                 <button type="submit" className="btn btn-primary flex items-center gap-2">
                   Tiếp: Chọn nội dung đánh giá <ArrowRight size={16} />
@@ -1394,23 +1562,13 @@ const LandingPage = () => {
                       <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số (Thang điểm 100)</option>
                     </select>
                     <div className="flex justify-end">
-                      <Link 
-                        to={selectedAssessment === 1 ? "/assessment1" : "/assessment2"}
-                        state={{ 
-                          selection: assessmentSelection,
-                          formData: formData
-                        }}
+                      <button 
+                        type="button"
+                        onClick={handleStartAssessment}
                         className="btn btn-primary flex items-center gap-1.5"
-                        style={{ textDecoration: 'none' }}
-                        onClick={(e) => {
-                          if (!assessmentSelection.partB && !assessmentSelection.partC) {
-                            e.preventDefault();
-                            alert("Vui lòng chọn ít nhất 1 bài đánh giá!");
-                          }
-                        }}
                       >
-                        Bắt đầu đánh giá <ArrowRight size={16} />
-                      </Link>
+                        {editId && editingAssessment?.status !== 'DRAFT' ? 'Đánh giá lại' : 'Bắt đầu đánh giá'} <ArrowRight size={16} />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1428,26 +1586,21 @@ const LandingPage = () => {
                     <ArrowLeft size={16} /> Quay lại
                   </Link>
                   <button type="button" onClick={handleSaveDraft} className="btn btn-secondary flex items-center gap-1.5">
-                    <Save size={16} /> Lưu tạm
+                    <Save size={16} /> {editId ? 'Lưu cập nhật' : 'Lưu tạm'}
                   </button>
+                  {editId && (
+                    <Link to="/danh-sach-ho-so" className="btn btn-secondary flex items-center gap-1.5" style={{ textDecoration: 'none' }}>
+                      ← Danh sách hồ sơ
+                    </Link>
+                  )}
                 </div>
-                <Link 
-                  to={selectedAssessment === 1 ? "/assessment1" : "/assessment2"} 
-                  state={{ 
-                    selection: assessmentSelection,
-                    formData: formData
-                  }}
+                <button 
+                  type="button"
+                  onClick={handleStartAssessment}
                   className="btn btn-primary flex items-center gap-2"
-                  style={{ textDecoration: 'none' }}
-                  onClick={(e) => {
-                    if (!assessmentSelection.partB && !assessmentSelection.partC) {
-                      e.preventDefault();
-                      alert("Vui lòng chọn ít nhất 1 bài đánh giá!");
-                    }
-                  }}
                 >
-                  Bắt đầu đánh giá <ArrowRight size={16} />
-                </Link>
+                  {editId && editingAssessment?.status !== 'DRAFT' ? 'Đánh giá lại' : 'Bắt đầu đánh giá'} <ArrowRight size={16} />
+                </button>
               </div>
             </div>
           )}

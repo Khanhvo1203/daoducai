@@ -104,7 +104,7 @@ const HomePage = () => {
         'Mô tả hệ thống AI',
         'Phân loại mức độ rủi ro'
       ],
-      link: '/ho-so-dang-ky'
+      link: '/danh-sach-ho-so'
     },
     {
       num: 2,
@@ -209,10 +209,10 @@ const HomePage = () => {
             </div>
             {expandedMenus.systemInfo && (
               <div className="sidebar-submenu">
-                <Link to="/history" className="submenu-item">Danh sách hệ thống AI</Link>
-                <Link to="/ho-so-dang-ky" className="submenu-item highlighted">Khai báo hệ thống AI</Link>
-                <Link to="/ho-so-dang-ky" className="submenu-item">Cập nhật thông tin</Link>
-                <Link to="/ho-so-dang-ky" className="submenu-item">Phân loại mức độ rủi ro</Link>
+                <Link to="/danh-sach-ho-so" className="submenu-item">Danh sách hồ sơ hệ thống AI</Link>
+                <Link to="/danh-sach-ho-so?tab=draft" className="submenu-item">Hồ sơ lưu bản nháp</Link>
+                <Link to="/danh-sach-ho-so?tab=completed" className="submenu-item">Hồ sơ đã đánh giá</Link>
+                <Link to="/ho-so-dang-ky" className="submenu-item highlighted">+ Khai báo hồ sơ AI mới</Link>
               </div>
             )}
           </div>
@@ -361,8 +361,8 @@ const HomePage = () => {
                       <Link to="/profile" className="dropdown-item" onClick={() => setShowUserDropdown(false)}>
                         <User size={14} /> Thông tin tài khoản
                       </Link>
-                      <Link to="/history" className="dropdown-item" onClick={() => setShowUserDropdown(false)}>
-                        <Layers size={14} /> Lịch sử đánh giá
+                      <Link to="/danh-sach-ho-so" className="dropdown-item" onClick={() => setShowUserDropdown(false)}>
+                        <Layers size={14} /> Danh sách hồ sơ AI
                       </Link>
                       <div className="dropdown-divider"></div>
                       <Link to="/login" className="dropdown-item danger" onClick={() => { setShowUserDropdown(false); handleLogout(); }}>

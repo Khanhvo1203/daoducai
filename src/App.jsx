@@ -102,11 +102,11 @@ const Navigation = () => {
                         <User size={15} /> <span>Thông tin tài khoản</span>
                       </Link>
                       <Link 
-                        to="/history"
+                        to="/danh-sach-ho-so"
                         onClick={() => setShowDropdown(false)}
                         className="dropdown-item"
                       >
-                        <History size={15} /> <span>Lịch sử đánh giá</span>
+                        <History size={15} /> <span>Danh sách hồ sơ AI</span>
                       </Link>
                       <div className="dropdown-divider"></div>
                     </>
@@ -158,7 +158,8 @@ function App() {
             <Route path="/assessment2" element={<ProtectedRoute allowedRole="MEMBER"><Assessment2 /></ProtectedRoute>} />
             <Route path="/dashboard1" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><Dashboard1 /></ProtectedRoute>} />
             <Route path="/dashboard2" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><Dashboard2 /></ProtectedRoute>} />
-            <Route path="/history" element={<ProtectedRoute allowedRole="MEMBER"><MemberHistory /></ProtectedRoute>} />
+            <Route path="/history" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><MemberHistory /></ProtectedRoute>} />
+            <Route path="/danh-sach-ho-so" element={<ProtectedRoute allowedRoles={['MEMBER', 'ADMIN']}><MemberHistory /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute allowedRole="MEMBER"><Profile /></ProtectedRoute>} />
 
             {/* Admin Protected Routes */}

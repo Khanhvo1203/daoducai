@@ -298,7 +298,17 @@ const Assessment2 = () => {
       const user = getCurrentUser();
       let code = null;
       if (user) {
-        code = saveAssessment(user.username, { formData, selection, answers, weights, dashboardRoute: '/dashboard2' });
+        const existingCode = location.state?.assessmentCode;
+        code = saveAssessment(user.username, { 
+          id: existingCode && existingCode !== 'DRAFT-ACTIVE' ? existingCode : undefined,
+          formData, 
+          selection, 
+          answers, 
+          weights, 
+          dashboardRoute: '/dashboard2',
+          status: 'COMPLETED',
+          isDraft: false
+        });
         localStorage.removeItem(`assessment_answers_${user.username}`);
         localStorage.removeItem(`assessment_evidences_${user.username}`);
         localStorage.removeItem(`assessment_activeStepIdx_${user.username}`);
