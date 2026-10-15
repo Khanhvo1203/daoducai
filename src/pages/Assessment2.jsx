@@ -567,7 +567,7 @@ const Assessment2 = () => {
                     <tr>
                       <th className="text-left w-[24%]">Nguyên tắc</th>
                       <th className="text-left w-[36%]">Mô tả nội dung (mỗi nhóm 15 câu)</th>
-                      <th className="text-center w-[10%] whitespace-nowrap">Mã câu hỏi</th>
+                      <th className="text-center w-[12%] whitespace-nowrap">Số câu đạt được<br/>(P/15)</th>
                       <th className="text-center w-[10%] whitespace-nowrap">Trọng số (W)</th>
                       <th className="text-center w-[12%] whitespace-nowrap">Đơn vị chọn (%)</th>
                       <th className="text-center w-[8%] whitespace-nowrap">Điểm quy đổi<br/>dự kiến</th>
@@ -600,7 +600,9 @@ const Assessment2 = () => {
                             <div className="weight-desc-text">{p.desc}</div>
                           </td>
                           <td className="text-center">
-                            <span className="weight-qrange-badge">{p.qRange}</span>
+                            <span className="weight-qrange-badge font-bold" style={{ color: '#1e40af' }}>
+                              {answeredYes}/15
+                            </span>
                           </td>
                           <td className="text-center">
                             <span className="weight-percent-display">{weights[p.id]}%</span>
@@ -635,14 +637,22 @@ const Assessment2 = () => {
                     {/* Total Row */}
                     {(() => {
                       const totalWeight = (weights.C1 || 0) + (weights.C2 || 0) + (weights.C3 || 0) + (weights.C4 || 0);
+                      const totalAnsweredYes = ['C1', 'C2', 'C3', 'C4'].reduce((sum, id) => {
+                        return sum + Object.keys(answers).filter(k => k.startsWith(id) && answers[k] === 0).length;
+                      }, 0);
                       const totalConvScore = ['C1', 'C2', 'C3', 'C4'].reduce((sum, id) => {
                         const answeredYes = Object.keys(answers).filter(k => k.startsWith(id) && answers[k] === 0).length;
                         return sum + ((answeredYes / 15) * (weights[id] || 0));
                       }, 0);
                       return (
                         <tr className="weight-total-row">
-                          <td colSpan={3} className="weight-total-label">
+                          <td colSpan={2} className="weight-total-label">
                             Tổng cộng
+                          </td>
+                          <td className="text-center">
+                            <span className="weight-qrange-badge font-bold" style={{ color: '#1e40af' }}>
+                              {totalAnsweredYes}/60
+                            </span>
                           </td>
                           <td className="text-center">
                             <span className="weight-total-percent">{totalWeight}%</span>
