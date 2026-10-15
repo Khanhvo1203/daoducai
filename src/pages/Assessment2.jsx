@@ -593,30 +593,30 @@ const Assessment2 = () => {
                       <div className={`q-num ${answers[q.id] !== undefined ? 'bg-success' : 'theme-bg'}`}>{q.id}</div>
                       <h4 className="q-text">{q.text}</h4>
                     </div>
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                    <div className="flex items-center gap-2 flex-shrink-0">
                       {answers[q.id] !== undefined ? (
-                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '4px 12px', borderRadius: '9999px', fontSize: '11px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '115px', backgroundColor: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
-                          <span style={{ minWidth: '6px', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22c55e' }}></span>
+                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', padding: '2px 8px', borderRadius: '9999px', fontSize: '10.5px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '95px', backgroundColor: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' }}>
+                          <span style={{ minWidth: '5px', width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#22c55e' }}></span>
                           Đã thực hiện
                         </span>
                       ) : openQuestion === q.id ? (
-                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '4px 12px', borderRadius: '9999px', fontSize: '11px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '115px', backgroundColor: '#fefce8', color: '#a16207', border: '1px solid #fef08a' }}>
-                          <span style={{ minWidth: '6px', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#eab308' }}></span>
+                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', padding: '2px 8px', borderRadius: '9999px', fontSize: '10.5px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '95px', backgroundColor: '#fefce8', color: '#a16207', border: '1px solid #fef08a' }}>
+                          <span style={{ minWidth: '5px', width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#eab308' }}></span>
                           Đang thực hiện
                         </span>
                       ) : (
-                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '4px 12px', borderRadius: '9999px', fontSize: '11px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '115px', backgroundColor: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca' }}>
-                          <span style={{ minWidth: '6px', width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
+                        <span className="hidden-mobile" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px', padding: '2px 8px', borderRadius: '9999px', fontSize: '10.5px', fontWeight: 'bold', whiteSpace: 'nowrap', minWidth: '95px', backgroundColor: '#fef2f2', color: '#b91c1c', border: '1px solid #fecaca' }}>
+                          <span style={{ minWidth: '5px', width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#ef4444' }}></span>
                           Chưa thực hiện
                         </span>
                       )}
-                      {openQuestion === q.id ? <ChevronUp size={20} className="text-muted" /> : <ChevronDown size={20} className="text-muted" />}
+                      {openQuestion === q.id ? <ChevronUp size={16} className="text-muted" /> : <ChevronDown size={16} className="text-muted" />}
                     </div>
                   </div>
                   
                   {openQuestion === q.id && (
-                    <div className="accordion-body flex-col gap-4 fade-in">
-                      <div className="radio-group flex-col gap-3">
+                    <div className="accordion-body flex-col gap-3 fade-in">
+                      <div className="radio-group flex-col gap-2">
                         {q.options.map((opt, oIdx) => (
                           <label key={oIdx} className={`radio-label ${answers[q.id] === oIdx ? 'selected' : ''}`}>
                             <input 
