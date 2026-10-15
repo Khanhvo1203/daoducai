@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, Cpu } from 'lucide-react';
+import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, CheckCircle, Cpu } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import { defaultEvidenceMap } from '../data/questionsData';
 import MacroStepper from '../components/MacroStepper';
@@ -493,32 +493,12 @@ const Assessment1 = () => {
                             )}
                           </div>
                           <textarea 
-                            className="evidence-textarea mb-3" 
+                            className="evidence-textarea" 
                             rows="2" 
                             placeholder={defaultEvidenceMap[q.id] ? `Nhập minh chứng (Gợi ý: ${defaultEvidenceMap[q.id]})...` : "Nhập đường dẫn tài liệu hoặc mô tả minh chứng..."}
                             value={evidences[q.id] || ''}
                             onChange={(e) => setEvidences({...evidences, [q.id]: e.target.value})}
                           ></textarea>
-                          <div className="flex items-center gap-3">
-                            <input 
-                              type="file"
-                              id={`evidence-file-${q.id}`}
-                              style={{ display: 'none' }}
-                              onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  setEvidences({ ...evidences, [q.id]: e.target.files[0].name });
-                                }
-                              }}
-                            />
-                            <label 
-                              htmlFor={`evidence-file-${q.id}`} 
-                              className="evidence-upload-btn cursor-pointer inline-flex items-center gap-2"
-                              style={{ cursor: 'pointer' }}
-                            >
-                              <Upload size={14} />
-                              <span>{evidences[q.id]?.match(/\.(pdf|docx|xlsx|doc|png|jpg)$/i) ? `Đã đính kèm: ${evidences[q.id]}` : 'Tải lên tài liệu (.pdf, .docx, .xlsx)'}</span>
-                            </label>
-                          </div>
                         </div>
                       )}
                     </div>

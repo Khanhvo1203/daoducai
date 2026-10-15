@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal, Cpu, RotateCcw, Info, Users, FileText, Lightbulb } from 'lucide-react';
+import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, CheckCircle, SlidersHorizontal, Cpu, RotateCcw, Info, Users, FileText, Lightbulb } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
@@ -766,18 +766,12 @@ const Assessment2 = () => {
                             <span className="evidence-tag">Tùy chọn</span>
                           </label>
                           <textarea 
-                            className="evidence-textarea mb-3" 
+                            className="evidence-textarea" 
                             rows="2" 
                             placeholder="Nhập đường dẫn tài liệu hoặc mô tả minh chứng..." 
                             value={evidences[q.id] || ''}
                             onChange={(e) => setEvidences({...evidences, [q.id]: e.target.value})}
                           ></textarea>
-                          <div className="flex items-center gap-3">
-                            <button type="button" className="evidence-upload-btn">
-                              <Upload size={14} />
-                              <span>Tải lên tài liệu (.pdf, .docx, .xlsx)</span>
-                            </button>
-                          </div>
                         </div>
                       )}
                     </div>
