@@ -570,7 +570,7 @@ const Assessment2 = () => {
                       <th className="text-center w-[10%] whitespace-nowrap">Mã câu hỏi</th>
                       <th className="text-center w-[10%] whitespace-nowrap">Trọng số (W)</th>
                       <th className="text-center w-[12%] whitespace-nowrap">Đơn vị chọn (%)</th>
-                      <th className="text-center w-[8%] whitespace-nowrap">Điểm đóng góp<br/>dự kiến</th>
+                      <th className="text-center w-[8%] whitespace-nowrap">Điểm quy đổi<br/>dự kiến</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -684,7 +684,7 @@ const Assessment2 = () => {
                   <div className="legend-item">• <strong>W</strong>: Trọng số nguyên tắc</div>
                   <div className="legend-item">• <strong>P/15</strong>: Số câu đạt được</div>
                   <div className="legend-item">• <strong>p/15</strong>: Tỷ lệ từng nguyên tắc</div>
-                  <div className="legend-item">• <strong>P\W</strong>: Số điểm quy đổi (Điểm đóng góp dự kiến)</div>
+                  <div className="legend-item">• <strong>P\W</strong>: Số điểm quy đổi (Điểm quy đổi dự kiến)</div>
                 </div>
               </div>
             </div>
