@@ -22,7 +22,9 @@ import {
   Download,
   LogIn,
   Sun,
-  Moon
+  Moon,
+  Globe,
+  ExternalLink
 } from 'lucide-react';
 import { getCurrentUser, logout } from '../utils/auth';
 import './HomePage.css';
@@ -37,7 +39,8 @@ const HomePage = () => {
     ethicsAssessment: true,
     weightAssessment: true,
     reports: true,
-    help: true
+    help: true,
+    internationalRefs: true
   });
 
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -89,7 +92,7 @@ const HomePage = () => {
     { label: 'Bám sát Thông tư 05', icon: ShieldCheck }
   ];
 
-  // 5 phân hệ chức năng chính (đã bỏ Quản trị hệ thống và đánh số lại)
+  // 6 phân hệ chức năng chính
   const featureCards = [
     {
       num: 1,
@@ -158,13 +161,29 @@ const HomePage = () => {
       iconColor: '#475569',
       icon: BookOpen,
       title: '5. Trợ giúp',
-      desc: 'Tài liệu hướng dẫn, công cụ tham khảo và hỗ trợ trong quá trình đánh giá',
+      desc: 'Tài liệu hướng dẫn sử dụng, quy trình đánh giá và giải đáp thắc mắc',
       bullets: [
         'Hướng dẫn sử dụng',
-        'Tài liệu tham khảo (UNESCO, ASEAN, ...)',
-        'Câu hỏi thường gặp'
+        'Quy trình thực hiện tự đánh giá',
+        'Câu hỏi thường gặp (FAQ)'
       ],
       link: '/ho-so-dang-ky'
+    },
+    {
+      num: 6,
+      badgeColor: '#0284c7',
+      iconBg: '#e0f2fe',
+      iconColor: '#0284c7',
+      icon: Globe,
+      title: '6. Tham khảo tài liệu quốc tế',
+      desc: 'Khung hướng dẫn đạo đức AI của UNESCO, ASEAN, OECD và các bộ công cụ quốc tế',
+      bullets: [
+        'Khung đạo đức AI UNESCO',
+        'Khung quản trị AI ASEAN & OECD',
+        'Công cụ tự đánh giá RAM (UNESCO)'
+      ],
+      link: '#',
+      onClick: handleDownloadUnesco
     }
   ];
 
@@ -295,17 +314,65 @@ const HomePage = () => {
             {expandedMenus.help && (
               <div className="sidebar-submenu">
                 <Link to="/ho-so-dang-ky" className="submenu-item">Hướng dẫn sử dụng</Link>
-                <a href="https://unesdoc.unesco.org" target="_blank" rel="noopener noreferrer" className="submenu-item">Tài liệu tham khảo</a>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Quy trình tự đánh giá</Link>
+                <Link to="/ho-so-dang-ky" className="submenu-item">Câu hỏi thường gặp (FAQ)</Link>
+              </div>
+            )}
+          </div>
+
+          {/* 6. Tham khảo tài liệu quốc tế */}
+          <div className="sidebar-group">
+            <div
+              className={`sidebar-menu-item parent ${expandedMenus.internationalRefs ? 'expanded' : ''}`}
+              onClick={() => toggleMenu('internationalRefs')}
+            >
+              <div className="menu-item-content">
+                <Globe size={16} className="menu-icon" />
+                <span>6. Tham khảo tài liệu quốc tế</span>
+              </div>
+              <ChevronUp size={14} className={`chevron-arrow ${expandedMenus.internationalRefs ? '' : 'chevron-rotated'}`} />
+            </div>
+            {expandedMenus.internationalRefs && (
+              <div className="sidebar-submenu">
                 <div
                   className="submenu-item"
                   onClick={handleDownloadUnesco}
                   title="Nhấp để tải về file Excel biểu mẫu đánh giá của UNESCO"
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
                 >
-                  <span>Công cụ quốc tế (UNESCO, ...)</span>
+                  <span>Công cụ quốc tế (UNESCO)</span>
                   <Download size={12} style={{ opacity: 0.7, flexShrink: 0 }} />
                 </div>
-                <Link to="/ho-so-dang-ky" className="submenu-item">Câu hỏi thường gặp (FAQ)</Link>
+                <a
+                  href="https://unesdoc.unesco.org/ark:/48223/pf0000381137_vie"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="submenu-item"
+                  title="Khuyến nghị về đạo đức trí tuệ nhân tạo của UNESCO"
+                >
+                  <span>Khung đạo đức AI UNESCO</span>
+                  <ExternalLink size={12} style={{ opacity: 0.7, flexShrink: 0 }} />
+                </a>
+                <a
+                  href="https://asean.org/book/asean-guide-on-ai-governance-and-ethics/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="submenu-item"
+                  title="Hướng dẫn quản trị và đạo đức AI của ASEAN"
+                >
+                  <span>Hướng dẫn quản trị AI ASEAN</span>
+                  <ExternalLink size={12} style={{ opacity: 0.7, flexShrink: 0 }} />
+                </a>
+                <a
+                  href="https://oecd.ai/en/principles"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="submenu-item"
+                  title="Nguyên tắc trí tuệ nhân tạo của OECD"
+                >
+                  <span>Nguyên tắc AI của OECD</span>
+                  <ExternalLink size={12} style={{ opacity: 0.7, flexShrink: 0 }} />
+                </a>
               </div>
             )}
           </div>
@@ -435,12 +502,8 @@ const HomePage = () => {
             <div className="feature-cards-grid-compact">
               {featureCards.map((card) => {
                 const IconComponent = card.icon;
-                return (
-                  <Link
-                    key={card.num}
-                    to={card.link}
-                    className="feature-card-compact"
-                  >
+                const cardContent = (
+                  <>
                     {/* Top: Badge + Tiêu đề + Mô tả */}
                     <div className="card-top-row">
                       <div className="card-left-col">
@@ -481,6 +544,31 @@ const HomePage = () => {
                         <ArrowRight size={15} strokeWidth={2.5} />
                       </div>
                     </div>
+                  </>
+                );
+
+                if (card.onClick) {
+                  return (
+                    <div
+                      key={card.num}
+                      onClick={card.onClick}
+                      className="feature-card-compact"
+                      role="button"
+                      tabIndex={0}
+                      title="Nhấp để tải về tài liệu / công cụ tham khảo quốc tế (UNESCO)"
+                    >
+                      {cardContent}
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={card.num}
+                    to={card.link}
+                    className="feature-card-compact"
+                  >
+                    {cardContent}
                   </Link>
                 );
               })}
