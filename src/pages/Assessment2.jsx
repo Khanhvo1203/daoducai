@@ -627,7 +627,6 @@ const Assessment2 = () => {
                           </td>
                           <td className="text-center">
                             <div className="weight-score-value">{convScore.toFixed(2)}</div>
-                            <div className="weight-score-sub">{answeredYes}/15 đạt</div>
                           </td>
                         </tr>
                        );
