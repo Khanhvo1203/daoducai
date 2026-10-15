@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal, Cpu } from 'lucide-react';
+import { Target, Shield, Scale, ChevronDown, ChevronUp, ArrowLeft, Upload, CheckCircle, SlidersHorizontal, Cpu, RotateCcw, Info, Users, FileText, Lightbulb } from 'lucide-react';
 import { getCurrentUser, saveAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
 import './Assessment.css';
@@ -483,89 +483,186 @@ const Assessment2 = () => {
 
           
           {activeStep.id.startsWith('partC') && (
-            <div className="card fade-in mb-6">
-              <div className="flex justify-between items-center mb-6 border-b pb-4">
+            <div className="weight-section-card fade-in mb-6">
+              {/* Title Header */}
+              <div className="flex flex-wrap justify-between items-center mb-4 pb-2 border-b border-slate-100 gap-2">
                 <div>
-                  <h2 className="text-xl font-bold uppercase text-main">HỒ SƠ ĐANG ĐÁNH TRỌNG SỐ</h2>
-                  <div className="flex gap-4 text-sm text-muted mt-1">
-                    <div>Mã hồ sơ: <span className="font-semibold text-primary">#Đang cập nhật</span></div>
+                  <h2 className="text-xl font-bold" style={{ color: '#1e3a8a' }}>
+                    A. Cấu trúc 04 nguyên tắc và trọng số linh hoạt
+                  </h2>
+                  <div className="flex gap-4 text-xs text-muted mt-1">
                     <div>Hệ thống: <span className="font-semibold text-primary">{formData.systemName}</span></div>
+                    <div>Lĩnh vực: <span className="font-semibold text-primary">{formData.domain || 'Chưa chọn'}</span></div>
                   </div>
-                </div>
-                <div className="preset-selector-container">
-                  <div className="preset-selector-label">
-                    <SlidersHorizontal size={14} className="text-blue-600" />
-                    <span>Đơn vị chọn (Loại hệ thống)</span>
-                  </div>
-                  <select
-                    className="preset-selector-dropdown"
-                    value={preset}
-                    onChange={handlePresetChange}
-                    title="Chọn loại hệ thống để tự động điền bộ trọng số mẫu hoặc tùy chỉnh"
-                  >
-                    <option value="chia_deu">Chia đều (25/25/25/25)</option>
-                    <option value="yt_hcc">YT/HCC - Y tế & hành chính công (40/30/20/10)</option>
-                    <option value="tc_ht">TC-HT - Tài chính, hạ tầng (35/30/15/20)</option>
-                    <option value="dmst">ĐMST - Đổi mới sáng tạo, R&D (20/15/35/30)</option>
-                    <option value="custom">Tùy chỉnh</option>
-                  </select>
                 </div>
               </div>
 
-              <div className="flex justify-between items-end border-b pb-3 mb-4">
-                <h4 className="font-bold text-main">TRỌNG SỐ 04 TRỤ CỘT</h4>
-                <div className="text-sm text-muted font-semibold">Tổng trọng số 04 trụ cột = 100%</div>
+              {/* Info & Action Banner */}
+              <div className="weight-header-banner">
+                <div className="flex items-center gap-2 text-sm text-slate-700">
+                  <Info size={18} className="text-blue-600 flex-shrink-0" />
+                  <span>
+                    Tổng trọng số 04 nguyên tắc = <strong>100%</strong>. Anh/Chị có thể điều chỉnh trọng số theo đặc thù hệ thống.
+                  </span>
+                </div>
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <div className="flex items-center gap-1.5 bg-white border border-blue-200 rounded-lg px-2.5 py-1.5 shadow-sm">
+                    <SlidersHorizontal size={13} className="text-blue-600 flex-shrink-0" />
+                    <span className="text-xs text-slate-600 font-semibold whitespace-nowrap">Bộ mẫu:</span>
+                    <select
+                      className="text-xs font-bold text-blue-900 bg-transparent border-0 outline-none cursor-pointer pr-1"
+                      value={preset}
+                      onChange={handlePresetChange}
+                      title="Chọn loại hệ thống để tự động điền bộ trọng số mẫu hoặc tùy chỉnh"
+                    >
+                      <option value="chia_deu">Chia đều (25/25/25/25)</option>
+                      <option value="yt_hcc">YT/HCC - Y tế & hành chính công (40/30/20/10)</option>
+                      <option value="tc_ht">TC-HT - Tài chính, hạ tầng (35/30/15/20)</option>
+                      <option value="dmst">ĐMST - Đổi mới sáng tạo, R&D (20/15/35/30)</option>
+                      <option value="custom">Tùy chỉnh</option>
+                    </select>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWeights({ C1: 25, C2: 25, C3: 25, C4: 25 });
+                      setPreset('chia_deu');
+                    }}
+                    className="flex items-center gap-1.5 bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 text-xs font-semibold shadow-sm transition-all cursor-pointer"
+                    title="Khôi phục lại trọng số mặc định (25% mỗi nguyên tắc)"
+                  >
+                    <RotateCcw size={13} className="text-blue-600" />
+                    <span>Khôi phục mặc định</span>
+                  </button>
+                </div>
               </div>
               
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="text-xs text-muted uppercase border-b">
-                    <th className="pb-3 w-[35%]">Nguyên tắc và ba nhóm nội dung</th>
-                    <th className="pb-3 text-center whitespace-nowrap px-2">Mã câu</th>
-                    <th className="pb-3 text-center w-[25%] px-2">Trọng số (Đơn vị chọn)</th>
-                    <th className="pb-3 text-center w-[25%] px-2">Ví dụ trọng số gợi ý<br/><span className="text-[10px] font-normal normal-case">(Theo loại hệ thống)</span></th>
-                    <th className="pb-3 text-center whitespace-nowrap pl-2">Điểm đóng góp<br/>dự kiến</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { id: 'C1', title: 'C1 – Bảo đảm an toàn, độ tin cậy và không gây hại', desc: 'Thiết kế an toàn • Kiểm thử và xác nhận chất lượng • Giám sát và quản lý sự cố', qRange: 'C1.1 - C1.15', suggestion: 'YT/HCC 40 % • TC-HT 35 % • ĐMST 20 %' },
-                    { id: 'C2', title: 'C2 – Tôn trọng quyền con người, công bằng, minh bạch', desc: 'Kiểm soát của con người • Minh bạch và khả năng giải thích • Phòng chống phân biệt đối xử và thiên lệch', qRange: 'C2.1 - C2.15', suggestion: 'YT/HCC 30 % • TC-HT 30 % • ĐMST 15 %' },
-                    { id: 'C3', title: 'C3 – Hạnh phúc, thịnh vượng, phát triển bền vững', desc: 'Lợi ích xã hội và bao trùm kỹ thuật số • Thiết kế bao trùm và giảm khoảng cách số • Tác động đến môi trường và tính bền vững', qRange: 'C3.1 - C3.15', suggestion: 'YT/HCC 20 % • TC-HT 15 % • ĐMST 35 %' },
-                    { id: 'C4', title: 'C4 – Khuyến khích đổi mới sáng tạo và trách nhiệm xã hội', desc: 'Đổi mới có trách nhiệm • Trách nhiệm giải trình và năng lực quản trị • Hợp tác và phát triển hệ sinh thái AI', qRange: 'C4.1 - C4.15', suggestion: 'YT/HCC 10 % • TC-HT 20 % • ĐMST 30 %' }
-                  ].map(p => {
-                     // Calculate current achieved score for this principle from answers
-                     const answeredYes = Object.keys(answers).filter(k => k.startsWith(p.id) && answers[k] === 0).length;
-                     const convScore = (answeredYes / 15) * weights[p.id];
-                     return (
-                      <tr className="border-b" key={p.id}>
-                        <td className="py-4 pr-4">
-                          <div className="font-bold text-sm text-main">{p.title}</div>
-                          <div className="text-xs text-muted mt-1" style={{ fontSize: '0.75rem', lineHeight: '1.2rem', color: '#64748b' }}>{p.desc}</div>
-                        </td>
-                        <td className="py-4 text-center text-sm text-muted font-medium whitespace-nowrap px-2">{p.qRange}</td>
-                        <td className="py-4 px-2">
-                          <div className="flex items-center justify-center gap-3">
-                            <input type="number" className="form-control text-center font-bold text-main" style={{ width: '65px', padding: '0.25rem 0.25rem' }} value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
-                            <input type="range" className="w-full max-w-[120px] cursor-pointer accent-primary" min="0" max="100" value={weights[p.id]} onChange={(e) => handleWeightChange(p.id, e.target.value)} />
-                          </div>
-                        </td>
-                        <td className="py-4 text-center text-xs text-muted px-2" style={{ lineHeight: '1.4' }}>{p.suggestion}</td>
-                        <td className="py-4 text-center font-bold text-main pl-2" style={{ fontSize: '1rem' }}>{convScore.toFixed(2)}</td>
-                      </tr>
-                     );
-                  })}
-                </tbody>
-              </table>
-              <div className="mt-4 p-4 bg-muted-light rounded text-sm text-muted">
-                <h5 className="font-bold mb-2 text-main">Giải thích công thức tính điểm trọng số:</h5>
-                <div className="mb-2"><strong>Điểm quy đổi</strong> = (Số câu đạt được / 15) * 100% * Trọng số</div>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li><strong>W</strong> là trọng số.</li>
-                  <li><strong>P/15</strong> là số câu đạt được.</li>
-                  <li><strong>p/15</strong> là tỷ lệ từng nguyên tắc.</li>
-                  <li><strong>P\W</strong> là số điểm quy đổi (Điểm đóng góp dự kiến).</li>
-                </ul>
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="weight-table">
+                  <thead>
+                    <tr>
+                      <th className="text-left w-[24%]">Nguyên tắc</th>
+                      <th className="text-left w-[36%]">Mô tả nội dung (mỗi nhóm 15 câu)</th>
+                      <th className="text-center w-[10%] whitespace-nowrap">Mã câu hỏi</th>
+                      <th className="text-center w-[10%] whitespace-nowrap">Trọng số (W)</th>
+                      <th className="text-center w-[12%] whitespace-nowrap">Đơn vị chọn (%)</th>
+                      <th className="text-center w-[8%] whitespace-nowrap">Điểm đóng góp<br/>dự kiến</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { id: 'C1', code: 'C1', title: 'An toàn, tin cậy', icon: Shield, desc: 'Thiết kế an toàn; Kiểm thử và xác nhận chất lượng; Giám sát và quản lý sự cố', qRange: 'C1.1 – C1.15' },
+                      { id: 'C2', code: 'C2', title: 'Minh bạch & Kiểm soát', icon: Users, desc: 'Kiểm soát của con người; Minh bạch và khả năng giải thích; Phòng chống phân biệt đối xử và thiên lệch', qRange: 'C2.1 – C2.15' },
+                      { id: 'C3', code: 'C3', title: 'Lợi ích & bao trùm', icon: FileText, desc: 'Lợi ích xã hội và bao trùm kỹ thuật số; Thiết kế bao trùm và giảm khoảng cách số; Tác động đến môi trường và tính bền vững', qRange: 'C3.1 – C3.15' },
+                      { id: 'C4', code: 'C4', title: 'Đổi mới sáng tạo', icon: Lightbulb, desc: 'Đổi mới có trách nhiệm; Trách nhiệm giải trình và năng lực quản trị; Hợp tác và phát triển hệ sinh thái AI', qRange: 'C4.1 – C4.15' }
+                    ].map(p => {
+                       const IconComponent = p.icon;
+                       const answeredYes = Object.keys(answers).filter(k => k.startsWith(p.id) && answers[k] === 0).length;
+                       const convScore = (answeredYes / 15) * weights[p.id];
+                       return (
+                        <tr key={p.id}>
+                          <td>
+                            <div className="flex items-center gap-3">
+                              <div className="weight-icon-box">
+                                <IconComponent size={20} strokeWidth={2.2} />
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-bold text-slate-900 text-sm leading-tight">{p.code}</span>
+                                <span className="font-semibold text-sky-600 text-xs mt-0.5 leading-tight">{p.title}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div className="text-xs text-slate-600 leading-relaxed">{p.desc}</div>
+                          </td>
+                          <td className="text-center">
+                            <span className="font-medium text-xs text-slate-700 whitespace-nowrap">{p.qRange}</span>
+                          </td>
+                          <td className="text-center">
+                            <span className="font-bold text-base text-slate-900">{weights[p.id]}%</span>
+                          </td>
+                          <td>
+                            <div className="flex flex-col items-center justify-center gap-1.5">
+                              <input
+                                type="number"
+                                className="weight-num-input"
+                                min="0"
+                                max="100"
+                                value={weights[p.id]}
+                                onChange={(e) => handleWeightChange(p.id, e.target.value)}
+                              />
+                              <input
+                                type="range"
+                                className="weight-slider"
+                                min="0"
+                                max="100"
+                                value={weights[p.id]}
+                                onChange={(e) => handleWeightChange(p.id, e.target.value)}
+                              />
+                            </div>
+                          </td>
+                          <td className="text-center">
+                            <div className="font-bold text-base text-slate-900">{convScore.toFixed(2)}</div>
+                            <div className="text-[10px] text-muted">{answeredYes}/15 đạt</div>
+                          </td>
+                        </tr>
+                       );
+                    })}
+
+                    {/* Total Row */}
+                    {(() => {
+                      const totalWeight = (weights.C1 || 0) + (weights.C2 || 0) + (weights.C3 || 0) + (weights.C4 || 0);
+                      const totalConvScore = ['C1', 'C2', 'C3', 'C4'].reduce((sum, id) => {
+                        const answeredYes = Object.keys(answers).filter(k => k.startsWith(id) && answers[k] === 0).length;
+                        return sum + ((answeredYes / 15) * (weights[id] || 0));
+                      }, 0);
+                      return (
+                        <tr className="weight-total-row">
+                          <td colSpan={3} className="font-bold text-slate-900 text-sm">
+                            Tổng cộng
+                          </td>
+                          <td className="text-center font-bold text-base text-slate-900">
+                            {totalWeight}%
+                          </td>
+                          <td>
+                            <div className="flex flex-col items-center justify-center gap-1">
+                              <span className="font-bold text-sm text-slate-900">{totalWeight}</span>
+                              <div className="w-[110px] h-2 bg-blue-100 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-blue-600 rounded-full transition-all duration-300"
+                                  style={{ width: `${Math.min(totalWeight, 100)}%` }}
+                                ></div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-center font-bold text-base text-blue-700">
+                            {totalConvScore.toFixed(2)}
+                          </td>
+                        </tr>
+                      );
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Bottom Note */}
+              <div className="weight-formula-box">
+                <div className="flex items-start gap-2 mb-1.5">
+                  <Info size={15} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-slate-800">Lưu ý:</strong> Tổng trọng số của 04 nguyên tắc phải bằng <strong>100%</strong>. Mức trọng số sẽ được áp dụng để tính điểm tuân thủ theo công thức:
+                  </div>
+                </div>
+                <div className="ml-6 font-semibold text-blue-900 bg-blue-50 py-1.5 px-3 rounded border border-blue-200 inline-block mb-2">
+                  Điểm quy đổi = (Số câu đạt được / 15) * 100% * Trọng số
+                </div>
+                <div className="ml-6 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-600">
+                  <div>• <strong>W</strong>: Trọng số nguyên tắc</div>
+                  <div>• <strong>P/15</strong>: Số câu đạt được</div>
+                  <div>• <strong>p/15</strong>: Tỷ lệ từng nguyên tắc</div>
+                  <div>• <strong>P\W</strong>: Số điểm quy đổi (Điểm đóng góp dự kiến)</div>
+                </div>
               </div>
             </div>
           )}
