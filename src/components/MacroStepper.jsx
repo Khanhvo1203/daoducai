@@ -16,19 +16,19 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
     {
       num: 1,
       titleLine1: 'Thông tin hệ thống',
-      titleLine2: 'và sàng lọc rủi ro',
+      titleLine2: '& sàng lọc rủi ro',
       path: '/ho-so-dang-ky'
     },
     {
       num: 2,
       titleLine1: 'Kiểm tra điều kiện quản trị',
-      titleLine2: 'và đánh giá theo 4 nguyên tắc',
+      titleLine2: '& đánh giá theo 4 nguyên tắc',
       path: '/assessment1'
     },
     {
       num: 3,
       titleLine1: 'Đề xuất biện pháp',
-      titleLine2: 'và theo dõi',
+      titleLine2: '& theo dõi giám sát',
       path: '/dashboard1'
     }
   ];
@@ -62,7 +62,7 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
               >
                 <div className="macro-step-circle">
                   {isCompleted ? (
-                    <Check size={28} strokeWidth={3} />
+                    <Check size={16} strokeWidth={2.8} />
                   ) : (
                     <span>{phase.num}</span>
                   )}
@@ -78,7 +78,7 @@ const MacroStepper = ({ currentPhase = 1, className = '', interactive = false })
                 <div className={`macro-step-connector ${isCompleted ? 'passed' : ''}`}>
                   <div className="macro-connector-line"></div>
                   <div className="macro-connector-arrow">
-                    <ArrowRight size={20} strokeWidth={2.8} />
+                    <ArrowRight size={15} strokeWidth={2.2} />
                   </div>
                 </div>
               )}

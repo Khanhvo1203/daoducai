@@ -281,81 +281,16 @@ const LandingPage = () => {
         )}
 
         {editId && (
-          <div style={{
-            background: 'linear-gradient(135deg, #0c3a78 0%, #1e40af 100%)',
-            color: '#ffffff',
-            borderRadius: '12px',
-            padding: '1.1rem 1.6rem',
-            marginBottom: '1.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '1rem',
-            boxShadow: '0 4px 14px rgba(12, 58, 120, 0.25)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div style={{
-                width: '42px',
-                height: '42px',
-                borderRadius: '8px',
-                background: 'rgba(255, 255, 255, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '18px',
-                flexShrink: 0
-              }}>
-                ✏️
-              </div>
-              <div>
-                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#93c5fd', fontWeight: 800 }}>
-                  CHẾ ĐỘ CHỈNH SỬA THÔNG TIN KHAI BÁO HỒ SƠ
-                </div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 800, marginTop: '2px' }}>
-                  {formData.systemName || `Hồ sơ #${editId}`}
-                </div>
-                <div style={{ fontSize: '0.8rem', color: '#e2e8f0', marginTop: '3px' }}>
-                  Mã hồ sơ: <strong>#{editId}</strong> · Trạng thái: <strong>{editingAssessment?.status === 'DRAFT' || editingAssessment?.isDraft ? 'Hồ sơ lưu bản nháp (Chưa đánh giá)' : 'Hồ sơ đã đánh giá'}</strong>
-                </div>
-              </div>
+          <div className="portal-edit-banner-compact">
+            <div className="banner-left">
+              <span className="banner-tag">CHẾ ĐỘ SỬA HỒ SƠ</span>
+              <span className="banner-title">{formData.systemName || `Hồ sơ #${editId}`}</span>
+              <span className="banner-meta">Mã: #{editId} · {editingAssessment?.status === 'DRAFT' || editingAssessment?.isDraft ? 'Bản nháp' : 'Đã đánh giá'}</span>
             </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-              <Link 
-                to="/danh-sach-ho-so" 
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: '#ffffff',
-                  padding: '0.55rem 1rem',
-                  borderRadius: '6px',
-                  textDecoration: 'none',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  border: '1px solid rgba(255, 255, 255, 0.3)'
-                }}
-              >
-                ← Quay lại danh sách hồ sơ
-              </Link>
-              <button
-                type="button"
-                onClick={handleSaveDraft}
-                style={{
-                  background: '#059669',
-                  color: '#ffffff',
-                  padding: '0.55rem 1.15rem',
-                  borderRadius: '6px',
-                  border: 'none',
-                  fontSize: '0.85rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  boxShadow: '0 2px 6px rgba(5, 150, 105, 0.3)'
-                }}
-              >
-                <Save size={15} /> Lưu cập nhật
+            <div className="banner-right">
+              <Link to="/danh-sach-ho-so" className="btn-banner-link">← Danh sách hồ sơ</Link>
+              <button type="button" onClick={handleSaveDraft} className="btn-banner-save">
+                <Save size={13} /> Lưu cập nhật
               </button>
             </div>
           </div>
@@ -363,18 +298,20 @@ const LandingPage = () => {
 
         <div className="portal-card">
           
-          {/* Header Section */}
+          {/* Header Section: Compact 1-line */}
           <div className="portal-header-section">
-            <h1 className="portal-page-title">
-              {step === 1 && 'Hồ sơ đăng ký đánh giá'}
-              {step === 2 && 'Khai báo & Mô tả hệ thống AI'}
-              {step === 3 && 'Chọn nội dung đánh giá'}
-            </h1>
-            <p className="portal-page-subtitle">
-              {step === 1 && 'Bước 1/3: Khai báo thông tin người đại diện đăng ký hồ sơ'}
-              {step === 2 && 'Bước 1/3: Xác định hệ thống và sàng lọc rủi ro (gồm bước 1 + 2)'}
-              {step === 3 && 'Bước 1/3: Lựa chọn phương thức đánh giá phù hợp'}
-            </p>
+            <div className="portal-header-title-row">
+              <h1 className="portal-page-title">
+                {step === 1 && 'Hồ sơ đăng ký đánh giá'}
+                {step === 2 && 'Khai báo & Mô tả hệ thống AI'}
+                {step === 3 && 'Chọn nội dung đánh giá'}
+              </h1>
+              <span className="portal-page-step-badge">
+                {step === 1 && 'Bước 1/3: Khai báo thông tin người đại diện'}
+                {step === 2 && 'Bước 1/3: Xác định hệ thống và sàng lọc rủi ro (gồm bước 1 + 2)'}
+                {step === 3 && 'Bước 1/3: Lựa chọn phương thức đánh giá phù hợp'}
+              </span>
+            </div>
           </div>
 
           {/* Macro Stepper (3 Phases Header) */}
