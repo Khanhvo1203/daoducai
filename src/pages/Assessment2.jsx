@@ -488,13 +488,14 @@ const Assessment2 = () => {
           {activeStep.id.startsWith('partC') && (
             <div className="weight-section-card fade-in mb-6">
               {/* Title Header */}
-              <div className="flex flex-wrap justify-between items-center mb-4 pb-2 border-b border-slate-100 gap-2">
+              <div className="flex flex-wrap justify-between items-center mb-3 pb-2 border-b border-slate-100 gap-2">
                 <div>
-                  <h2 className="text-xl font-bold" style={{ color: '#1e3a8a' }}>
+                  <h2 className="text-base font-bold" style={{ color: '#1e3a8a' }}>
                     A. Cấu trúc 04 nguyên tắc và trọng số linh hoạt
                   </h2>
-                  <div className="flex gap-4 text-xs text-muted mt-1">
+                  <div className="flex gap-3 text-xs text-muted mt-0.5">
                     <div>Hệ thống: <span className="font-semibold text-primary">{formData.systemName}</span></div>
+                    <div>•</div>
                     <div>Lĩnh vực: <span className="font-semibold text-primary">{formData.domain || 'Chưa chọn'}</span></div>
                   </div>
                 </div>
@@ -506,10 +507,10 @@ const Assessment2 = () => {
                 <div className="weight-banner-top-row">
                   <div className="weight-banner-message">
                     <div className="weight-info-icon-badge">
-                      <Info size={18} />
+                      <Info size={15} />
                     </div>
                     <div className="weight-message-text">
-                      Tổng trọng số 04 nguyên tắc = <span className="weight-highlight-target">100%</span>. Anh/Chị có thể điều chỉnh trọng số theo đặc thù hệ thống.
+                      Tổng trọng số 04 nguyên tắc = <span className="weight-highlight-target">100%</span>. Có thể điều chỉnh trọng số theo đặc thù hệ thống.
                     </div>
                   </div>
 
@@ -519,7 +520,7 @@ const Assessment2 = () => {
                     className="btn-restore-weight"
                     title="Khôi phục lại trọng số mặc định (25% mỗi nguyên tắc)"
                   >
-                    <RotateCcw size={15} />
+                    <RotateCcw size={12} />
                     <span>Khôi phục mặc định</span>
                   </button>
                 </div>
@@ -528,8 +529,8 @@ const Assessment2 = () => {
                 <div className="weight-banner-presets-row">
                   <div className="preset-control-group">
                     <div className="preset-control-label">
-                      <SlidersHorizontal size={15} />
-                      <span>Bộ mẫu gợi ý:</span>
+                      <SlidersHorizontal size={13} />
+                      <span>Bộ mẫu:</span>
                     </div>
                     <div className="executive-select-wrapper">
                       <select
@@ -587,7 +588,7 @@ const Assessment2 = () => {
                           <td>
                             <div className="weight-principle-cell">
                               <div className="weight-icon-box">
-                                <IconComponent size={20} strokeWidth={2.2} />
+                                <IconComponent size={16} strokeWidth={2.2} />
                               </div>
                               <div className="weight-principle-info">
                                 <span className="weight-principle-code">{p.code}</span>
@@ -671,7 +672,7 @@ const Assessment2 = () => {
               {/* Bottom Note */}
               <div className="weight-formula-card">
                 <div className="weight-formula-header">
-                  <Info size={16} className="weight-formula-icon" />
+                  <Info size={14} className="weight-formula-icon" />
                   <div>
                     <strong>Lưu ý:</strong> Tổng trọng số của 04 nguyên tắc phải bằng <strong>100%</strong>. Mức trọng số sẽ được áp dụng để tính điểm tuân thủ theo công thức:
                   </div>
