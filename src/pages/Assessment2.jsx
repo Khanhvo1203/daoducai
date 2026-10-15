@@ -81,13 +81,16 @@ const Assessment2 = () => {
     localStorage.setItem(`assessment_preset_${userId}`, preset);
   }, [weights, preset, userId]);
 
-  const handlePresetChange = (e) => {
-    const val = e.target.value;
+  const applyPreset = (val) => {
     setPreset(val);
     if (val === 'yt_hcc') setWeights({ C1: 40, C2: 30, C3: 20, C4: 10 });
     else if (val === 'tc_ht') setWeights({ C1: 35, C2: 30, C3: 15, C4: 20 });
     else if (val === 'dmst') setWeights({ C1: 20, C2: 15, C3: 35, C4: 30 });
     else if (val === 'chia_deu') setWeights({ C1: 25, C2: 25, C3: 25, C4: 25 });
+  };
+
+  const handlePresetChange = (e) => {
+    applyPreset(e.target.value);
   };
 
   const handleWeightChange = (key, newValue) => {
@@ -499,41 +502,78 @@ const Assessment2 = () => {
 
               {/* Info & Action Banner */}
               <div className="weight-header-banner">
-                <div className="flex items-center gap-2 text-sm text-slate-700">
-                  <Info size={18} className="text-blue-600 flex-shrink-0" />
-                  <span>
-                    Tổng trọng số 04 nguyên tắc = <strong>100%</strong>. Anh/Chị có thể điều chỉnh trọng số theo đặc thù hệ thống.
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <div className="flex items-center gap-1.5 bg-white border border-blue-200 rounded-lg px-2.5 py-1.5 shadow-sm">
-                    <SlidersHorizontal size={13} className="text-blue-600 flex-shrink-0" />
-                    <span className="text-xs text-slate-600 font-semibold whitespace-nowrap">Bộ mẫu:</span>
-                    <select
-                      className="text-xs font-bold text-blue-900 bg-transparent border-0 outline-none cursor-pointer pr-1"
-                      value={preset}
-                      onChange={handlePresetChange}
-                      title="Chọn loại hệ thống để tự động điền bộ trọng số mẫu hoặc tùy chỉnh"
-                    >
-                      <option value="chia_deu">Chia đều (25/25/25/25)</option>
-                      <option value="yt_hcc">YT/HCC - Y tế & hành chính công (40/30/20/10)</option>
-                      <option value="tc_ht">TC-HT - Tài chính, hạ tầng (35/30/15/20)</option>
-                      <option value="dmst">ĐMST - Đổi mới sáng tạo, R&D (20/15/35/30)</option>
-                      <option value="custom">Tùy chỉnh</option>
-                    </select>
+                {/* Top Row: Info rule & Restore button */}
+                <div className="weight-banner-top-row">
+                  <div className="weight-banner-message">
+                    <div className="weight-info-icon-badge">
+                      <Info size={18} />
+                    </div>
+                    <div className="weight-message-text">
+                      Tổng trọng số 04 nguyên tắc = <span className="weight-highlight-target">100%</span>. Anh/Chị có thể điều chỉnh trọng số theo đặc thù hệ thống.
+                    </div>
                   </div>
+
                   <button
                     type="button"
-                    onClick={() => {
-                      setWeights({ C1: 25, C2: 25, C3: 25, C4: 25 });
-                      setPreset('chia_deu');
-                    }}
-                    className="flex items-center gap-1.5 bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-700 border border-slate-200 hover:border-blue-300 rounded-lg px-3 py-1.5 text-xs font-semibold shadow-sm transition-all cursor-pointer"
+                    onClick={() => applyPreset('chia_deu')}
+                    className="btn-restore-weight"
                     title="Khôi phục lại trọng số mặc định (25% mỗi nguyên tắc)"
                   >
-                    <RotateCcw size={13} className="text-blue-600" />
+                    <RotateCcw size={15} />
                     <span>Khôi phục mặc định</span>
                   </button>
+                </div>
+
+                {/* Bottom Row: Quick Preset Pills */}
+                <div className="weight-banner-presets-row">
+                  <div className="presets-header-label">
+                    <SlidersHorizontal size={14} />
+                    <span>Bộ mẫu gợi ý:</span>
+                  </div>
+                  <div className="presets-pill-group">
+                    <button
+                      type="button"
+                      className={`weight-preset-pill ${preset === 'chia_deu' ? 'active' : ''}`}
+                      onClick={() => applyPreset('chia_deu')}
+                      title="Chia đều 25% cho cả 4 nguyên tắc"
+                    >
+                      <span className="preset-pill-dot"></span>
+                      Chia đều (25/25/25/25)
+                    </button>
+                    <button
+                      type="button"
+                      className={`weight-preset-pill ${preset === 'yt_hcc' ? 'active' : ''}`}
+                      onClick={() => applyPreset('yt_hcc')}
+                      title="Y tế & hành chính công: Ưu tiên C1 (40%) và C2 (30%)"
+                    >
+                      <span className="preset-pill-dot"></span>
+                      YT / Hành chính công (40/30/20/10)
+                    </button>
+                    <button
+                      type="button"
+                      className={`weight-preset-pill ${preset === 'tc_ht' ? 'active' : ''}`}
+                      onClick={() => applyPreset('tc_ht')}
+                      title="Tài chính, hạ tầng: Ưu tiên C1 (35%) và C2 (30%)"
+                    >
+                      <span className="preset-pill-dot"></span>
+                      Tài chính & Hạ tầng (35/30/15/20)
+                    </button>
+                    <button
+                      type="button"
+                      className={`weight-preset-pill ${preset === 'dmst' ? 'active' : ''}`}
+                      onClick={() => applyPreset('dmst')}
+                      title="Đổi mới sáng tạo, R&D: Ưu tiên C3 (35%) và C4 (30%)"
+                    >
+                      <span className="preset-pill-dot"></span>
+                      Đổi mới sáng tạo (20/15/35/30)
+                    </button>
+                    {preset === 'custom' && (
+                      <span className="weight-preset-pill active custom-pill" title="Trọng số do bạn tùy chỉnh thủ công">
+                        <span className="preset-pill-dot"></span>
+                        Tùy chỉnh riêng
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               
@@ -563,27 +603,27 @@ const Assessment2 = () => {
                        return (
                         <tr key={p.id}>
                           <td>
-                            <div className="flex items-center gap-3">
+                            <div className="weight-principle-cell">
                               <div className="weight-icon-box">
                                 <IconComponent size={20} strokeWidth={2.2} />
                               </div>
-                              <div className="flex flex-col">
-                                <span className="font-bold text-slate-900 text-sm leading-tight">{p.code}</span>
-                                <span className="font-semibold text-sky-600 text-xs mt-0.5 leading-tight">{p.title}</span>
+                              <div className="weight-principle-info">
+                                <span className="weight-principle-code">{p.code}</span>
+                                <span className="weight-principle-title">{p.title}</span>
                               </div>
                             </div>
                           </td>
                           <td>
-                            <div className="text-xs text-slate-600 leading-relaxed">{p.desc}</div>
+                            <div className="weight-desc-text">{p.desc}</div>
                           </td>
                           <td className="text-center">
-                            <span className="font-medium text-xs text-slate-700 whitespace-nowrap">{p.qRange}</span>
+                            <span className="weight-qrange-badge">{p.qRange}</span>
                           </td>
                           <td className="text-center">
-                            <span className="font-bold text-base text-slate-900">{weights[p.id]}%</span>
+                            <span className="weight-percent-display">{weights[p.id]}%</span>
                           </td>
                           <td>
-                            <div className="flex flex-col items-center justify-center gap-1.5">
+                            <div className="weight-control-cell">
                               <input
                                 type="number"
                                 className="weight-num-input"
@@ -603,8 +643,8 @@ const Assessment2 = () => {
                             </div>
                           </td>
                           <td className="text-center">
-                            <div className="font-bold text-base text-slate-900">{convScore.toFixed(2)}</div>
-                            <div className="text-[10px] text-muted">{answeredYes}/15 đạt</div>
+                            <div className="weight-score-value">{convScore.toFixed(2)}</div>
+                            <div className="weight-score-sub">{answeredYes}/15 đạt</div>
                           </td>
                         </tr>
                        );
@@ -619,25 +659,25 @@ const Assessment2 = () => {
                       }, 0);
                       return (
                         <tr className="weight-total-row">
-                          <td colSpan={3} className="font-bold text-slate-900 text-sm">
+                          <td colSpan={3} className="weight-total-label">
                             Tổng cộng
                           </td>
-                          <td className="text-center font-bold text-base text-slate-900">
-                            {totalWeight}%
+                          <td className="text-center">
+                            <span className="weight-total-percent">{totalWeight}%</span>
                           </td>
                           <td>
-                            <div className="flex flex-col items-center justify-center gap-1">
-                              <span className="font-bold text-sm text-slate-900">{totalWeight}</span>
-                              <div className="w-[110px] h-2 bg-blue-100 rounded-full overflow-hidden">
+                            <div className="weight-total-progress-cell">
+                              <span className="weight-total-num">{totalWeight}</span>
+                              <div className="weight-progress-track">
                                 <div
-                                  className="h-full bg-blue-600 rounded-full transition-all duration-300"
+                                  className="weight-progress-bar"
                                   style={{ width: `${Math.min(totalWeight, 100)}%` }}
                                 ></div>
                               </div>
                             </div>
                           </td>
-                          <td className="text-center font-bold text-base text-blue-700">
-                            {totalConvScore.toFixed(2)}
+                          <td className="text-center">
+                            <span className="weight-total-score">{totalConvScore.toFixed(2)}</span>
                           </td>
                         </tr>
                       );
@@ -647,21 +687,21 @@ const Assessment2 = () => {
               </div>
 
               {/* Bottom Note */}
-              <div className="weight-formula-box">
-                <div className="flex items-start gap-2 mb-1.5">
-                  <Info size={15} className="text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="weight-formula-card">
+                <div className="weight-formula-header">
+                  <Info size={16} className="weight-formula-icon" />
                   <div>
-                    <strong className="text-slate-800">Lưu ý:</strong> Tổng trọng số của 04 nguyên tắc phải bằng <strong>100%</strong>. Mức trọng số sẽ được áp dụng để tính điểm tuân thủ theo công thức:
+                    <strong>Lưu ý:</strong> Tổng trọng số của 04 nguyên tắc phải bằng <strong>100%</strong>. Mức trọng số sẽ được áp dụng để tính điểm tuân thủ theo công thức:
                   </div>
                 </div>
-                <div className="ml-6 font-semibold text-blue-900 bg-blue-50 py-1.5 px-3 rounded border border-blue-200 inline-block mb-2">
-                  Điểm quy đổi = (Số câu đạt được / 15) * 100% * Trọng số
+                <div className="weight-formula-equation">
+                  Điểm quy đổi = (Số câu đạt được / 15) × 100% × Trọng số
                 </div>
-                <div className="ml-6 flex flex-wrap gap-x-5 gap-y-1 text-xs text-slate-600">
-                  <div>• <strong>W</strong>: Trọng số nguyên tắc</div>
-                  <div>• <strong>P/15</strong>: Số câu đạt được</div>
-                  <div>• <strong>p/15</strong>: Tỷ lệ từng nguyên tắc</div>
-                  <div>• <strong>P\W</strong>: Số điểm quy đổi (Điểm đóng góp dự kiến)</div>
+                <div className="weight-formula-legend">
+                  <div className="legend-item">• <strong>W</strong>: Trọng số nguyên tắc</div>
+                  <div className="legend-item">• <strong>P/15</strong>: Số câu đạt được</div>
+                  <div className="legend-item">• <strong>p/15</strong>: Tỷ lệ từng nguyên tắc</div>
+                  <div className="legend-item">• <strong>P\W</strong>: Số điểm quy đổi (Điểm đóng góp dự kiến)</div>
                 </div>
               </div>
             </div>
