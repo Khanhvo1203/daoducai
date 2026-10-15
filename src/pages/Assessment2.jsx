@@ -524,55 +524,37 @@ const Assessment2 = () => {
                   </button>
                 </div>
 
-                {/* Bottom Row: Quick Preset Pills */}
+                {/* Bottom Row: Executive Select Dropdown & Live Breakdown Badge */}
                 <div className="weight-banner-presets-row">
-                  <div className="presets-header-label">
-                    <SlidersHorizontal size={14} />
-                    <span>Bộ mẫu gợi ý:</span>
+                  <div className="preset-control-group">
+                    <div className="preset-control-label">
+                      <SlidersHorizontal size={15} />
+                      <span>Bộ mẫu gợi ý:</span>
+                    </div>
+                    <div className="executive-select-wrapper">
+                      <select
+                        className="executive-select-dropdown"
+                        value={preset}
+                        onChange={handlePresetChange}
+                        title="Chọn bộ mẫu trọng số định sẵn theo lĩnh vực hoặc tùy chỉnh"
+                      >
+                        <option value="chia_deu">Chia đều (25% - 25% - 25% - 25%)</option>
+                        <option value="yt_hcc">Y tế & Hành chính công (40% - 30% - 20% - 10%)</option>
+                        <option value="tc_ht">Tài chính & Hạ tầng (35% - 30% - 15% - 20%)</option>
+                        <option value="dmst">Đổi mới sáng tạo & R&D (20% - 15% - 35% - 30%)</option>
+                        <option value="custom">Tùy chỉnh riêng theo hệ thống</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="presets-pill-group">
-                    <button
-                      type="button"
-                      className={`weight-preset-pill ${preset === 'chia_deu' ? 'active' : ''}`}
-                      onClick={() => applyPreset('chia_deu')}
-                      title="Chia đều 25% cho cả 4 nguyên tắc"
-                    >
-                      <span className="preset-pill-dot"></span>
-                      Chia đều (25/25/25/25)
-                    </button>
-                    <button
-                      type="button"
-                      className={`weight-preset-pill ${preset === 'yt_hcc' ? 'active' : ''}`}
-                      onClick={() => applyPreset('yt_hcc')}
-                      title="Y tế & hành chính công: Ưu tiên C1 (40%) và C2 (30%)"
-                    >
-                      <span className="preset-pill-dot"></span>
-                      YT / Hành chính công (40/30/20/10)
-                    </button>
-                    <button
-                      type="button"
-                      className={`weight-preset-pill ${preset === 'tc_ht' ? 'active' : ''}`}
-                      onClick={() => applyPreset('tc_ht')}
-                      title="Tài chính, hạ tầng: Ưu tiên C1 (35%) và C2 (30%)"
-                    >
-                      <span className="preset-pill-dot"></span>
-                      Tài chính & Hạ tầng (35/30/15/20)
-                    </button>
-                    <button
-                      type="button"
-                      className={`weight-preset-pill ${preset === 'dmst' ? 'active' : ''}`}
-                      onClick={() => applyPreset('dmst')}
-                      title="Đổi mới sáng tạo, R&D: Ưu tiên C3 (35%) và C4 (30%)"
-                    >
-                      <span className="preset-pill-dot"></span>
-                      Đổi mới sáng tạo (20/15/35/30)
-                    </button>
-                    {preset === 'custom' && (
-                      <span className="weight-preset-pill active custom-pill" title="Trọng số do bạn tùy chỉnh thủ công">
-                        <span className="preset-pill-dot"></span>
-                        Tùy chỉnh riêng
-                      </span>
-                    )}
+
+                  <div className="preset-breakdown-badge" title="Tỷ lệ phân bổ trọng số hiện tại của 04 nguyên tắc">
+                    <span className="badge-item">C1: <strong>{weights.C1}%</strong></span>
+                    <span className="badge-sep">•</span>
+                    <span className="badge-item">C2: <strong>{weights.C2}%</strong></span>
+                    <span className="badge-sep">•</span>
+                    <span className="badge-item">C3: <strong>{weights.C3}%</strong></span>
+                    <span className="badge-sep">•</span>
+                    <span className="badge-item">C4: <strong>{weights.C4}%</strong></span>
                   </div>
                 </div>
               </div>
