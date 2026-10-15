@@ -61,18 +61,18 @@
   transform: scale(1.06);
 }
 
-/* Step Circle: Gọn gàng (30px x 30px) */
+/* Step Circle: Kích thước gấp đôi (50px x 50px), số 1, 2, 3 to rõ ràng */
 .macro-step-circle {
-  width: 30px;
-  height: 30px;
-  min-width: 30px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace, sans-serif;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 1.65rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
   flex-shrink: 0;
@@ -82,7 +82,7 @@
 .macro-step-item.pending .macro-step-circle {
   background: #ffffff;
   color: #94a3b8;
-  border: 1.5px solid #cbd5e1;
+  border: 2px solid #cbd5e1;
 }
 
 .macro-step-item.pending .macro-step-text {
@@ -94,35 +94,35 @@
 .macro-step-item.active .macro-step-circle {
   background: linear-gradient(135deg, #0c3a78 0%, #1e40af 100%);
   color: #ffffff;
-  border: 2px solid #3b82f6;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  border: 2.5px solid #3b82f6;
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.16), 0 3px 10px rgba(12, 58, 120, 0.2);
 }
 
 .macro-step-item.active .macro-step-text {
   color: #0c3a78;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* COMPLETED */
 .macro-step-item.completed .macro-step-circle {
   background: #059669;
   color: #ffffff;
-  border: 1.5px solid #059669;
-  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+  border: 2px solid #059669;
+  box-shadow: 0 3px 8px rgba(5, 150, 105, 0.25);
 }
 
 .macro-step-item.completed .macro-step-text {
   color: #1e293b;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* Step Text: Gọn gàng 2 dòng */
+/* Step Text: 2 dòng rõ ràng */
 .macro-step-text {
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", sans-serif;
-  font-size: 0.8rem;
-  line-height: 1.25;
+  font-size: 0.85rem;
+  line-height: 1.3;
   transition: color 0.2s ease;
   white-space: nowrap;
 }
@@ -132,8 +132,8 @@
 }
 
 .macro-line-2 {
-  font-weight: 500;
-  opacity: 0.88;
+  font-weight: 600;
+  opacity: 0.9;
 }
 
 /* Connector Arrow */
