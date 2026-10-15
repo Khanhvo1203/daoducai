@@ -491,7 +491,7 @@ const Assessment2 = () => {
               <div className="flex flex-wrap justify-between items-center mb-3 pb-2 border-b border-slate-100 gap-2">
                 <div>
                   <h2 className="text-base font-bold" style={{ color: '#1e3a8a' }}>
-                    A. Cấu trúc 04 nguyên tắc và trọng số linh hoạt
+                    Cấu trúc 04 nguyên tắc và trọng số linh hoạt
                   </h2>
                   <div className="flex gap-3 text-xs text-muted mt-0.5">
                     <div>Hệ thống: <span className="font-semibold text-primary">{formData.systemName}</span></div>
