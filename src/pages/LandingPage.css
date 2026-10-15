@@ -472,7 +472,214 @@
 .text-muted { color: #64748b; }
 .text-primary { color: #0c3a78; }
 
-/* Selection Cards (Step 3) */
+/* Selection Cards (Step 3: Modern Method Choice Cards) */
+.method-selection-container {
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.method-selection-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%);
+  border: 1.5px solid #bfdbfe;
+  border-left: 5px solid #2563eb;
+  border-radius: 12px;
+  padding: 0.95rem 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.05);
+}
+
+.method-header-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
+}
+
+.method-header-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0 0 0.15rem 0;
+  line-height: 1.3;
+}
+
+.method-header-desc {
+  font-size: 0.84rem;
+  color: #475569;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.method-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.method-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.method-card:hover {
+  border-color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.1);
+}
+
+.method-card.active {
+  border-color: #2563eb;
+  background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 45%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.14);
+}
+
+.method-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.method-card-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.method-card.active .method-card-icon-box {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.method-card-radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.method-card.active .method-card-radio {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.method-card-badge {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  margin-bottom: 0.45rem;
+  width: fit-content;
+}
+
+.method-card-badge.recommended {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.method-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.45rem 0;
+  line-height: 1.35;
+}
+
+.method-card.active .method-card-title {
+  color: #1e3a8a;
+}
+
+.method-card-desc {
+  font-size: 0.82rem;
+  color: #64748b;
+  line-height: 1.45;
+  margin: 0 0 0.85rem 0;
+  flex: 1;
+}
+
+.method-card-features {
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.method-card.active .method-card-features {
+  border-top-color: #bfdbfe;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.feature-check {
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.method-selected-notice {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .method-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
 .portal-selection-card {
   padding: 1rem 1.25rem;
   border-radius: 8px;

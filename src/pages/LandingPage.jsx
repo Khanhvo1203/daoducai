@@ -6,7 +6,10 @@ import {
   Check, 
   Save,
   Settings,
-  Scale
+  Scale,
+  ShieldCheck,
+  ClipboardCheck,
+  SlidersHorizontal
 } from 'lucide-react';
 import { getCurrentUser, getAssessmentById, updateAssessment } from '../utils/auth';
 import MacroStepper from '../components/MacroStepper';
@@ -1468,45 +1471,109 @@ const LandingPage = () => {
           {step === 3 && (
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
               <div className="portal-table-body" style={{ padding: '1.25rem 2rem' }}>
-                <p className="text-muted text-sm mb-4">
-                  Chọn phương thức đánh giá phù hợp cho hệ thống <strong>{formData.systemName || '(Chưa đặt tên)'}</strong> theo Thông tư 05/2026/TT-BKHCN:
-                </p>
+                <div className="method-selection-container">
+                  {/* Header info */}
+                  <div className="method-selection-header">
+                    <div className="method-header-icon">
+                      <ShieldCheck size={24} />
+                    </div>
+                    <div>
+                      <h3 className="method-header-title">
+                        Khung đánh giá đạo đức AI theo Thông tư 05/2026/TT-BKHCN
+                      </h3>
+                      <p className="method-header-desc">
+                        Lựa chọn phương thức đánh giá phù hợp cho hệ thống <strong>{formData.systemName || '(Chưa đặt tên)'}</strong>:
+                      </p>
+                    </div>
+                  </div>
 
-                <div className="flex flex-col gap-3">
-                  {/* Lựa chọn đánh giá */}
-                  <div className="portal-selection-card selected">
-                    <div className="flex items-start gap-3">
-                      <Settings size={20} className="text-primary flex-shrink-0" style={{ marginTop: '2px' }} />
-                      <div className="flex-1">
-                        <h4 className="font-bold text-main mb-0.5" style={{ fontSize: '1rem' }}>
-                          Đánh giá khung đạo đức theo Thông tư 05/2026/TT-BKHCN
-                        </h4>
-                        <p className="text-muted text-xs" style={{ margin: 0 }}>
-                          Tiến hành làm bài đánh giá trực tiếp trên hệ thống theo tiêu chuẩn Bộ Khoa học và Công nghệ.
-                        </p>
+                  {/* 2 Choice Cards */}
+                  <div className="method-cards-grid">
+                    {/* Method 1 */}
+                    <div 
+                      className={`method-card ${selectedAssessment === 1 ? 'active' : ''}`}
+                      onClick={() => setSelectedAssessment(1)}
+                    >
+                      <div className="method-card-top">
+                        <div className="method-card-icon-box">
+                          <ClipboardCheck size={22} />
+                        </div>
+                        <div className="method-card-radio">
+                          {selectedAssessment === 1 && <Check size={14} strokeWidth={3} />}
+                        </div>
+                      </div>
+
+                      <span className="method-card-badge">Phương thức 1</span>
+                      <h4 className="method-card-title">
+                        Đánh giá khung đạo đức theo các tiêu chí
+                      </h4>
+                      <p className="method-card-desc">
+                        Đánh giá trực tiếp mức độ tuân thủ dựa trên 60 tiêu chuẩn đạo đức AI. Phương pháp đơn giản, chuẩn hóa, thao tác nhanh chóng.
+                      </p>
+
+                      <div className="method-card-features">
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>Đầy đủ 60 tiêu chuẩn Thông tư 05/2026</span>
+                        </div>
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>Tự động xếp hạng & tính mức độ tuân thủ</span>
+                        </div>
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>Phù hợp tự đánh giá nội bộ, rà soát nhanh</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Method 2 */}
+                    <div 
+                      className={`method-card ${selectedAssessment === 2 ? 'active' : ''}`}
+                      onClick={() => setSelectedAssessment(2)}
+                    >
+                      <div className="method-card-top">
+                        <div className="method-card-icon-box">
+                          <SlidersHorizontal size={22} />
+                        </div>
+                        <div className="method-card-radio">
+                          {selectedAssessment === 2 && <Check size={14} strokeWidth={3} />}
+                        </div>
+                      </div>
+
+                      <span className="method-card-badge recommended">Phương thức 2 • Linh hoạt</span>
+                      <h4 className="method-card-title">
+                        Đánh giá khung đạo đức theo nguyên tắc trọng số
+                      </h4>
+                      <p className="method-card-desc">
+                        Tùy chỉnh trọng số linh hoạt (W) cho 04 nguyên tắc đạo đức cốt lõi theo đặc thù từng lĩnh vực (Y tế, Tài chính, ĐMST...) và tính điểm quy đổi.
+                      </p>
+
+                      <div className="method-card-features">
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>04 nguyên tắc & bộ trọng số linh hoạt</span>
+                        </div>
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>Cung cấp bộ mẫu gợi ý sẵn theo từng ngành</span>
+                        </div>
+                        <div className="feature-item">
+                          <Check size={14} className="feature-check" strokeWidth={2.5} />
+                          <span>Tính điểm quy đổi dự kiến & xếp loại chi tiết</span>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-muted-light rounded-md border" style={{ marginLeft: '1rem' }}>
-                    <label className="text-xs font-semibold mb-1.5 block text-main">Chọn phương thức đánh giá chi tiết:</label>
-                    <select 
-                      className="portal-select mb-3" 
-                      value={selectedAssessment} 
-                      onChange={(e) => setSelectedAssessment(parseInt(e.target.value, 10))}
-                    >
-                      <option value={1}>1. Đánh giá khung đạo đức theo các tiêu chí (Thang điểm 60)</option>
-                      <option value={2}>2. Đánh giá khung đạo đức theo nguyên tắc trọng số (Thang điểm 100)</option>
-                    </select>
-                    <div className="flex justify-end">
-                      <button 
-                        type="button"
-                        onClick={handleStartAssessment}
-                        className="btn btn-primary flex items-center gap-1.5"
-                      >
-                        {editId && editingAssessment?.status !== 'DRAFT' ? 'Đánh giá lại' : 'Bắt đầu đánh giá'} <ArrowRight size={16} />
-                      </button>
-                    </div>
+                  {/* Quick Guide / Status Notice */}
+                  <div className="method-selected-notice">
+                    <span className="font-semibold text-primary">Phương thức đang chọn:</span>
+                    <span>
+                      {selectedAssessment === 1 
+                        ? 'Phương thức 1 – Đánh giá khung đạo đức theo các tiêu chí.' 
+                        : 'Phương thức 2 – Đánh giá khung đạo đức theo nguyên tắc trọng số.'}
+                    </span>
                   </div>
                 </div>
               </div>
